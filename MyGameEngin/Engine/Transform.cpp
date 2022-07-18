@@ -32,6 +32,11 @@ void Transform::Calclation()
 
 XMMATRIX Transform::GetWorldMatrix()
 {
+    Calclation();
+    if (pTransform_)    //e‚ª‚¢‚éê‡
+    {
+        return matScale_ * matRotate_ * matTranslate_ * pTransform_->GetWorldMatrix();
+    }
     return matScale_ * matRotate_ * matTranslate_;
 }
 
