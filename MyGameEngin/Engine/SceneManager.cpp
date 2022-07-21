@@ -5,7 +5,7 @@
 #include "Model.h"
 
 SceneManager::SceneManager(GameObject* parent)
-    : GameObject(parent, "SceneManager")
+    : GameObject(parent, "SceneManager"), currentSceneID_(), nextSceneID_()
 {
 }
 

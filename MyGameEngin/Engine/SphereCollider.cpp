@@ -1,6 +1,6 @@
 #include "SphereCollider.h"
 
-SphereCollider::SphereCollider(XMFLOAT3 center, float radius)
+SphereCollider::SphereCollider(XMFLOAT3 center, float radius) : pGameObject_(nullptr)
 {
 	center_ = center;
 	radius_ = radius;

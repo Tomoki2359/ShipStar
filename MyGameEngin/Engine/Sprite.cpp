@@ -9,7 +9,8 @@ Sprite::Sprite() :
 	index_(nullptr),
 	vertices_(nullptr),
 	indexNum(0),
-	vertexNum_(0)
+	vertexNum_(0),
+	pTexture_(nullptr)
 {
 }
 
@@ -168,7 +169,7 @@ HRESULT Sprite::LoadTexture(LPCWSTR fileName)
 void Sprite::PassDataToCB(Transform& transform, XMFLOAT4 color)
 {
 	CONSTANT_BUFFER cb;
-	XMMATRIX mat = XMMatrixScaling(1.0 / 1920.0f, 1.0 / 1080.0f, 1.0f);	//Windows‰æ–Ê‚Ì’²®
+	XMMATRIX mat = XMMatrixScaling(1.0f / 1920.0f, 1.0f / 1080.0f, 1.0f);	//Windows‰æ–Ê‚Ì’²®
 	cb.matW = XMMatrixTranspose(pTexture_->GetSize() * mat * transform.GetWorldMatrix());
 
 	D3D11_MAPPED_SUBRESOURCE pdata;

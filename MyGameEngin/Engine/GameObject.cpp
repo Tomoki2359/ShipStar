@@ -1,6 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
+GameObject::GameObject() :
+	killObject_(false),
+	pParent_(nullptr),
+	objectName_(""),
+	pCollider_(nullptr)
 {
 }
 
@@ -97,13 +101,13 @@ GameObject* GameObject::FindChildObject(std::string childName)
 
 GameObject* GameObject::GetRootJob()
 {
-	if (pParent_ == nullptr)
+	if (pParent_ != nullptr)
 	{
-		return this;
+		return pParent_->GetRootJob();
 	}
 	else
 	{
-		pParent_->GetRootJob();
+		return this;
 	}
 }
 

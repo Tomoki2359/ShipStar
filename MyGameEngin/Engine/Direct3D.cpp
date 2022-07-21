@@ -87,6 +87,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
 
 	//レンダーターゲットビューを作成
+	assert(pBackBuffer != nullptr);
 	hr = pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
 	if (FAILED(hr))
 	{
@@ -101,8 +102,8 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	///////////////////////////ビューポート（描画範囲）設定///////////////////////////////
 	//レンダリング結果を表示する範囲
 	D3D11_VIEWPORT vp;
-	vp.Width = winW;	//幅
-	vp.Height = winH;//高さ
+	vp.Width = (float)winW;	//幅
+	vp.Height = (float)winH;//高さ
 	vp.MinDepth = 0.0f;	//手前
 	vp.MaxDepth = 1.0f;	//奥
 	vp.TopLeftX = 0;	//左
@@ -123,6 +124,7 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
 	pDevice->CreateTexture2D(&descDepth, NULL, &pDepthStencil);
+	assert(pDepthStencil != nullptr);
 	pDevice->CreateDepthStencilView(pDepthStencil, NULL, &pDepthStencilView);
 
 	//ブレンドステートの作成
