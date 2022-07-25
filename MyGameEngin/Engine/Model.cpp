@@ -5,7 +5,7 @@ namespace Model
 {
 	struct MODEL
 	{
-		Fbx* pFbx;
+		Fbx* pFbx = nullptr;
 		Transform TransformModel;
 		std::string FileModel;
 	};
@@ -23,13 +23,13 @@ int Model::Load(std::string fileName)
 		if (fileName == (*itr)->FileModel)
 		{
 			pLoadModel->pFbx = (*itr)->pFbx;
-			return modelList_.size() - 1;
+			return (int)modelList_.size() - 1;
 		}
 	}
 	pLoadModel->pFbx = new Fbx;
 	pLoadModel->pFbx->Load(pLoadModel->FileModel);
 	modelList_.push_back(pLoadModel);
-	return modelList_.size() - 1;
+	return (int)modelList_.size() - 1;
 }
 
 
