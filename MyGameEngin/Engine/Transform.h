@@ -8,19 +8,19 @@ class Transform
 {
 	XMMATRIX matTranslate_;	//移動行列
 	XMMATRIX matRotate_;	//回転行列	
-	XMMATRIX matScale_;	//拡大行列
+	XMMATRIX matScale_;		//拡大行列
 
 public:
 	Transform* pTransform_; //親のTransform
-	XMFLOAT3 position_;	//位置
-	XMFLOAT3 rotate_;	//向き
-	XMFLOAT3 scale_;	//拡大率
+	XMFLOAT3 position_;		//位置
+	XMFLOAT3 rotate_;		//向き
+	XMFLOAT3 scale_;		//拡大率
 
 	//コンストラクタ
 	Transform();
 
 	//デストラクタ
-	~Transform();
+	~Transform() {}
 
 	//各行列の計算
 	void Calclation();
@@ -29,5 +29,5 @@ public:
 	XMMATRIX GetWorldMatrix();
 
 	//法線変形用行列を取得
-	XMMATRIX GetNormalMatrix();
+	XMMATRIX GetNormalMatrix() { return matRotate_ * XMMatrixInverse(nullptr, matScale_); }
 };

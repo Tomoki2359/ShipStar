@@ -75,7 +75,7 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* pMesh)
 	VERTEX* vertices = new VERTEX[vertexCount_];
 
 	//全ポリゴン
-	for (DWORD poly = 0; poly < polygonCount_; poly++)
+	for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++)
 	{
 		//3頂点分
 		for (int vertex = 0; vertex < 3; vertex++)
@@ -97,7 +97,7 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* pMesh)
 			FbxVector4 Normal;
 			pMesh->GetPolygonVertexNormal(poly, vertex, Normal);	//ｉ番目のポリゴンの、ｊ番目の頂点の法線をゲット
 			vertices[index].normal = XMVectorSet((float)Normal[0], (float)Normal[1], (float)Normal[2], 0.0f);
-			vertices[index].color_ = { 0.5, 0.0, 1.0, 0.3 };
+			vertices[index].color_ = { 0.5f, 0.0f, 1.0f, 0.3f };
 
 		}
 	}
@@ -127,7 +127,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* pMesh)
 	pIndexBuffer_ = new ID3D11Buffer * [materialCount_];
 	indexCount_ = new int[materialCount_];
 
-	int* index = new int[polygonCount_ * 3];
+	int* index = new int[(long long)polygonCount_ * 3];
 
 	for (int i = 0; i < materialCount_; i++)
 	{
@@ -135,7 +135,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* pMesh)
 		int count = 0;
 
 		//全ポリゴン
-		for (DWORD poly = 0; poly < polygonCount_; poly++)
+		for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++)
 		{
 			FbxLayerElementMaterial* mtl = pMesh->GetLayer(0)->GetMaterials();
 			int mtlId = mtl->GetIndexArray().GetAt(poly);

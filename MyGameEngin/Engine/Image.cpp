@@ -23,7 +23,7 @@ int Image::Load(LPCWSTR fileName)
 	pLoadImage->pSprite = new Sprite;
 	pLoadImage->pSprite->Initialize(pLoadImage->FileImage);
 	ImageList_.push_back(pLoadImage);
-	return ImageList_.size() - 1;
+	return (int)ImageList_.size() - 1;
 }
 
 void Image::Draw(int hPict)
@@ -71,15 +71,15 @@ void Image::AllRelease()
 //透明度の取得
 void Image::SetAlpha(int hPict, int alpha)
 {
-	ImageList_[hPict]->alpha_ = (float)alpha / 255;
+	ImageList_[hPict]->alpha_ = (float)alpha / UINT8_MAX;
 }
 
 //RGBの色の取得	
 void Image::SetColor(int hPict, int red, int blue, int green)
 {
-	ImageList_[hPict]->red_ = (float)red / 255;
-	ImageList_[hPict]->green_ = (float)green / 255;
-	ImageList_[hPict]->blue_ = (float)blue / 255;
+	ImageList_[hPict]->red_ = (float)red / UINT8_MAX;
+	ImageList_[hPict]->green_ = (float)green / UINT8_MAX;
+	ImageList_[hPict]->blue_ = (float)blue / UINT8_MAX;
 }
 
 //移動・回転・拡大縮小の取得

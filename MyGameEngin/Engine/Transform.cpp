@@ -11,10 +11,6 @@ Transform::Transform() :
 {
 }
 
-Transform::~Transform()
-{
-}
-
 void Transform::Calclation()
 {
     //ˆÚ“®s—ñ
@@ -39,9 +35,4 @@ XMMATRIX Transform::GetWorldMatrix()
         return matScale_ * matRotate_ * matTranslate_ * pTransform_->GetWorldMatrix();
     }
     return matScale_ * matRotate_ * matTranslate_;
-}
-
-XMMATRIX Transform::GetNormalMatrix()
-{
-    return matRotate_ * XMMatrixInverse(nullptr, matScale_);
 }

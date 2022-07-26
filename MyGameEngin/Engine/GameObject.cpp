@@ -18,14 +18,10 @@ GameObject::GameObject(GameObject* parent, const std::string& name) :
 		transform_.pTransform_ = &parent->transform_;
 }
 
-GameObject::~GameObject()
-{
-}
-
 void GameObject::UpdateSub()
 {
 	Update();
-	Transform();
+
 	RoundRobin(GetRootJob());
 	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 	{
@@ -173,13 +169,8 @@ void GameObject::KillMe()
 	killObject_ = true;
 }
 
-void GameObject::SetPosition(XMFLOAT3 position)
-{
-	transform_.position_ = position;
-}
-
 //スクリーンの色の変更
-void GameObject::SetScreen(int red, int blue, int green)
+void GameObject::SetScreen(short red, short blue, short green)
 {
 	Direct3D::SetColor((float)red / 255, (float)blue / 255, (float)green / 255);
 }

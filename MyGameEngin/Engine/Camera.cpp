@@ -10,13 +10,13 @@ namespace Camera
 }
 
 //初期化
-void Camera::Initialize(int WINDOU_WIDTH,int WINDOU_HEIGHT)
+void Camera::Initialize(int WINDOW_WIDTH,int WINDOW_HEIGHT)
 {
 	position_ = XMVectorSet(0, 3, -10, 0);	//カメラの位置
 	target_ = XMVectorSet(0, 0, 0, 0);	//カメラの焦点
 
 	//プロジェクション行列
-	projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)WINDOU_WIDTH / (FLOAT)WINDOU_HEIGHT, 0.1f, 100.0f);
+	projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)WINDOW_WIDTH / (FLOAT)WINDOW_HEIGHT, 0.1f, 100.0f);
 }
 
 //更新

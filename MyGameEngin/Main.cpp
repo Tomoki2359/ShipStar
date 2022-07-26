@@ -110,7 +110,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			if (nowTime - startTime >= 1000)
 			{
-				WCHAR str[16];
+				//WCHAR str[16];
 				//wsprintf(str, L"%u", countFps);
 				//SetWindowText(hWnd, str);
 

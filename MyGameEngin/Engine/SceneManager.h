@@ -9,8 +9,8 @@ enum SCENE_ID
 
 class SceneManager : public GameObject
 {
-	SCENE_ID currentSceneID_;	//現在のシーン
-	SCENE_ID nextSceneID_;		//次のシーン
+	unsigned short currentSceneID_;		//現在のシーン
+	unsigned short nextSceneID_;		//次のシーン
 public:
 
 	//コンストラクタ
