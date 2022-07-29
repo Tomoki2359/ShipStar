@@ -145,6 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Airframe.cpp" />
+    <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
@@ -160,6 +162,8 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SplashScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
@@ -182,6 +186,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Airframe.h" />
+    <ClInclude Include="Course.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Define.h" />
@@ -197,6 +203,8 @@
     <ClInclude Include="Engine\Sprite.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SplashScene.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
