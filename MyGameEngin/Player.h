@@ -12,5 +12,7 @@ public:
 	//デストラクタ
 	~Player();
 
+	void UpdateState() override;
+
 	void SetStatus() override;
 };
