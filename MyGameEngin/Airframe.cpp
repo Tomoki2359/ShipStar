@@ -4,16 +4,16 @@
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent)
-	: GameObject(parent, "Airframe"), hModel_(-1), aRotate_(false), Speed_(0.0f),
-	dRotate_(false), lRotate_(false), rRotate_(false), cTurbo_(false), tTurbo_(0),
-	sCamera_(false), status_()
+	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
+	cCamera_(false), status_()
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), aRotate_(false), Speed_(0.0f),
-	dRotate_(false), lRotate_(false), rRotate_(false), cTurbo_(false), tTurbo_(0),
-	sCamera_(false), status_()
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
+	cCamera_(false), status_()
 {
 }
 
@@ -28,13 +28,14 @@ void Airframe::Initialize()
 	SetStatus();
 
 	//モデルデータのロード
-	hModel_ = Model::Load(failName_);
+	//パーツを呼び出せるようになったら消す
+	hModel_ = Model::Load(fileName_);
 	assert(hModel_ >= 0);
 
 	status_[MAX_SPEED] = (float)((int)status_[MAX_SPEED] * 10000000 / 216000) / 10000;	//最高速度
 	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//加速度
 	status_[TURBO] = status_[TURBO] / 100 * 60;	//ターボ値
-	Speed_ = 0;	//現在の速度
+	speed_ = 0;	//現在の速度
 }
 
 //更新
@@ -44,31 +45,31 @@ void Airframe::Update()
 	UpdateState();
 
 	//左に傾いている状態のとき
-	if (lRotate_ == true)
+	if (lCurve_ == true)
 	{
 		//角度を戻す処理
 		transform_.rotate_.z -= 1;
 		if (transform_.rotate_.z <= 0)
 		{
-			lRotate_ = false;
+			lCurve_ = false;
 			transform_.rotate_.z = 0;
 		}
 	}
 
 	//右に傾いている状態のとき
-	if (rRotate_ == true)
+	if (rCurve_ == true)
 	{
 		//角度を戻す処理
 		transform_.rotate_.z += 1;
 		if (transform_.rotate_.z >= 0)
 		{
-			rRotate_ = false;
+			rCurve_ = false;
 			transform_.rotate_.z = 0;
 		}
 	}
 
 	//上昇状態なら
-	if (aRotate_ == true)
+	if (cAscent_ == true)
 	{
 		if (transform_.position_.y >= 15)
 		{
@@ -77,13 +78,13 @@ void Airframe::Update()
 		transform_.rotate_.x += 0.2f;
 		if (transform_.rotate_.x >= 0)
 		{
-			aRotate_ = false;
+			cAscent_ = false;
 			transform_.rotate_.x = 0;
 		}
 	}
 
 	//下降状態なら
-	if (dRotate_ == true)
+	if (cDescent_ == true)
 	{
 		if (transform_.position_.y <= -5)
 		{
@@ -92,7 +93,7 @@ void Airframe::Update()
 		transform_.rotate_.x -= 0.2f;
 		if (transform_.rotate_.x <= 0)
 		{
-			dRotate_ = false;
+			cDescent_ = false;
 			transform_.rotate_.x = 0;
 		}
 	}
@@ -100,9 +101,22 @@ void Airframe::Update()
 	//速さや位置を一定にする
 	Limit();
 
+	//ターボ中の処理
+	if (cTurbo_ == true)
+	{
+		//スピードを上げる
+		speed_ = status_[MAX_SPEED] * 2.0f;
+		//時間が経ったら終わる
+		if (tTurbo_ >= status_[TURBO])
+		{
+			cTurbo_ = false;
+			tTurbo_ = 0;
+		}
+	}
+
 	//移動処理
 	//速度をベクターに変換
-	XMFLOAT3 Move_ = { 0,0,Speed_ };
+	XMFLOAT3 Move_ = { 0,0,speed_ };
 	XMVECTOR vMove_ = XMLoadFloat3(&Move_);
 
 	//機体のX軸,Y軸の角度の取得
@@ -115,8 +129,8 @@ void Airframe::Update()
 	vPos += vMove_;
 	XMStoreFloat3(&transform_.position_, vPos);
 
-	//カメラをつかうかどうか
-	if (sCamera_ == true)
+	//カメラを使用するかどうか
+	if (cCamera_ == true)
 	{
 		//カメラの設置
 		XMFLOAT3 camPos;
@@ -131,13 +145,14 @@ void Airframe::Update()
 		Camera::SetTarget(Pos_);
 	}
 
-	//ターボを貯める
+	//ターボ値を貯める
 	tTurbo_++;
 }
 
 //描画
 void Airframe::Draw()
 {
+	//パーツを呼び出せるようになったら消す
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
 }
@@ -151,9 +166,9 @@ void Airframe::Release()
 void Airframe::Limit()
 {
 	//速度が最大速度を超えたとき最大速度にする
-	if (Speed_ >= status_[MAX_SPEED])
+	if (speed_ >= status_[MAX_SPEED])
 	{
-		Speed_ = status_[MAX_SPEED];
+		speed_ = status_[MAX_SPEED];
 	}
 
 	//一定以上上昇しない
@@ -178,35 +193,36 @@ void Airframe::SetStatus()
 	status_[TURBO] = 150;
 	status_[ENDURANCE] = 100;
 
-	failName_ = "";
-	sCamera_ = false;
+	//パーツを呼び出せるようになったら修正
+	fileName_ = "";
+	cCamera_ = false;
 }
 
 void Airframe::Accelerate()
 {
 	//加速分の速度を増やす
-	Speed_ = Speed_ + status_[ACCELE];
+	speed_ = speed_ + status_[ACCELE];
 }
 
 void Airframe::Decelerate()
 {
 	//加速分の速度を減らす
-	Speed_ = Speed_ - (status_[ACCELE] * 2);
+	speed_ = speed_ - (status_[ACCELE] * 2);
 	//速度が最大速度を超えたとき最大速度にする
-	if (Speed_ <= 0)
+	if (speed_ <= 0)
 	{
-		Speed_ = 0;
+		speed_ = 0;
 	}
 }
 
 void Airframe::TurnRight()
 {
 	transform_.rotate_.y += 1.5f;
-	if (lRotate_ != true)
+	if (lCurve_ != true)
 	{
 		//右に曲がるときの傾き
 		transform_.rotate_.z -= 2;
-		rRotate_ = true;
+		rCurve_ = true;
 		if (transform_.rotate_.z <= -40)
 		{
 			transform_.rotate_.z = -40;
@@ -217,11 +233,11 @@ void Airframe::TurnRight()
 void Airframe::TurnLeft()
 {
 	transform_.rotate_.y -= 1.5f;
-	if (rRotate_ != true)
+	if (rCurve_ != true)
 	{
 		//左に曲がるときの傾き
 		transform_.rotate_.z += 2;
-		lRotate_ = true;
+		lCurve_ = true;
 		if (transform_.rotate_.z >= 40)
 		{
 			transform_.rotate_.z = 40;
@@ -232,11 +248,11 @@ void Airframe::TurnLeft()
 void Airframe::Rise()
 {
 	//下降状態ではないとき
-	if (dRotate_ != true)
+	if (cDescent_ != true)
 	{
 		//上昇状態にする
 		transform_.rotate_.x -= 0.4f;
-		aRotate_ = true;
+		cAscent_ = true;
 		//角度が15を超えたら15にする
 		if (transform_.rotate_.x <= -25)
 		{
@@ -248,11 +264,11 @@ void Airframe::Rise()
 void Airframe::Descent()
 {
 	//上昇状態ではないとき
-	if (aRotate_ != true)
+	if (cAscent_ != true)
 	{
 		//下降状態にする
 		transform_.rotate_.x += 0.4f;
-		dRotate_ = true;
+		cDescent_ = true;
 		//角度が－15を超えたら-15にする
 		if (transform_.rotate_.x >= 25)
 		{
@@ -263,12 +279,6 @@ void Airframe::Descent()
 
 void Airframe::Turbo()
 {
-	//スピードを上げる
-	Speed_ = status_[MAX_SPEED] * 2.0f;
-	//時間が経ったら終わる
-	if (tTurbo_ >= status_[TURBO])
-	{
-		cTurbo_ = false;
-		tTurbo_ = 0;
-	}
+	cTurbo_ = true;
+	tTurbo_ = 0;
 }

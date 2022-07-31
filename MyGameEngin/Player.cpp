@@ -44,6 +44,7 @@ void Player::UpdateState()
 		Descent();
 	}
 	//ターボ
+	//300は順位によって発動する時間が変動する(最下位から5秒,10秒,15秒,20秒)
 	if (tTurbo_ >= 300 && Input::IsKeyDown(DIK_C))
 	{
 		tTurbo_ = 0;
@@ -59,8 +60,9 @@ void Player::SetStatus()
 	status_[TURBO] = 150;
 	status_[ENDURANCE] = 100;
 
-	failName_ = "Assets\\oden.fbx.";	//ファイルの名前
-	sCamera_ = true;	//カメラON
+	//パーツを呼び出せるようになったら修正
+	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
+	cCamera_ = true;	//カメラON
 	transform_.scale_.x = 0.25;
 	transform_.scale_.y = 0.25;
 	transform_.scale_.z = 0.25;

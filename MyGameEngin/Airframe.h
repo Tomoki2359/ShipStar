@@ -14,11 +14,11 @@ enum STATUS_ID
 class Airframe : public GameObject
 {
 	short hModel_;    //モデル番号
-	float Speed_;	//現在の速度
-	bool aRotate_;	//上昇状態かどうか
-	bool dRotate_;	//下降状態かどうか
-	bool lRotate_;	//左に曲がっている状態かどうか
-	bool rRotate_;	//右に曲がっている状態かどうか
+	float speed_;	//現在の速度
+	bool cAscent_;	//上昇状態かどうか
+	bool cDescent_;	//下降状態かどうか
+	bool lCurve_;	//左に曲がっている状態かどうか
+	bool rCurve_;	//右に曲がっている状態かどうか
 
 protected:
 	short tTurbo_;	//ターボ値を貯める
@@ -26,8 +26,8 @@ protected:
 
 public:
 	float status_[MAX_STATUS];
-	std::string failName_;
-	bool sCamera_;	//カメラをつけるかどうか
+	std::string fileName_;
+	bool cCamera_;	//カメラをつけるかどうか
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
 	Airframe(GameObject* parent);
