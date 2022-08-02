@@ -14,5 +14,5 @@ public:
 
 	void UpdateState() override;
 
-	void SetStatus() override;
+	//void SetStatus() override;
 };

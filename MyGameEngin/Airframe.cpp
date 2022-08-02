@@ -6,14 +6,14 @@
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_()
+	cCamera_(false), status_(), PartsSet()
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_()
+	cCamera_(false), status_(), PartsSet()
 {
 }
 
@@ -24,6 +24,11 @@ Airframe::~Airframe()
 //初期化
 void Airframe::Initialize()
 {
+	csv.Load("Assets/PartsStatus.csv");
+
+	//全てデフォルト値で初期化
+	PartsSet = { NULL, NULL, NULL, NULL, NULL, NULL };
+
 	//ステータスの取得
 	SetStatus();
 
@@ -184,18 +189,35 @@ void Airframe::Limit()
 	}
 }
 
+void Airframe::SetPartsNum(char engine, char body, char wing, char cockpit, char pattern)
+{
+	PartsSet.ENGINE = engine;
+	PartsSet.BODY = body;
+	PartsSet.WING = wing;
+	PartsSet.COCKPIT = cockpit;
+	PartsSet.PATTERN = pattern;
+
+	SetStatus();
+}
+
 //ステータスの取得
 void Airframe::SetStatus()
 {
 	//あとでfor分でCSVから入れる
-	status_[MAX_SPEED] = 150;
-	status_[ACCELE] = 200;
-	status_[TURBO] = 150;
-	status_[ENDURANCE] = 100;
+	status_[MAX_SPEED] = (float)csv.GetValue(PARTS_WING ,PartsSet.WING);
+	status_[ACCELE] = (float)csv.GetValue(PARTS_COCKPIT, PartsSet.COCKPIT);	//値250で逆進を確認
+	status_[TURBO] = (float)csv.GetValue(PARTS_ENGINE, PartsSet.ENGINE);
+	status_[ENDURANCE] = (float)csv.GetValue(PARTS_BODY, PartsSet.BODY);
 
 	//パーツを呼び出せるようになったら修正
-	fileName_ = "";
-	cCamera_ = false;
+	//fileName_ = "";
+	//cCamera_ = false;
+
+	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
+	cCamera_ = true;	//カメラON
+	transform_.scale_.x = 0.25;
+	transform_.scale_.y = 0.25;
+	transform_.scale_.z = 0.25;
 }
 
 void Airframe::Accelerate()

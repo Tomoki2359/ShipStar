@@ -14,32 +14,32 @@ Player::~Player()
 void Player::UpdateState()
 {
 	//前進する
-	if (Input::IsKey(DIK_W))
+	if (Input::IsKey(DIK_W) && !Input::IsKey(DIK_S))
 	{
 		Accelerate();
 	}
 	//ブレーキする
-	if (Input::IsKey(DIK_S))
+	if (Input::IsKey(DIK_S) && !Input::IsKey(DIK_W))
 	{
 		Decelerate();
 	}
 	//左にカーブする
-	if (Input::IsKey(DIK_A))
+	if (Input::IsKey(DIK_A) && !Input::IsKey(DIK_D))
 	{
 		TurnLeft();
 	}
 	//右にカーブする
-	if (Input::IsKey(DIK_D))
+	if (Input::IsKey(DIK_D) && !Input::IsKey(DIK_A))
 	{
 		TurnRight();
 	}
 	//上昇する
-	if (Input::IsKey(DIK_E))
+	if (Input::IsKey(DIK_E) && !Input::IsKey(DIK_Q))
 	{
 		Rise();
 	}
 	//下降する
-	if (Input::IsKey(DIK_Q))
+	if (Input::IsKey(DIK_Q) && !Input::IsKey(DIK_E))
 	{
 		Descent();
 	}
@@ -52,18 +52,18 @@ void Player::UpdateState()
 	}
 }
 
-void Player::SetStatus()
-{
-	//あとでfor分でCSVから入れる
-	status_[MAX_SPEED] = 150;
-	status_[ACCELE] = 200;
-	status_[TURBO] = 150;
-	status_[ENDURANCE] = 100;
-
-	//パーツを呼び出せるようになったら修正
-	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
-	cCamera_ = true;	//カメラON
-	transform_.scale_.x = 0.25;
-	transform_.scale_.y = 0.25;
-	transform_.scale_.z = 0.25;
-}
+//void Player::SetStatus()
+//{
+//	//あとでfor分でCSVから入れる
+//	status_[MAX_SPEED] = 150;
+//	status_[ACCELE] = 200;
+//	status_[TURBO] = 150;
+//	status_[ENDURANCE] = 100;
+//
+//	//パーツを呼び出せるようになったら修正
+//	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
+//	cCamera_ = true;	//カメラON
+//	transform_.scale_.x = 0.25;
+//	transform_.scale_.y = 0.25;
+//	transform_.scale_.z = 0.25;
+//}

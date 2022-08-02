@@ -1,5 +1,25 @@
 #pragma once
+#include "CSVReader.h"
 #include "Engine/GameObject.h"
+
+struct PARTS_NUM
+{
+	char COST;		//コスト
+	short ENGINE;	//エンジン
+	short BODY;		//ボディ
+	short WING;		//翼
+	short COCKPIT;	//コックピット
+	short PATTERN;	//模様
+};
+
+enum PARTS
+{
+	PARTS_ENGINE,	//エンジン
+	PARTS_BODY,		//ボディ
+	PARTS_WING,		//翼
+	PARTS_COCKPIT,	//コックピット
+	PARTS_PATTERN	//模様
+};
 
 enum STATUS_ID
 {
@@ -13,18 +33,20 @@ enum STATUS_ID
 //■■シーンを管理するクラス
 class Airframe : public GameObject
 {
-	short hModel_;    //モデル番号
+	short hModel_;   //モデル番号
 	float speed_;	//現在の速度
 	bool cAscent_;	//上昇状態かどうか
 	bool cDescent_;	//下降状態かどうか
 	bool lCurve_;	//左に曲がっている状態かどうか
 	bool rCurve_;	//右に曲がっている状態かどうか
+	CSVReader csv;	//csvを読み込むための関数
 
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
 
 public:
+	PARTS_NUM PartsSet;
 	float status_[MAX_STATUS];
 	std::string fileName_;
 	bool cCamera_;	//カメラをつけるかどうか
@@ -53,8 +75,10 @@ public:
 	//速さや位置などの限界
 	void Limit();
 
+	void SetPartsNum(char engine, char body, char wing, char cockpit, char pattern);
+
 	//ステータスの取得
-	virtual void SetStatus();
+	void SetStatus();
 
 	//加速
 	void Accelerate();
