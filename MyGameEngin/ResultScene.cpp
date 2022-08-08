@@ -15,7 +15,7 @@ void ResultScene::Initialize()
 //çXêV
 void ResultScene::Update()
 {
-	SCENE_CHANGE(SCENE_ID_LOBBY);
+	//SCENE_CHANGE(SCENE_ID_LOBBY);
 }
 
 //ï`âÊ

@@ -15,8 +15,8 @@ void MatchingScene::Initialize()
 //çXêV
 void MatchingScene::Update()
 {
-	SCENE_CHANGE(SCENE_ID_LOBBY);
-	SCENE_CHANGE(SCENE_ID_PLAY);
+	//SCENE_CHANGE(SCENE_ID_LOBBY);
+	//SCENE_CHANGE(SCENE_ID_PLAY);
 }
 
 //ï`âÊ

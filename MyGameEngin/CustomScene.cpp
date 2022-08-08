@@ -15,7 +15,7 @@ void CustomScene::Initialize()
 //çXêV
 void CustomScene::Update()
 {
-	SCENE_CHANGE(SCENE_ID_LOBBY);
+	//SCENE_CHANGE(SCENE_ID_LOBBY);
 }
 
 //ï`âÊ

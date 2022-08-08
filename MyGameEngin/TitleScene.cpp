@@ -15,7 +15,8 @@ void TitleScene::Initialize()
 //çXêV
 void TitleScene::Update()
 {
-	SCENE_CHANGE(SCENE_ID_LOBBY);
+	//SCENE_CHANGE(SCENE_ID_LOBBY);
+	SCENE_CHANGE(SCENE_ID_PLAY);
 }
 
 //ï`âÊ
