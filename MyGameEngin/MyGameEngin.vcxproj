@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Airframe.cpp" />
+    <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="CustomScene.cpp" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airframe.h" />
+    <ClInclude Include="Computer.h" />
     <ClInclude Include="Course.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="CustomScene.h" />
