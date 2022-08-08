@@ -148,6 +148,7 @@
     <ClCompile Include="Airframe.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="CustomScene.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
     <ClCompile Include="Engine\Fbx.cpp" />
@@ -161,9 +162,12 @@
     <ClCompile Include="Engine\Sprite.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MatchingScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SplashScene.cpp" />
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
@@ -189,6 +193,7 @@
     <ClInclude Include="Airframe.h" />
     <ClInclude Include="Course.h" />
     <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="CustomScene.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Define.h" />
     <ClInclude Include="Engine\Direct3D.h" />
@@ -203,8 +208,11 @@
     <ClInclude Include="Engine\Sprite.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="MatchingScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SplashScene.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>

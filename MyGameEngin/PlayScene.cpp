@@ -14,6 +14,8 @@ void PlayScene::Initialize()
 	SetScreen(0, 0, 0);
 	Instantiate<Player>(this);
 	Instantiate<Course>(this);
+
+	SCENE_CHANGE(SCENE_ID_RESULT);
 }
 
 //çXêV

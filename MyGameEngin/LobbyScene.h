@@ -3,12 +3,12 @@
 #include "Engine/SceneManager.h"
 
 //■■シーンを管理するクラス
-class PlayScene : public GameObject
+class LobbyScene : public GameObject
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	PlayScene(GameObject* parent);
+	LobbyScene(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

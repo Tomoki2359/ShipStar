@@ -5,7 +5,11 @@ enum SCENE_ID
 {
 	SCENE_ID_SPLASH = 0,
 	SCENE_ID_TITLE,
+	SCENE_ID_LOBBY,
+	SCENE_ID_CUSTOM,
+	SCENE_ID_MATCHING,
 	SCENE_ID_PLAY,
+	SCENE_ID_RESULT,
 };
 
 class SceneManager : public GameObject
