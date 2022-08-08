@@ -214,7 +214,14 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
-	cCamera_ = true;	//カメラON
+	if (this->objectName_ == "Player")
+	{
+		cCamera_ = true;	//カメラON
+	}
+	else
+	{
+		cCamera_ = false;	//カメラOFF
+	}
 	transform_.scale_.x = 0.25;
 	transform_.scale_.y = 0.25;
 	transform_.scale_.z = 0.25;
@@ -239,7 +246,10 @@ void Airframe::Decelerate()
 
 void Airframe::TurnRight()
 {
-	transform_.rotate_.y += 1.5f;
+	if (speed_ > 0)
+	{
+		transform_.rotate_.y += 1.5f;
+	}
 	if (lCurve_ != true)
 	{
 		//右に曲がるときの傾き
@@ -254,7 +264,10 @@ void Airframe::TurnRight()
 
 void Airframe::TurnLeft()
 {
-	transform_.rotate_.y -= 1.5f;
+	if (speed_ > 0)
+	{
+		transform_.rotate_.y -= 1.5f;
+	}
 	if (rCurve_ != true)
 	{
 		//左に曲がるときの傾き

@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Course.h"
 #include "Player.h"
+#include "Computer.h"
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -13,6 +14,7 @@ void PlayScene::Initialize()
 {
 	SetScreen(0, 0, 0);
 	Instantiate<Player>(this);
+	Instantiate<Computer>(this);
 	Instantiate<Course>(this);
 }
 
