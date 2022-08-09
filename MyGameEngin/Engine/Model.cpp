@@ -77,3 +77,23 @@ void Model::SetTransform(int hModel_, Transform transform_)
 {
 	modelList_[hModel_]->TransformModel = transform_;
 }
+
+//レイキャスト（レイを飛ばして当たり判定）
+void Model::RayCast(int handle, RayCastData* data)
+{
+	XMFLOAT3 target;
+	target.x = data->start.x + data->dir.x;
+	target.y = data->start.y + data->dir.y;
+	target.z = data->start.z + data->dir.z;
+	XMMATRIX matInv = XMMatrixInverse(nullptr, modelList_[handle]->TransformModel.GetWorldMatrix());
+	XMVECTOR vecStart = XMVector3TransformCoord(XMLoadFloat3(&data->start), matInv);
+	XMVECTOR vecTarget = XMVector3TransformCoord(XMLoadFloat3(&target), matInv);
+	XMVECTOR vecDir = vecTarget - vecStart;
+
+	XMStoreFloat3(&data->start, vecStart);
+	XMStoreFloat3(&data->dir, vecDir);
+
+	modelList_[handle]->pFbx->RayCast(data);
+
+
+}

@@ -1,5 +1,7 @@
 #include "Player.h"
 #include "Engine/Input.h"
+#include "Course.h"
+#include "Engine/Model.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
@@ -50,6 +52,8 @@ void Player::UpdateState()
 		tTurbo_ = 0;
 		Turbo();
 	}
+	Course* pCourse = (Course*)FindObject("Course");    //ステージオブジェクトを探す
+	int hGroundModel = pCourse->GetModelHandle();    //モデル番号を取得
 }
 
 void Player::SetStatus()

@@ -54,11 +54,14 @@ HRESULT Fbx::Load(std::string fileName)
 	vertexCount_ = pMesh->GetControlPointsCount();	//頂点の数
 	polygonCount_ = pMesh->GetPolygonCount();		//ポリゴンの数
 	materialCount_ = pNode->GetMaterialCount();		//マテリアルの数
+	pMaterialList_ = new MATERIAL[materialCount_];
+	
 
 	InitVertex(pMesh);		//頂点バッファ準備
 	InitIndex(pMesh);		//インデックスバッファ準備
 	IntConstantBuffer();	//コンスタントバッファ準備
 	InitMaterial(pNode);
+
 
 	//終わったら戻す
 	SetCurrentDirectory(defaultCurrentDir);
@@ -72,7 +75,7 @@ HRESULT Fbx::Load(std::string fileName)
 void Fbx::InitVertex(fbxsdk::FbxMesh* pMesh)
 {
 	//頂点情報を入れる配列
-	VERTEX* vertices = new VERTEX[vertexCount_];
+	vertices = new VERTEX[vertexCount_];
 
 	//全ポリゴン
 	for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++)
@@ -85,7 +88,7 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* pMesh)
 
 			//頂点の位置
 			FbxVector4 pos = pMesh->GetControlPointAt(index);
-			vertices[index].position = XMVectorSet((float)pos[0], (float)pos[1], (float)pos[2], 0.0f);
+			vertices[index].position = XMFLOAT3((float)pos[0], (float)pos[1], (float)pos[2]);
 
 			//頂点のUV
 			FbxLayerElementUV* pUV = pMesh->GetLayer(0)->GetUVs();
@@ -126,13 +129,13 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* pMesh)
 {
 	pIndexBuffer_ = new ID3D11Buffer * [materialCount_];
 	indexCount_ = new int[materialCount_];
+	ppIndexData_ = new DWORD * [materialCount_];
 
 	int* index = new int[(long long)polygonCount_ * 3];
 
+	int count = 0;
 	for (int i = 0; i < materialCount_; i++)
 	{
-
-		int count = 0;
 
 		//全ポリゴン
 		for (DWORD poly = 0; poly < (unsigned)polygonCount_; poly++)
@@ -172,6 +175,15 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* pMesh)
 			MessageBox(NULL, L"インデックスバッファの作成に失敗しました", L"エラー", MB_OK);
 			//return hr;
 		}
+
+		pMaterialList_[i].polygonCount = count / 3;
+		ppIndexData_[i] = new DWORD[count];
+		memcpy(ppIndexData_[i], index, sizeof(DWORD) * count);
+	}
+	if ((index) != nullptr)
+	{
+		delete[] index;
+		index = nullptr;
 	}
 }
 
@@ -197,8 +209,6 @@ void Fbx::IntConstantBuffer()
 
 void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 {
-	pMaterialList_ = new MATERIAL[materialCount_];
-
 
 	for (int i = 0; i < materialCount_; i++)
 	{
@@ -293,7 +303,7 @@ void Fbx::Draw(Transform& transform)
 		Direct3D::pContext->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 		Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-			//描画
+		//描画
 		Direct3D::pContext->DrawIndexed(indexCount_[i], 0, 0);
 	}
 }
@@ -309,4 +319,36 @@ void Fbx::Release()
 	SAFE_DELETE_ARRAY(pIndexBuffer_);
 
 	SAFE_RELEASE(pVertexBuffer_);
+}
+
+//レイキャスト
+void Fbx::RayCast(RayCastData* data)
+{
+	data->hit = FALSE;
+
+	//マテリアル毎
+	for (DWORD i = 0; i < materialCount_; i++)
+	{
+		//そのマテリアルのポリゴン毎
+		for (DWORD j = 0; j < pMaterialList_[i].polygonCount; j++)
+		{
+			//3頂点
+			XMFLOAT3 ver[3];
+
+			ver[0] = vertices[ppIndexData_[i][j * 3 + 0]].position;
+			ver[1] = vertices[ppIndexData_[i][j * 3 + 1]].position;
+			ver[2] = vertices[ppIndexData_[i][j * 3 + 2]].position;
+
+			BOOL  hit = FALSE;
+			float dist = 0.0f;
+
+			hit = Direct3D::Intersect(data->start, data->dir, ver[0], ver[1], ver[2], &dist);
+
+			if (hit && dist < data->dist)
+			{
+				data->hit = TRUE;
+				data->dist = dist;
+			}
+		}
+	}
 }
