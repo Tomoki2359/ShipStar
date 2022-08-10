@@ -1,8 +1,10 @@
 #include "Computer.h"
+#include "Engine/Model.h"
+#include "Course.h"
 #include "Player.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(M_TURNL)
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL)
 {
 }
 
@@ -12,6 +14,44 @@ Computer::~Computer()
 
 void Computer::UpdateState()
 {
+	Course* pCourse = (Course*)FindObject("Course");
+	short hCourseModel = (short)pCourse->GetModelHandle();
+
+	RayCastData Straight;	//真っ直ぐにレイを飛ばす
+	Straight.start = transform_.position_;   //レイの発射位置
+	Straight.dir = XMFLOAT3(0, -1, 1);       //レイの方向	コースができたらそれぞれ方向を変更する
+	Model::RayCast(hCourseModel, &Straight); //レイを発射
+
+	RayCastData Right;		//斜め右にレイを飛ばす
+	Right.start = transform_.position_;   //レイの発射位置
+	Right.dir = XMFLOAT3(1, -1, 1);       //レイの方向
+	Model::RayCast(hCourseModel, &Right); //レイを発射
+
+	RayCastData Left;		//斜め左にレイを飛ばす
+	Left.start = transform_.position_;   //レイの発射位置
+	Left.dir = XMFLOAT3(-1, -1, 1);       //レイの方向
+	Model::RayCast(hCourseModel, &Left); //レイを発射
+
+	if (Straight.hit && Right.hit && Left.hit)
+	{
+		SetNextState(M_ACCEL);
+		if (Straight.dist > Right.dist && Straight.dist > Left.dist)	//真っ直ぐに飛ばしたレイが最も長かった場合
+		{
+			ResetNextState(M_TURNR);
+			ResetNextState(M_TURNL);
+		}
+		if (Right.dist > Straight.dist && Right.dist > Left.dist)
+		{
+			SetNextState(M_TURNR);
+			ResetNextState(M_TURNL);
+		}
+		if (Left.dist > Straight.dist && Left.dist > Right.dist)
+		{
+			SetNextState(M_TURNL);
+			ResetNextState(M_TURNR);
+		}
+	}
+
 	//前進する
 	if (VirtualState_ & M_ACCEL)
 	{
@@ -61,4 +101,20 @@ void Computer::UpdateState()
 void Computer::ChangeState()
 {
 	VirtualState_ = NextState_;
+}
+
+void Computer::SetNextState(char M_STATUS)
+{
+	if (!(NextState_ & M_STATUS))
+	{
+		NextState_ += M_STATUS;
+	}
+}
+
+void Computer::ResetNextState(char M_STATUS)
+{
+	if (NextState_ & M_STATUS)
+	{
+		NextState_ -= M_STATUS;
+	}
 }

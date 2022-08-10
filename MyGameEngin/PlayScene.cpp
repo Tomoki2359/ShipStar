@@ -13,10 +13,10 @@ PlayScene::PlayScene(GameObject* parent)
 void PlayScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<Course>(this);
 	Instantiate<Player>(this);
 	Instantiate<Computer>(this);
-	Instantiate<Course>(this);
-
+	
 	//SCENE_CHANGE(SCENE_ID_RESULT);
 }
 

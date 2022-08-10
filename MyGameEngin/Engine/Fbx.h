@@ -20,7 +20,7 @@ struct RayCastData
 	BOOL        hit;	//ƒŒƒC‚ª“–‚½‚Á‚½‚©
 	XMFLOAT3 normal;	//–@ü
 
-	RayCastData() { dist = 99999.0f; }
+	RayCastData() : start(), dir(), dist(), hit(), normal() { dist = 99999.0f; }
 };
 
 class Fbx

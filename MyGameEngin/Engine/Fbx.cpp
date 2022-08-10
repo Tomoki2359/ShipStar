@@ -6,7 +6,7 @@
 Fbx::Fbx() :
 	vertexCount_(0), polygonCount_(0), materialCount_(0),
 	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),
-	indexCount_(nullptr), pMaterialList_(nullptr)
+	indexCount_(nullptr), pMaterialList_(nullptr), ppIndexData_(), vertices()
 {
 }
 
@@ -327,7 +327,7 @@ void Fbx::RayCast(RayCastData* data)
 	data->hit = FALSE;
 
 	//マテリアル毎
-	for (DWORD i = 0; i < materialCount_; i++)
+	for (DWORD i = 0; i < (unsigned)materialCount_; i++)
 	{
 		//そのマテリアルのポリゴン毎
 		for (DWORD j = 0; j < pMaterialList_[i].polygonCount; j++)

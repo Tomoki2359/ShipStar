@@ -23,4 +23,8 @@ public:
 	void UpdateState() override;
 
 	void ChangeState();
+
+	void SetNextState(char M_STATUS);
+
+	void ResetNextState(char M_STATUS);
 };
