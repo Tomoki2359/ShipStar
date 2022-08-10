@@ -307,6 +307,8 @@ void Direct3D::SetShader(SHADER_TYPE type)
 	pContext->PSSetShader(shaderBundle[type].pPixelShader, NULL, 0);	//ピクセルシェーダー
 	pContext->IASetInputLayout(shaderBundle[type].pVertexLayout);		//頂点インプットレイアウト
 	pContext->RSSetState(shaderBundle[type].pRasterizerState);			//ラスタライザー
+
+
 }
 
 
@@ -355,4 +357,52 @@ void Direct3D::SetColor(float red, float blue, float green)
 	red_ = red;
 	blue_ = blue;
 	green_ = green;
+}
+
+//三角形と線分の衝突判定
+bool  Direct3D::Intersect(XMFLOAT3& start, XMFLOAT3& direction, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2, float* distance)
+{
+	// 微小な定数での値
+	constexpr float kEpsilon = 1e-6f;
+
+	//三角形の２辺
+	XMVECTOR edge1 = XMVectorSet(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z, 0.0f);
+	XMVECTOR edge2 = XMVectorSet(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z, 0.0f);
+
+	XMVECTOR alpha = XMVector3Cross(XMLoadFloat3(&direction), edge2);
+	float det = XMVector3Dot(edge1, alpha).m128_f32[0];
+
+	if (-kEpsilon < det && det < kEpsilon)
+	{
+		return false;
+	}
+
+	float invDet = 1.0f / det;
+	XMFLOAT3 r = XMFLOAT3(start.x - v0.x, start.y - v0.y, start.z - v0.z);
+
+	// uが0 <= u<=1 を満たしているかを調べる。
+	float u = XMVector3Dot(alpha, XMLoadFloat3(&r)).m128_f32[0] * invDet;
+	if (u < 0.0f || u > 1.0f)
+	{
+		return false;
+	}
+
+	XMVECTOR beta = XMVector3Cross(XMLoadFloat3(&r), edge1);
+
+	// vが0 <= v<=1 - u をみたしているかを調べる
+	float v = XMVector3Dot(XMLoadFloat3(&direction), beta).m128_f32[0] * invDet;
+	if (v < 0.0f || u + v > 1.0f)
+	{
+		return false;
+	}
+
+	// tが0 <= t を満たすことを調べる。
+	float t = XMVector3Dot(edge2, beta).m128_f32[0] * invDet;
+	if (t < 0.0f)
+	{
+		return false;
+	}
+
+	*distance = t;
+	return true;
 }

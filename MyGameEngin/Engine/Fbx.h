@@ -11,13 +11,26 @@
 
 class Texture;
 
+//レイキャスト用構造体
+struct RayCastData
+{
+	XMFLOAT3	start;	//レイ発射位置
+	XMFLOAT3	dir;	//レイの向きベクトル
+	float       dist;	//衝突点までの距離
+	BOOL        hit;	//レイが当たったか
+	XMFLOAT3 normal;	//法線
+
+	RayCastData() { dist = 99999.0f; }
+};
+
 class Fbx
 {
 	//マテリアル
 	struct MATERIAL
 	{
-		Texture* pTexture;
+		Texture*	pTexture;
 		XMFLOAT4	diffuse;
+		DWORD		polygonCount;//マテリアルのポリゴン数
 	};
 	struct CONSTANT_BUFFER
 	{
@@ -29,7 +42,7 @@ class Fbx
 
 	struct VERTEX
 	{
-		XMVECTOR position;
+		XMFLOAT3 position;
 		XMVECTOR uv;
 		XMVECTOR normal;
 		XMVECTOR color_;
@@ -45,6 +58,9 @@ class Fbx
 	MATERIAL* pMaterialList_;
 
 	int* indexCount_;
+	DWORD** ppIndexData_;
+
+	VERTEX* vertices;
 
 public:
 	Fbx();
@@ -52,6 +68,8 @@ public:
 	HRESULT Load(std::string fileName);
 	void    Draw(Transform& transform);
 	void    Release();
+
+	void RayCast(RayCastData* data);
 
 private:
 	void InitVertex(fbxsdk::FbxMesh* pMesh);

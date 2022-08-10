@@ -8,9 +8,9 @@ namespace Model
 {
 	int Load(std::string fileName);
 	void SetTransform(int hModel_, Transform transform_);
+	void RayCast(int handle, RayCastData* data);
 	void Draw(int hModel_);
 	void Release();
 
 	void AllRelease();
 };
-
