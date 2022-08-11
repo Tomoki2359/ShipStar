@@ -4,7 +4,7 @@
 #include "Player.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL)
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20)
 {
 }
 
@@ -14,44 +14,111 @@ Computer::~Computer()
 
 void Computer::UpdateState()
 {
-	Course* pCourse = (Course*)FindObject("Course");
-	short hCourseModel = (short)pCourse->GetModelHandle();
+	static char UpdateLimit = 0;	//更新回数に制限をかけてみる
+	char Random = rand() % 100;
 
-	RayCastData Straight;	//真っ直ぐにレイを飛ばす
-	Straight.start = transform_.position_;   //レイの発射位置
-	Straight.dir = XMFLOAT3(0, -1, 1);       //レイの方向	コースができたらそれぞれ方向を変更する
-	Model::RayCast(hCourseModel, &Straight); //レイを発射
-
-	RayCastData Right;		//斜め右にレイを飛ばす
-	Right.start = transform_.position_;   //レイの発射位置
-	Right.dir = XMFLOAT3(1, -1, 1);       //レイの方向
-	Model::RayCast(hCourseModel, &Right); //レイを発射
-
-	RayCastData Left;		//斜め左にレイを飛ばす
-	Left.start = transform_.position_;   //レイの発射位置
-	Left.dir = XMFLOAT3(-1, -1, 1);       //レイの方向
-	Model::RayCast(hCourseModel, &Left); //レイを発射
-
-	if (Straight.hit && Right.hit && Left.hit)
+	if (UpdateLimit == 0)
 	{
-		SetNextState(M_ACCEL);
-		if (Straight.dist > Right.dist && Straight.dist > Left.dist)	//真っ直ぐに飛ばしたレイが最も長かった場合
+		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+		mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+		mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+
+		XMVECTOR Straight = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
+		XMVECTOR Left = XMVectorSet(-0.5f, -1.0f, 0.0f, 0.0f);
+		XMVECTOR Right = XMVectorSet(0.5f, -1.0f, 0.0f, 0.0f);
+
+		Straight = XMVector3TransformCoord(Straight, mRotate);
+		Left = XMVector3TransformCoord(Left, mRotate);
+		Right = XMVector3TransformCoord(Right, mRotate);
+
+		Straight = XMVector3Normalize(Straight);
+		Left = XMVector3Normalize(Left);
+		Right = XMVector3Normalize(Right);
+
+		XMFLOAT3 matS, matL, matR;
+		XMStoreFloat3(&matS, Straight);
+		XMStoreFloat3(&matL, Left);
+		XMStoreFloat3(&matR, Right);
+
+		Course* pCourse = (Course*)FindObject("Course");
+		short hCourseModel = (short)pCourse->GetModelHandle();
+
+		RayCastData Ray_Straight;	//真っ直ぐにレイを飛ばす
+		Ray_Straight.start = transform_.position_;   //レイの発射位置
+		Ray_Straight.dir = matS;					 //レイの方向
+		Model::RayCast(hCourseModel, &Ray_Straight); //レイを発射
+
+		RayCastData Ray_Right;		//斜め右にレイを飛ばす
+		Ray_Right.start = transform_.position_;   //レイの発射位置
+		Ray_Right.dir = matR;				      //レイの方向
+		Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
+
+		RayCastData Ray_Left;		//斜め左にレイを飛ばす
+		Ray_Left.start = transform_.position_;   //レイの発射位置
+		Ray_Left.dir = matL;				     //レイの方向
+		Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
+
+		if (Ray_Straight.hit && Ray_Right.hit && Ray_Left.hit)
 		{
-			ResetNextState(M_TURNR);
-			ResetNextState(M_TURNL);
-		}
-		if (Right.dist > Straight.dist && Right.dist > Left.dist)
-		{
-			SetNextState(M_TURNR);
-			ResetNextState(M_TURNL);
-		}
-		if (Left.dist > Straight.dist && Left.dist > Right.dist)
-		{
-			SetNextState(M_TURNL);
-			ResetNextState(M_TURNR);
+			SetNextState(M_ACCEL);
+			if (Ray_Straight.dist > Ray_Right.dist && Ray_Straight.dist > Ray_Left.dist)	//真っ直ぐに飛ばしたレイが最も長かった場合
+			{
+				if (Random < 90)
+				{
+					ResetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				else if (Random < 95)
+				{
+					SetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				else
+				{
+					SetNextState(M_TURNL);
+					ResetNextState(M_TURNR);
+				}
+			}
+			if (Ray_Right.dist > Ray_Straight.dist && Ray_Right.dist > Ray_Left.dist)
+			{
+				if (Random < 95)
+				{
+					SetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				else
+				{
+					ResetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				
+			}
+			if (Ray_Left.dist > Ray_Straight.dist && Ray_Left.dist > Ray_Right.dist)
+			{
+				if (Random < 95)
+				{
+					SetNextState(M_TURNL);
+					ResetNextState(M_TURNR);
+				}
+				else
+				{
+					ResetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+			}
 		}
 	}
-
+	
+	if (UpdateLimit >= UpdateDecider)
+	{
+		UpdateDecider = (rand() % 10) + 20;
+		UpdateLimit = NULL;
+	}
+	else
+	{
+		UpdateLimit++;
+	}
+	
 	//前進する
 	if (VirtualState_ & M_ACCEL)
 	{

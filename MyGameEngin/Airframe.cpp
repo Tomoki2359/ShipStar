@@ -214,7 +214,7 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
-	if (this->objectName_ == "Player")
+	if (this->objectName_ == "Computer")	//動作確認のためにcomを追わせている
 	{
 		cCamera_ = true;	//カメラON
 	}

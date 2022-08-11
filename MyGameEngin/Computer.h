@@ -13,6 +13,11 @@ class Computer : public Airframe
 	//有無の判定、アクセルブレーキは1がtrue、0がfalseとする。
 	char VirtualState_;	//仮想の思考を司る部分(仮)
 	char NextState_;	//次のフレームの状態
+
+	char UpdateDecider;	//更新頻度を生成
+
+	void SetNextState(char M_STATUS);
+	void ResetNextState(char M_STATUS);
 public:
 	//コンストラクタ
 	Computer(GameObject* parent);
@@ -23,8 +28,4 @@ public:
 	void UpdateState() override;
 
 	void ChangeState();
-
-	void SetNextState(char M_STATUS);
-
-	void ResetNextState(char M_STATUS);
 };
