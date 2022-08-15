@@ -2,9 +2,21 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 
+enum CUSTOM
+{
+	CUSTOM_BACK = 0,
+	CUSTOM_OK,
+	MAX_CUSTOM,
+};
+
 //■■シーンを管理するクラス
 class CustomScene : public GameObject
 {
+	short custom_;
+	bool mouseMoob_;
+	bool change_;
+	XMFLOAT3 mousePos_;
+	XMFLOAT3 mouseNext_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
