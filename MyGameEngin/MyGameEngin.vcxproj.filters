@@ -19,6 +19,12 @@
     <Filter Include="ヘッダー ファイル\Engine">
       <UniqueIdentifier>{608708b0-f292-4785-bf63-11a833f9cf25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Image">
+      <UniqueIdentifier>{78887cc7-c80d-4034-9d94-948a9cf52b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Image">
+      <UniqueIdentifier>{94ee2d36-32cd-47dd-9774-8c207713f8fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl">
@@ -116,6 +122,33 @@
     <ClCompile Include="MatchingScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Image\TitleStart.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\TitleOption.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\LobbyCourse.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\LobbyPlay.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\LobbyCustom.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\BackButton.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\OKButton.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\MatchingStart.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="OptionScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input.h">
@@ -194,6 +227,33 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="MatchingScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\TitleStart.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\TitleOption.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\LobbyCourse.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\LobbyPlay.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\LobbyCustom.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\BackButton.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\OKButton.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\MatchingStart.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

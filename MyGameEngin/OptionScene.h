@@ -2,24 +2,13 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 
-enum MATCHING
-{
-	MATCHING_BACK = 0,
-	MATCHING_STRAT,
-	MAX_MATCHING,
-};
-
 //■■シーンを管理するクラス
-class MatchingScene : public GameObject
+class OptionScene : public GameObject
 {
-	short matching_;
-	bool mouseMoob_;
-	XMFLOAT3 mousePos_;
-	XMFLOAT3 mouseNext_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	MatchingScene(GameObject* parent);
+	OptionScene(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

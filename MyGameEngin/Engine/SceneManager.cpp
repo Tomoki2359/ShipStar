@@ -6,6 +6,7 @@
 #include "../CustomScene.h"
 #include "../MatchingScene.h"
 #include "../ResultScene.h"
+#include "../OptionScene.h"
 #include "Image.h"
 #include "Model.h"
 
@@ -48,6 +49,7 @@ void SceneManager::Update()
         {
         case SCENE_ID_SPLASH: Instantiate<SplashScene>(this); break;
         case SCENE_ID_TITLE: Instantiate<TitleScene>(this); break;
+        case SCENE_ID_OPTION: Instantiate<OptionScene>(this); break;
         case SCENE_ID_LOBBY: Instantiate<LobbyScene>(this); break;
         case SCENE_ID_CUSTOM: Instantiate<CustomScene>(this); break;
         case SCENE_ID_MATCHING: Instantiate<MatchingScene>(this); break;

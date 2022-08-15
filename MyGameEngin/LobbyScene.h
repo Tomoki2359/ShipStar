@@ -2,9 +2,21 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 
+enum LOBBY
+{
+	LOBBY_COURSE = 0,
+	LOBBY_PLAY,
+	LOBBY_CUSTOM,
+	MAX_LOBBY,
+};
+
 //■■シーンを管理するクラス
 class LobbyScene : public GameObject
 {
+	short lobby_;
+	bool mouseMoob_;
+	XMFLOAT3 mousePos_;
+	XMFLOAT3 mouseNext_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

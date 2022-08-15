@@ -2,9 +2,20 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 
+enum RESULT
+{
+	RESULT_BACK = 0,
+	RESULT_OK,
+	MAX_RESULT,
+};
+
 //■■シーンを管理するクラス
 class ResultScene : public GameObject
 {
+	short result_;
+	bool mouseMoob_;
+	XMFLOAT3 mousePos_;
+	XMFLOAT3 mouseNext_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

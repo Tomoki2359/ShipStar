@@ -17,12 +17,12 @@ void PlayScene::Initialize()
 	Instantiate<Player>(this);
 	Instantiate<Computer>(this);
 	
-	//SCENE_CHANGE(SCENE_ID_RESULT);
 }
 
 //çXêV
 void PlayScene::Update()
 {
+	//SCENE_CHANGE(SCENE_ID_RESULT);
 }
 
 //ï`âÊ
