@@ -69,7 +69,7 @@ void TitleScene::Update()
 			SCENE_CHANGE(SCENE_ID_OPTION);
 		}
 	}
-	SCENE_CHANGE(SCENE_ID_PLAY);
+	//SCENE_CHANGE(SCENE_ID_PLAY);
 }
 
 //•`‰æ

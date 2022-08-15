@@ -2,25 +2,24 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 
-enum OPTION
+enum VOLUME
 {
-	OPTION_BACK = 0,
-	OPTION_BUTTON,
-	OPTION_VOLUME,
-	MAX_OPTION,
+	VOLUME_BACK = 0,
+	VOLUME_OK,
+	MAX_VOLUME,
 };
 
 //■■シーンを管理するクラス
-class OptionScene : public GameObject
+class VolumeScene : public GameObject
 {
-	short option_;
+	short volume_;
 	bool mouseMoob_;
 	XMFLOAT3 mousePos_;
 	XMFLOAT3 mouseNext_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	OptionScene(GameObject* parent);
+	VolumeScene(GameObject* parent);
 
 	//初期化
 	void Initialize() override;
