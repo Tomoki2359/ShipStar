@@ -4,7 +4,7 @@
 #include "Player.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20)
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand()
 {
 }
 
@@ -19,49 +19,17 @@ void Computer::UpdateState()
 
 	if (UpdateLimit == 0)
 	{
-		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-		mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-		mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+		
+		RayCasting();
 
-		XMVECTOR Straight = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
-		XMVECTOR Left = XMVectorSet(-0.5f, -1.0f, 0.0f, 0.0f);
-		XMVECTOR Right = XMVectorSet(0.5f, -1.0f, 0.0f, 0.0f);
-
-		Straight = XMVector3TransformCoord(Straight, mRotate);
-		Left = XMVector3TransformCoord(Left, mRotate);
-		Right = XMVector3TransformCoord(Right, mRotate);
-
-		Straight = XMVector3Normalize(Straight);
-		Left = XMVector3Normalize(Left);
-		Right = XMVector3Normalize(Right);
-
-		XMFLOAT3 matS, matL, matR;
-		XMStoreFloat3(&matS, Straight);
-		XMStoreFloat3(&matL, Left);
-		XMStoreFloat3(&matR, Right);
-
-		Course* pCourse = (Course*)FindObject("Course");
-		short hCourseModel = (short)pCourse->GetModelHandle();
-
-		RayCastData Ray_Straight;	//真っ直ぐにレイを飛ばす
-		Ray_Straight.start = transform_.position_;   //レイの発射位置
-		Ray_Straight.dir = matS;					 //レイの方向
-		Model::RayCast(hCourseModel, &Ray_Straight); //レイを発射
-
-		RayCastData Ray_Right;		//斜め右にレイを飛ばす
-		Ray_Right.start = transform_.position_;   //レイの発射位置
-		Ray_Right.dir = matR;				      //レイの方向
-		Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
-
-		RayCastData Ray_Left;		//斜め左にレイを飛ばす
-		Ray_Left.start = transform_.position_;   //レイの発射位置
-		Ray_Left.dir = matL;				     //レイの方向
-		Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
-
-		if (Ray_Straight.hit && Ray_Right.hit && Ray_Left.hit)
+		if (PrCommand.Move_Front > 0 && PrCommand.Move_Right > 0 && PrCommand.Move_Left > 0)
 		{
 			SetNextState(M_ACCEL);
-			if (Ray_Straight.dist > Ray_Right.dist && Ray_Straight.dist > Ray_Left.dist)	//真っ直ぐに飛ばしたレイが最も長かった場合
+
+			GameObject* pPlayer = FindObject("Player");
+			PosRel(pPlayer);
+
+			if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//真っ直ぐに飛ばしたレイが最も長かった場合
 			{
 				if (Random < 90)
 				{
@@ -79,7 +47,7 @@ void Computer::UpdateState()
 					ResetNextState(M_TURNR);
 				}
 			}
-			if (Ray_Right.dist > Ray_Straight.dist && Ray_Right.dist > Ray_Left.dist)
+			if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
 			{
 				if (Random < 95)
 				{
@@ -93,7 +61,7 @@ void Computer::UpdateState()
 				}
 				
 			}
-			if (Ray_Left.dist > Ray_Straight.dist && Ray_Left.dist > Ray_Right.dist)
+			if (PrCommand.Move_Left > PrCommand.Move_Front && PrCommand.Move_Left > PrCommand.Move_Right)
 			{
 				if (Random < 95)
 				{
@@ -183,5 +151,94 @@ void Computer::ResetNextState(char M_STATUS)
 	if (NextState_ & M_STATUS)
 	{
 		NextState_ -= M_STATUS;
+	}
+}
+
+void Computer::RayCasting()
+{
+	//レイ変換用
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+
+	XMVECTOR Straight = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
+	XMVECTOR Left = XMVectorSet(-0.5f, -1.0f, 0.0f, 0.0f);
+	XMVECTOR Right = XMVectorSet(0.5f, -1.0f, 0.0f, 0.0f);
+
+	Straight = XMVector3TransformCoord(Straight, mRotate);
+	Left = XMVector3TransformCoord(Left, mRotate);
+	Right = XMVector3TransformCoord(Right, mRotate);
+
+	Straight = XMVector3Normalize(Straight);
+	Left = XMVector3Normalize(Left);
+	Right = XMVector3Normalize(Right);
+
+	XMFLOAT3 matS, matL, matR;
+	XMStoreFloat3(&matS, Straight);
+	XMStoreFloat3(&matL, Left);
+	XMStoreFloat3(&matR, Right);
+
+	//レイキャスト
+	Course* pCourse = (Course*)FindObject("Course");
+	short hCourseModel = (short)pCourse->GetModelHandle();
+
+	RayCastData Ray_Straight;	//真っ直ぐにレイを飛ばす
+	Ray_Straight.start = transform_.position_;   //レイの発射位置
+	Ray_Straight.dir = matS;					 //レイの方向
+	Model::RayCast(hCourseModel, &Ray_Straight); //レイを発射
+	if (Ray_Straight.hit)
+	{
+		PrCommand.Move_Front = Ray_Straight.dist;
+	}
+	else
+	{
+		PrCommand.Move_Front = -1;
+	}
+
+	RayCastData Ray_Right;		//斜め右にレイを飛ばす
+	Ray_Right.start = transform_.position_;   //レイの発射位置
+	Ray_Right.dir = matR;				      //レイの方向
+	Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
+	if (Ray_Right.hit)
+	{
+		PrCommand.Move_Right = Ray_Right.dist;
+	}
+	else
+	{
+		PrCommand.Move_Right = -1;
+	}
+
+	RayCastData Ray_Left;		//斜め左にレイを飛ばす
+	Ray_Left.start = transform_.position_;   //レイの発射位置
+	Ray_Left.dir = matL;				     //レイの方向
+	Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
+	if (Ray_Left.hit)
+	{
+		PrCommand.Move_Left = Ray_Left.dist;
+	}
+	else
+	{
+		PrCommand.Move_Left = -1;
+	}
+}
+
+void Computer::PosRel(GameObject* pTarget)
+{
+	XMFLOAT3 dis = GetDistance(pTarget);
+	XMVECTOR vec = XMLoadFloat3(&dis);
+	XMVECTOR len = XMVector3Length(vec);
+	float Length = XMVectorGetX(len);
+	if(Length < 15)
+	{
+		XMFLOAT3 Dis;
+		XMStoreFloat3(&Dis, vec);
+		if (Dis.x > 0)
+		{
+			PrCommand.Move_Left += Length / 5;
+		}
+		else if (Dis.x < 0)
+		{
+			PrCommand.Move_Right += Length / 5;
+		}
 	}
 }

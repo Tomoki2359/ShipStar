@@ -214,7 +214,7 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
-	if (this->objectName_ == "Computer")	//動作確認のためにcomを追わせている
+	if (this->objectName_ == "Player")	//動作確認のためにcomを追わせている
 	{
 		cCamera_ = true;	//カメラON
 	}
@@ -316,4 +316,12 @@ void Airframe::Turbo()
 {
 	cTurbo_ = true;
 	tTurbo_ = 0;
+}
+
+XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
+{
+	float DisX = this->GetPosition().x - pTarget->GetPosition().x;
+	float DisY = this->GetPosition().y - pTarget->GetPosition().y;
+	float DisZ = this->GetPosition().z - pTarget->GetPosition().z;
+	return XMFLOAT3(DisX, DisY, DisZ);
 }

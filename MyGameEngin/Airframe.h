@@ -44,6 +44,7 @@ class Airframe : public GameObject
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
+	XMFLOAT3 GetDistance(GameObject* pTarget);
 
 public:
 	PARTS_NUM PartsSet;
