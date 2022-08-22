@@ -5,17 +5,24 @@
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
-	: GameObject(parent, "PlayScene")
+	: GameObject(parent, "PlayScene"), PlayerList_()
 {
 }
 
 //初期化
 void PlayScene::Initialize()
 {
+	char PlayerNum = NULL;
+	PlayerList_.clear();
 	SetScreen(0, 0, 0);
 	Instantiate<Course>(this);
-	Instantiate<Player>(this);
-	Instantiate<Computer>(this);
+	PlayerList_.push_back(Instantiate<Player>(this));
+	PlayerNum += (char)PlayerList_.size();
+	while (PlayerNum < 5)
+	{
+		PlayerList_.push_back(Instantiate<Computer>(this));
+		PlayerNum++;
+	}
 	
 }
 

@@ -2,9 +2,10 @@
 #include "Engine/Model.h"
 #include "Course.h"
 #include "Player.h"
+#include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand()
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(),Hate_(5.0f)
 {
 }
 
@@ -26,8 +27,16 @@ void Computer::UpdateState()
 		{
 			SetNextState(M_ACCEL);
 
-			GameObject* pPlayer = FindObject("Player");
-			PosRel(pPlayer);
+			PlayScene* pPlayScene = (PlayScene*)FindObject("PlayScene");
+			for (auto i = pPlayScene->PlayerList_.begin(); i != pPlayScene->PlayerList_.end(); i++)
+			{
+				if (*i != this)
+				{
+					PosRel(*i);
+				}
+			}
+			/*GameObject* pPlayer = FindObject("Player");
+			PosRel(pPlayer);*/
 
 			if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//^‚Á’¼‚®‚É”ò‚Î‚µ‚½ƒŒƒC‚ªÅ‚à’·‚©‚Á‚½ê‡
 			{
@@ -234,11 +243,15 @@ void Computer::PosRel(GameObject* pTarget)
 		XMStoreFloat3(&Dis, vec);
 		if (Dis.x > 0)
 		{
-			PrCommand.Move_Left += Length / 5;
+			PrCommand.Move_Left += Length / Hate_;
 		}
 		else if (Dis.x < 0)
 		{
-			PrCommand.Move_Right += Length / 5;
+			PrCommand.Move_Right += Length / Hate_;
 		}
+	}
+	else
+	{
+		return;
 	}
 }

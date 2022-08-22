@@ -17,6 +17,8 @@ class Computer : public Airframe
 
 	char UpdateDecider;	//更新頻度を生成
 
+	const float Hate_;	//他オブジェクトの影響力を指定(後ほど調整)
+
 	struct Priority
 	{
 		float Move_Front;	//正面

@@ -21,4 +21,6 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+	std::list<GameObject*> PlayerList_;
 };
