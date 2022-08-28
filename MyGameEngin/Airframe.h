@@ -40,7 +40,8 @@ class Airframe : public GameObject
 	bool lCurve_;	//左に曲がっている状態かどうか
 	bool rCurve_;	//右に曲がっている状態かどうか
 	CSVReader csv;	//csvを読み込むための関数
-
+	bool start_;	//スタートしたかどうか
+	short timeCount_;	//レース時間の管理とカウントダウン
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか

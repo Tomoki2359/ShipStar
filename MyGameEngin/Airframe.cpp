@@ -6,14 +6,14 @@
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet()
+	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180)
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet()
+	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180)
 {
 }
 
@@ -46,76 +46,94 @@ void Airframe::Initialize()
 //更新
 void Airframe::Update()
 {
-	//継承先で呼び出す
-	UpdateState();
-
-	//左に傾いている状態のとき
-	if (lCurve_ == true)
+	//3秒後にスタートする
+	if (start_)
 	{
-		//角度を戻す処理
-		transform_.rotate_.z -= 1;
-		if (transform_.rotate_.z <= 0)
+		//継承先で呼び出す
+		UpdateState();
+
+		//左に傾いている状態のとき
+		if (lCurve_ == true)
 		{
-			lCurve_ = false;
-			transform_.rotate_.z = 0;
+			//角度を戻す処理
+			transform_.rotate_.z -= 1;
+			if (transform_.rotate_.z <= 0)
+			{
+				lCurve_ = false;
+				transform_.rotate_.z = 0;
+			}
 		}
+
+		//右に傾いている状態のとき
+		if (rCurve_ == true)
+		{
+			//角度を戻す処理
+			transform_.rotate_.z += 1;
+			if (transform_.rotate_.z >= 0)
+			{
+				rCurve_ = false;
+				transform_.rotate_.z = 0;
+			}
+		}
+
+		//上昇状態なら
+		if (cAscent_ == true)
+		{
+			if (transform_.position_.y >= 15)
+			{
+				transform_.rotate_.x += 0.4f;
+			}
+			transform_.rotate_.x += 0.2f;
+			if (transform_.rotate_.x >= 0)
+			{
+				cAscent_ = false;
+				transform_.rotate_.x = 0;
+			}
+		}
+
+		//下降状態なら
+		if (cDescent_ == true)
+		{
+			if (transform_.position_.y <= -5)
+			{
+				transform_.rotate_.x -= 0.4f;
+			}
+			transform_.rotate_.x -= 0.2f;
+			if (transform_.rotate_.x <= 0)
+			{
+				cDescent_ = false;
+				transform_.rotate_.x = 0;
+			}
+		}
+
+		//速さや位置を一定にする
+		Limit();
+
+		//ターボ中の処理
+		if (cTurbo_ == true)
+		{
+			//スピードを上げる
+			speed_ = status_[MAX_SPEED] * 2.0f;
+			//時間が経ったら終わる
+			if (tTurbo_ >= status_[TURBO])
+			{
+				cTurbo_ = false;
+				tTurbo_ = 0;
+			}
+		}
+
+		//ターボ値を貯める
+		tTurbo_++;
 	}
 
-	//右に傾いている状態のとき
-	if (rCurve_ == true)
+	//カウントダウン
+	else
 	{
-		//角度を戻す処理
-		transform_.rotate_.z += 1;
-		if (transform_.rotate_.z >= 0)
+		//timeCount_が0以下になったら操作可能にする
+		timeCount_--;	
+		if (timeCount_ <= 0)
 		{
-			rCurve_ = false;
-			transform_.rotate_.z = 0;
-		}
-	}
-
-	//上昇状態なら
-	if (cAscent_ == true)
-	{
-		if (transform_.position_.y >= 15)
-		{
-			transform_.rotate_.x += 0.4f;
-		}
-		transform_.rotate_.x += 0.2f;
-		if (transform_.rotate_.x >= 0)
-		{
-			cAscent_ = false;
-			transform_.rotate_.x = 0;
-		}
-	}
-
-	//下降状態なら
-	if (cDescent_ == true)
-	{
-		if (transform_.position_.y <= -5)
-		{
-			transform_.rotate_.x -= 0.4f;
-		}
-		transform_.rotate_.x -= 0.2f;
-		if (transform_.rotate_.x <= 0)
-		{
-			cDescent_ = false;
-			transform_.rotate_.x = 0;
-		}
-	}
-
-	//速さや位置を一定にする
-	Limit();
-
-	//ターボ中の処理
-	if (cTurbo_ == true)
-	{
-		//スピードを上げる
-		speed_ = status_[MAX_SPEED] * 2.0f;
-		//時間が経ったら終わる
-		if (tTurbo_ >= status_[TURBO])
-		{
-			cTurbo_ = false;
-			tTurbo_ = 0;
+			start_ = true;
 		}
 	}
 
@@ -149,9 +167,6 @@ void Airframe::Update()
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
 	}
-
-	//ターボ値を貯める
-	tTurbo_++;
 }
 
 //描画
