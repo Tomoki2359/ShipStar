@@ -1,10 +1,11 @@
 #include "Airframe.h"
+#include "Course.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent)
-	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f),
+	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
 	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180)
 {
@@ -75,7 +76,7 @@ void Airframe::Update()
 				transform_.rotate_.z = 0;
 			}
 		}
-
+		HeightAdjustment();
 		//上昇状態なら
 		if (cAscent_ == true)
 		{
@@ -229,7 +230,7 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
-	if (this->objectName_ == "Player")
+	if (this->objectName_ == "Computer")
 	{
 		cCamera_ = true;	//カメラON
 	}
@@ -240,6 +241,37 @@ void Airframe::SetStatus()
 	transform_.scale_.x = 0.25;
 	transform_.scale_.y = 0.25;
 	transform_.scale_.z = 0.25;
+}
+
+void Airframe::HeightAdjustment()
+{
+	//レイ変換用
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+
+	XMFLOAT3 Ray = XMFLOAT3(0.0f, -1.0f, 0.0f);
+
+	//レイキャスト
+	Course* pCourse = (Course*)FindObject("Course");
+	short hCourseModel = (short)pCourse->GetModelHandle();
+
+	RayCastData RayCast;
+	RayCast.start = transform_.position_;   //レイの発射位置
+	RayCast.dir = Ray;					 //レイの方向
+	Model::RayCast(hCourseModel, &RayCast); //レイを発射
+	if (RayCast.hit && RayCast.dist != PrevHeight_)
+	{
+		if (PrevHeight_ > RayCast.dist)
+		{
+			Descent();
+		}
+		else
+		{
+			Rise();
+		}
+		PrevHeight_ = RayCast.dist;
+	}
 }
 
 void Airframe::Accelerate()

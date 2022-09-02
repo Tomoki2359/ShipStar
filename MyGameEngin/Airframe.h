@@ -42,6 +42,7 @@ class Airframe : public GameObject
 	CSVReader csv;	//csvを読み込むための関数
 	bool start_;	//スタートしたかどうか
 	short timeCount_;	//レース時間の管理とカウントダウン
+	float PrevHeight_;
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
@@ -81,6 +82,9 @@ public:
 
 	//ステータスの取得
 	void SetStatus();
+
+	//コース底からの高さを一定にする
+	void HeightAdjustment();
 
 	//加速
 	void Accelerate();

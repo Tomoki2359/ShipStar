@@ -5,7 +5,7 @@
 #include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(),Hate_(5.0f)
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(),Hate_(5.0f), Search_(15)
 {
 }
 
@@ -40,21 +40,8 @@ void Computer::UpdateState()
 
 			if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//ê^Ç¡íºÇÆÇ…îÚÇŒÇµÇΩÉåÉCÇ™ç≈Ç‡í∑Ç©Ç¡ÇΩèÍçá
 			{
-				if (Random < 90)
-				{
-					ResetNextState(M_TURNR);
-					ResetNextState(M_TURNL);
-				}
-				else if (Random < 95)
-				{
-					SetNextState(M_TURNR);
-					ResetNextState(M_TURNL);
-				}
-				else
-				{
-					SetNextState(M_TURNL);
-					ResetNextState(M_TURNR);
-				}
+				ResetNextState(M_TURNR);
+				ResetNextState(M_TURNL);
 			}
 			if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
 			{
@@ -237,17 +224,17 @@ void Computer::PosRel(GameObject* pTarget)
 	XMVECTOR vec = XMLoadFloat3(&dis);
 	XMVECTOR len = XMVector3Length(vec);
 	float Length = XMVectorGetX(len);
-	if(Length < 15)
+	if(Length < Search_)
 	{
 		XMFLOAT3 Dis;
 		XMStoreFloat3(&Dis, vec);
 		if (Dis.x > 0)
 		{
-			PrCommand.Move_Left += Length / Hate_;
+			PrCommand.Move_Left += (Search_ - Length) / Hate_;
 		}
 		else if (Dis.x < 0)
 		{
-			PrCommand.Move_Right += Length / Hate_;
+			PrCommand.Move_Right += (Search_ - Length) / Hate_;
 		}
 	}
 	else
