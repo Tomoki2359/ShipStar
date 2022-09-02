@@ -10,10 +10,8 @@ OKButton::OKButton(GameObject* parent)
 void OKButton::Initialize()
 {
 	//モデルデータのロード
-	hPict_ = Image::Load(L"Assets\\Button.png");
+	hPict_ = Image::Load(L"Assets\\OKButton.png");
 	assert(hPict_ >= 0);
-	transform_.scale_.x = 0.166f;
-	transform_.scale_.y = 0.166f;
 	transform_.position_.x = 0.8f;
 	transform_.position_.y = -0.8f;
 }
@@ -21,20 +19,22 @@ void OKButton::Initialize()
 //更新
 void OKButton::Update()
 {
+	//マウスの位置の取得
 	XMFLOAT3 MousePos_;
 	MousePos_ = Input::GetMousePosition();
 
+	//画像の位置
 	if (MousePos_.x >= 1250 && MousePos_.x <= 1520 && MousePos_.y >= 650 && MousePos_.y <= 1080)
 	{
-		transform_.scale_.x = 0.25f;
-		transform_.scale_.y = 0.25f;
+		transform_.scale_.x = 1.1f;
+		transform_.scale_.y = 1.1f;
 		if (Input::IsMouceDown(0))
 			KillMe();
 	}
 	else
 	{
-		transform_.scale_.x = 0.166f;
-		transform_.scale_.y = 0.166f;
+		transform_.scale_.x = 1.0f;
+		transform_.scale_.y = 1.0f;
 	}
 }
 

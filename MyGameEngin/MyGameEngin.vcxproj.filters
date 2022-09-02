@@ -161,6 +161,9 @@
     <ClCompile Include="Image\OptionVolume.cpp">
       <Filter>ソース ファイル\Image</Filter>
     </ClCompile>
+    <ClCompile Include="Image\TitleName.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input.h">
@@ -278,6 +281,9 @@
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
     <ClInclude Include="Image\OptionVolume.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\TitleName.h">
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
   </ItemGroup>
