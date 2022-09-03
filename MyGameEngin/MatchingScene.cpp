@@ -1,10 +1,8 @@
 #include "MatchingScene.h"
-#include "Image/BackButton.h"
-#include "Image/MatchingStart.h"
 
 //コンストラクタ
 MatchingScene::MatchingScene(GameObject* parent)
-	: GameObject(parent, "MatchingScene"),mouseMoob_(true),matching_(-1)
+	: GameObject(parent, "MatchingScene"),mouseMoob_(true),matching_(-1), first_(true)
 {
 }
 
@@ -19,7 +17,15 @@ void MatchingScene::Initialize()
 //更新
 void MatchingScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pBack_ = (BackButton*)FindObject("BackButton");
+		assert(pBack_ != nullptr);
+		pStart_ = (MatchingStart*)FindObject("MatchingStart");
+		assert(pStart_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		matching_++;
 		mouseMoob_ = false;
@@ -28,7 +34,7 @@ void MatchingScene::Update()
 			matching_ = MATCHING_BACK;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		matching_--;
 		mouseMoob_ = false;
@@ -59,13 +65,13 @@ void MatchingScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (matching_ == MATCHING_BACK && Input::IsKeyDown(DIK_Z))
+		if (matching_ == MATCHING_BACK)
 		{
-			SCENE_CHANGE(SCENE_ID_LOBBY);
+			pBack_->IsButton();
 		}
-		if (matching_ == MATCHING_STRAT && Input::IsKeyDown(DIK_Z))
+		if (matching_ == MATCHING_STRAT)
 		{
-			SCENE_CHANGE(SCENE_ID_PLAY);
+			pStart_->IsButton();
 		}
 	}
 }

@@ -1,24 +1,20 @@
 #pragma once
-#include "../Engine/GameObject.h"
+#include "Button.h"
 
 //■■シーンを管理するクラス
-class MatchingStart : public GameObject
+class MatchingStart : public Button
 {
-	int hPict_;    //モデル番号
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
 	MatchingStart(GameObject* parent);
 
-	//初期化
-	void Initialize() override;
+	//初期地点
+	void InitialPoint() override;
 
-	//更新
-	void Update() override;
+	//画像の位置の判定
+	bool IsImage() override;
 
-	//描画
-	void Draw() override;
-
-	//開放
-	void Release() override;
+	//画像ファイルの名前を取得
+	LPCWSTR SetFile() override;
 };

@@ -1,6 +1,9 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
+#include "Image/LobbyCourse.h"
+#include "Image/LobbyCustom.h"
+#include "Image/LobbyPlay.h"
 
 enum LOBBY
 {
@@ -14,9 +17,17 @@ enum LOBBY
 class LobbyScene : public GameObject
 {
 	short lobby_;
-	bool mouseMoob_;
-	XMFLOAT3 mousePos_;
-	XMFLOAT3 mouseNext_;
+	bool mouseMoob_;	//マウスが動いているかどうか
+	bool first_;		//画像のポインタを指定したかどうか
+
+	//マウス操作
+	XMFLOAT3 mousePos_;		//前のマウスの位置
+	XMFLOAT3 mouseNext_;	//今のマウスの位置
+
+	//画像のポインタ
+	LobbyCourse* pCourse_;
+	LobbyPlay* pPlay_;
+	LobbyCustom* pCustom_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

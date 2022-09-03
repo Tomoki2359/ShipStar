@@ -1,11 +1,8 @@
 #include "OptionScene.h"
-#include "Image/BackButton.h"
-#include "Image/OptionButton.h"
-#include "Image/OptionVolume.h"
 
 //コンストラクタ
 OptionScene::OptionScene(GameObject* parent)
-	: GameObject(parent, "OptionScene")
+	: GameObject(parent, "OptionScene"), mouseMoob_(true), option_(-1), first_(true)
 {
 }
 
@@ -21,7 +18,17 @@ void OptionScene::Initialize()
 //更新
 void OptionScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pBack_ = (BackButton*)FindObject("BackButton");
+		assert(pBack_ != nullptr);
+		pButton_ = (OptionButton*)FindObject("OptionButton");
+		assert(pButton_ != nullptr);
+		pVolume_ = (OptionVolume*)FindObject("OptionVolume");
+		assert(pVolume_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		mouseMoob_ = false;
 		option_++;
@@ -30,7 +37,7 @@ void OptionScene::Update()
 			option_ = OPTION_BACK;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		mouseMoob_ = false;
 		option_--;
@@ -66,17 +73,17 @@ void OptionScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (option_ == OPTION_BACK && Input::IsKeyDown(DIK_Z))
+		if (option_ == OPTION_BACK)
 		{
-			SCENE_CHANGE(SCENE_ID_TITLE);
+			pBack_->IsButton();
 		}
-		if (option_ == OPTION_BUTTON && Input::IsKeyDown(DIK_Z))
+		if (option_ == OPTION_BUTTON)
 		{
-			SCENE_CHANGE(SCENE_ID_BUTTON);
+			pButton_->IsButton();
 		}
-		if (option_ == OPTION_VOLUME && Input::IsKeyDown(DIK_Z))
+		if (option_ == OPTION_VOLUME)
 		{
-			SCENE_CHANGE(SCENE_ID_VOLUME);
+			pVolume_->IsButton();
 		}
 	}
 }

@@ -1,11 +1,8 @@
 #include "LobbyScene.h"
-#include "Image/LobbyCourse.h"
-#include "Image/LobbyCustom.h"
-#include "Image/LobbyPlay.h"
 
 //コンストラクタ
 LobbyScene::LobbyScene(GameObject* parent)
-	: GameObject(parent, "LobbyScene"),mouseMoob_(true),lobby_(-1)
+	: GameObject(parent, "LobbyScene"),mouseMoob_(true),lobby_(-1), first_(true)
 {
 }
 
@@ -21,7 +18,17 @@ void LobbyScene::Initialize()
 //更新
 void LobbyScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pCourse_ = (LobbyCourse*)FindObject("LobbyCourse");
+		assert(pCourse_ != nullptr);
+		pPlay_ = (LobbyPlay*)FindObject("LobbyPlay");
+		assert(pPlay_ != nullptr);
+		pCustom_ = (LobbyCustom*)FindObject("LobbyCustom");
+		assert(pCustom_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		mouseMoob_ = false;
 		lobby_++;
@@ -30,7 +37,7 @@ void LobbyScene::Update()
 			lobby_ = LOBBY_COURSE;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		mouseMoob_ = false;
 		lobby_--;
@@ -62,16 +69,17 @@ void LobbyScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (lobby_ == LOBBY_COURSE && Input::IsKeyDown(DIK_Z))
+		if (lobby_ == LOBBY_COURSE)
 		{
+			pCourse_->IsButton();
 		}
-		if (lobby_ == LOBBY_PLAY && Input::IsKeyDown(DIK_Z))
+		if (lobby_ == LOBBY_PLAY)
 		{
-			SCENE_CHANGE(SCENE_ID_MATCHING);
+			pPlay_->IsButton();
 		}
-		if (lobby_ == LOBBY_CUSTOM && Input::IsKeyDown(DIK_Z))
+		if (lobby_ == LOBBY_CUSTOM)
 		{
-			SCENE_CHANGE(SCENE_ID_CUSTOM);
+			pCustom_->IsButton();
 		}
 	}
 }

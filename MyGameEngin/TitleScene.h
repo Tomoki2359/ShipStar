@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
+#include "Image/TitleStart.h"
+#include "Image/TitleOption.h"
 
 enum TITLE
 {
@@ -12,10 +14,17 @@ enum TITLE
 //■■シーンを管理するクラス
 class TitleScene : public GameObject
 {
-	short title_;
-	bool mouseMoob_;
-	XMFLOAT3 mousePos_;
-	XMFLOAT3 mouseNext_;
+	short title_;		//選んだ画像
+	bool mouseMoob_;	//マウスが動いているかどうか
+	bool first_;		//画像のポインタを指定したかどうか
+
+	//マウス操作
+	XMFLOAT3 mousePos_;		//前のマウスの位置
+	XMFLOAT3 mouseNext_;	//今のマウスの位置
+
+	//画像のポインタ
+	TitleStart* pStart_;
+	TitleOption* pOption_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

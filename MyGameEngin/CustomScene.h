@@ -1,6 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
+#include "Image/OKButton.h"
+#include "Image/BackButton.h"
 
 enum CUSTOM
 {
@@ -13,10 +15,17 @@ enum CUSTOM
 class CustomScene : public GameObject
 {
 	short custom_;
-	bool mouseMoob_;
-	bool change_;
-	XMFLOAT3 mousePos_;
-	XMFLOAT3 mouseNext_;
+	bool change_;	//本当に変更するかどうか
+	bool mouseMoob_;	//マウスが動いているかどうか
+	bool first_;		//画像のポインタを指定したかどうか
+
+	//マウス操作
+	XMFLOAT3 mousePos_;		//前のマウスの位置
+	XMFLOAT3 mouseNext_;	//今のマウスの位置
+
+	//画像のポインタ
+	BackButton* pBack_;
+	OKButton* pOK_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

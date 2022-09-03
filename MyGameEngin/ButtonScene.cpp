@@ -1,10 +1,8 @@
 #include "ButtonScene.h"
-#include "Image/BackButton.h"
-#include "Image/OKButton.h"
 
 //コンストラクタ
 ButtonScene::ButtonScene(GameObject* parent)
-	: GameObject(parent, "ButtonScene"), mouseMoob_(false), button_(-1)
+	: GameObject(parent, "ButtonScene"), mouseMoob_(false), button_(-1),first_(false)
 {
 }
 
@@ -19,7 +17,15 @@ void ButtonScene::Initialize()
 //更新
 void ButtonScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pBack_ = (BackButton*)FindObject("BackButton");
+		assert(pBack_ != nullptr);
+		pOK_ = (OKButton*)FindObject("OKButton");
+		assert(pOK_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		mouseMoob_ = false;
 		button_++;
@@ -28,7 +34,7 @@ void ButtonScene::Update()
 			button_ = BUTTON_BACK;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		mouseMoob_ = false;
 		button_--;
@@ -58,13 +64,13 @@ void ButtonScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (button_ == BUTTON_BACK && Input::IsKeyDown(DIK_Z))
+		if (button_ == BUTTON_BACK)
 		{
-			SCENE_CHANGE(SCENE_ID_OPTION);
+			pBack_->IsButton();
 		}
-		if (button_ == BUTTON_OK && Input::IsKeyDown(DIK_Z))
+		if (button_ == BUTTON_OK)
 		{
-			SCENE_CHANGE(SCENE_ID_OPTION);
+			pOK_->IsButton();
 		}
 	}
 }

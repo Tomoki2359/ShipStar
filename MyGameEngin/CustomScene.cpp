@@ -1,10 +1,8 @@
 #include "CustomScene.h"
-#include "Image/OKButton.h"
-#include "Image/BackButton.h"
 
 //コンストラクタ
 CustomScene::CustomScene(GameObject* parent)
-	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false)
+	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true)
 {
 }
 
@@ -19,7 +17,15 @@ void CustomScene::Initialize()
 //更新
 void CustomScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pBack_ = (BackButton*)FindObject("BackButton");
+		assert(pBack_ != nullptr);
+		pOK_ = (OKButton*)FindObject("OKButton");
+		assert(pOK_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		custom_++;
 		mouseMoob_ = false;
@@ -28,7 +34,7 @@ void CustomScene::Update()
 			custom_ = CUSTOM_BACK;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		custom_--;
 		mouseMoob_ = false;
@@ -57,19 +63,20 @@ void CustomScene::Update()
 		if (FindObject("OKButton") == nullptr)
 		{
 			Instantiate<OKButton>(this);
+			first_ = true;
 			change_ = true;
 		}
 
 		//キー操作
 		if (mouseMoob_ == false)
 		{
-			if (custom_ == CUSTOM_BACK && Input::IsKeyDown(DIK_Z))
+			if (custom_ == CUSTOM_BACK)
 			{
-				SCENE_CHANGE(SCENE_ID_LOBBY);
+				pBack_->IsButton();
 			}
-			if (custom_ == CUSTOM_OK && Input::IsKeyDown(DIK_Z))
+			if (custom_ == CUSTOM_OK)
 			{
-				change_ = true;
+				pOK_->IsButton();
 			}
 		}
 	}
@@ -80,25 +87,27 @@ void CustomScene::Update()
 		if (FindObject("BackButton") == nullptr)
 		{
 			Instantiate<BackButton>(this);
+			first_ = true;
 			change_ = false;
 		}
 
 		if (FindObject("OKButton") == nullptr)
 		{
 			Instantiate<OKButton>(this);
+			first_ = true;
 			change_ = false;
 		}
 
 		//キー操作
 		if (mouseMoob_ == false)
 		{
-			if (custom_ == CUSTOM_BACK && Input::IsKeyDown(DIK_Z))
+			if (custom_ == CUSTOM_BACK)
 			{
-				change_ = false;
+				pBack_->IsButton();
 			}
-			if (custom_ == CUSTOM_OK && Input::IsKeyDown(DIK_Z))
+			if (custom_ == CUSTOM_OK)
 			{
-				change_ = false;
+				pOK_->IsButton();
 			}
 		}
 	}

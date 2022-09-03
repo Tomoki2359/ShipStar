@@ -157,6 +157,7 @@
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Image.cpp" />
     <ClCompile Include="Engine\Input.cpp" />
+    <ClCompile Include="Engine\Math.cpp" />
     <ClCompile Include="Engine\Model.cpp" />
     <ClCompile Include="Engine\RootJob.cpp" />
     <ClCompile Include="Engine\SceneManager.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Image\BackButton.cpp" />
+    <ClCompile Include="Image\Button.cpp" />
     <ClCompile Include="Image\LobbyCourse.cpp" />
     <ClCompile Include="Image\LobbyCustom.cpp" />
     <ClCompile Include="Image\LobbyPlay.cpp" />
@@ -218,6 +220,7 @@
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Image.h" />
     <ClInclude Include="Engine\Input.h" />
+    <ClInclude Include="Engine\Math.h" />
     <ClInclude Include="Engine\Model.h" />
     <ClInclude Include="Engine\RootJob.h" />
     <ClInclude Include="Engine\SceneManager.h" />
@@ -226,6 +229,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Image\BackButton.h" />
+    <ClInclude Include="Image\Button.h" />
     <ClInclude Include="Image\LobbyCourse.h" />
     <ClInclude Include="Image\LobbyCustom.h" />
     <ClInclude Include="Image\LobbyPlay.h" />

@@ -1,10 +1,9 @@
 #include "VolumeScene.h"
-#include "Image/BackButton.h"
-#include "Image/OKButton.h"
+
 
 //コンストラクタ
 VolumeScene::VolumeScene(GameObject* parent)
-	: GameObject(parent, "VolumeScene"),mouseMoob_(false),volume_(-1)
+	: GameObject(parent, "VolumeScene"),mouseMoob_(false),volume_(-1), first_(true)
 {
 }
 
@@ -19,7 +18,16 @@ void VolumeScene::Initialize()
 //更新
 void VolumeScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	//画像のポインタを指定したかどうか
+	if (first_)
+	{
+		first_ = false;
+		pBack_ = (BackButton*)FindObject("BackButton");
+		assert(pBack_ != nullptr);
+		pOK_ = (OKButton*)FindObject("OKButton");
+		assert(pOK_ != nullptr);
+	}
+	if (Input::IsKeyDown(DIK_S))
 	{
 		mouseMoob_ = false;
 		volume_++;
@@ -28,7 +36,7 @@ void VolumeScene::Update()
 			volume_ = VOLUME_BACK;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		mouseMoob_ = false;
 		volume_--;
@@ -58,13 +66,13 @@ void VolumeScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (volume_ == VOLUME_BACK && Input::IsKeyDown(DIK_Z))
+		if (volume_ == VOLUME_BACK)
 		{
-			SCENE_CHANGE(SCENE_ID_OPTION);
+			pBack_->IsButton();
 		}
-		if (volume_ == VOLUME_OK && Input::IsKeyDown(DIK_Z))
+		if (volume_ == VOLUME_OK)
 		{
-			SCENE_CHANGE(SCENE_ID_OPTION);
+			pOK_->IsButton();
 		}
 	}
 }

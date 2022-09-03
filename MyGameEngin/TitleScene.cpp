@@ -1,12 +1,10 @@
 #include "TitleScene.h"
 #include "Engine/Input.h"
-#include "Image/TitleStart.h"
-#include "Image/TitleOption.h"
 #include "Image/TitleName.h"
 
 //コンストラクタ
 TitleScene::TitleScene(GameObject* parent)
-	: GameObject(parent, "TitleScene"),mouseMoob_(true),title_(-1)
+	: GameObject(parent, "TitleScene"), mouseMoob_(true), title_(-1), first_(true)
 {
 }
 
@@ -22,7 +20,16 @@ void TitleScene::Initialize()
 //更新
 void TitleScene::Update()
 {
-	if (Input::IsKeyDown(DIK_W))
+	if (first_)
+	{
+		first_ = false;
+		pStart_ = (TitleStart*)FindObject("TitleStart");
+		assert(pStart_ != nullptr);
+		pOption_ = (TitleOption*)FindObject("TitleOption");
+		assert(pOption_ != nullptr);
+	}
+
+	if (Input::IsKeyDown(DIK_S))
 	{
 		mouseMoob_ = false;
 		title_++;
@@ -31,7 +38,7 @@ void TitleScene::Update()
 			title_ = TITLE_START;
 		}
 	}
-	if (Input::IsKeyDown(DIK_S))
+	if (Input::IsKeyDown(DIK_W))
 	{
 		mouseMoob_ = false;
 		title_--;
@@ -62,13 +69,13 @@ void TitleScene::Update()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (title_ == TITLE_START && Input::IsKeyDown(DIK_Z))
+		if (title_ == TITLE_START)
 		{
-			SCENE_CHANGE(SCENE_ID_LOBBY);
+			pStart_->IsButton();
 		}
-		if (title_ == TITLE_OPTION && Input::IsKeyDown(DIK_Z))
+		if (title_ == TITLE_OPTION)
 		{
-			SCENE_CHANGE(SCENE_ID_OPTION);
+			pOption_->IsButton();
 		}
 	}
 	//SCENE_CHANGE(SCENE_ID_PLAY);
