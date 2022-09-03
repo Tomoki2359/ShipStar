@@ -7,14 +7,14 @@
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180)
+	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_()
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f),
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180)
+	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_()
 {
 }
 
@@ -50,6 +50,7 @@ void Airframe::Update()
 	//3秒後にスタートする
 	if (start_)
 	{
+		PrevPosition_ = transform_.position_;
 		//継承先で呼び出す
 		UpdateState();
 
@@ -76,7 +77,7 @@ void Airframe::Update()
 				transform_.rotate_.z = 0;
 			}
 		}
-		HeightAdjustment();
+		
 		//上昇状態なら
 		if (cAscent_ == true)
 		{
@@ -153,6 +154,8 @@ void Airframe::Update()
 	vPos += vMove_;
 	XMStoreFloat3(&transform_.position_, vPos);
 
+	CourseoutSaver();
+
 	//カメラを使用するかどうか
 	if (cCamera_ == true)
 	{
@@ -192,17 +195,17 @@ void Airframe::Limit()
 		speed_ = status_[MAX_SPEED];
 	}
 
-	//一定以上上昇しない
-	if (transform_.position_.y >= 15)
-	{
-		transform_.position_.y = 15;
-	}
+	////一定以上上昇しない
+	//if (transform_.position_.y >= 15)
+	//{
+	//	transform_.position_.y = 15;
+	//}
 
-	//一定以下下降しない
-	if (transform_.position_.y <= -5)
-	{
-		transform_.position_.y = -5;
-	}
+	////一定以下下降しない
+	//if (transform_.position_.y <= -5)
+	//{
+	//	transform_.position_.y = -5;
+	//}
 }
 
 void Airframe::SetPartsNum(char engine, char body, char wing, char cockpit, char pattern)
@@ -238,40 +241,9 @@ void Airframe::SetStatus()
 	{
 		cCamera_ = false;	//カメラOFF
 	}
-	transform_.scale_.x = 0.25;
-	transform_.scale_.y = 0.25;
-	transform_.scale_.z = 0.25;
-}
-
-void Airframe::HeightAdjustment()
-{
-	//レイ変換用
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
-
-	XMFLOAT3 Ray = XMFLOAT3(0.0f, -1.0f, 0.0f);
-
-	//レイキャスト
-	Course* pCourse = (Course*)FindObject("Course");
-	short hCourseModel = (short)pCourse->GetModelHandle();
-
-	RayCastData RayCast;
-	RayCast.start = transform_.position_;   //レイの発射位置
-	RayCast.dir = Ray;					 //レイの方向
-	Model::RayCast(hCourseModel, &RayCast); //レイを発射
-	if (RayCast.hit && RayCast.dist != PrevHeight_)
-	{
-		if (PrevHeight_ > RayCast.dist)
-		{
-			Descent();
-		}
-		else
-		{
-			Rise();
-		}
-		PrevHeight_ = RayCast.dist;
-	}
+	transform_.scale_.x = 0.25f;
+	transform_.scale_.y = 0.25f;
+	transform_.scale_.z = 0.25f;
 }
 
 void Airframe::Accelerate()
@@ -371,4 +343,73 @@ XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
 	float DisY = this->GetPosition().y - pTarget->GetPosition().y;
 	float DisZ = this->GetPosition().z - pTarget->GetPosition().z;
 	return XMFLOAT3(DisX, DisY, DisZ);
+}
+
+void Airframe::CourseoutSaver()
+{
+	//レイ変換用
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+
+	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f);
+
+	Left = XMVector3TransformCoord(Left, mRotate);
+	Right = XMVector3TransformCoord(Right, mRotate);
+
+	Left = XMVector3Normalize(Left);
+	Right = XMVector3Normalize(Right);
+
+	XMFLOAT3 matL, matR;
+	XMStoreFloat3(&matL, Left);
+	XMStoreFloat3(&matR, Right);
+
+	//レイキャスト
+	Course* pCourse = (Course*)FindObject("Course");
+	short hCourseModel = (short)pCourse->GetModelHandle();
+
+	RayCastData Ray_Right;		//斜め右にレイを飛ばす
+	Ray_Right.start = transform_.position_;   //レイの発射位置
+	Ray_Right.dir = matR;				      //レイの方向
+	Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
+	if (!Ray_Right.hit)
+	{
+		transform_.position_ = PrevPosition_;
+		speed_ *= 0.6f;
+		XMFLOAT3 Move_ = { -0.1f,0,0 };
+		XMVECTOR vMove_ = XMLoadFloat3(&Move_);
+
+		//機体のX軸,Y軸の角度の取得
+		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+		mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+
+		//現在地から機体の向きによって進む
+		vMove_ = XMVector3TransformCoord(vMove_, mRotate);
+		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
+		vPos += vMove_;
+		XMStoreFloat3(&transform_.position_, vPos);
+	}
+	
+	RayCastData Ray_Left;		//斜め左にレイを飛ばす
+	Ray_Left.start = transform_.position_;   //レイの発射位置
+	Ray_Left.dir = matL;				     //レイの方向
+	Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
+	if (!Ray_Left.hit)
+	{
+		transform_.position_ = PrevPosition_;
+		speed_ *= 0.6f;
+		XMFLOAT3 Move_ = { 0.1f,0,0 };
+		XMVECTOR vMove_ = XMLoadFloat3(&Move_);
+
+		//機体のX軸,Y軸の角度の取得
+		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+		mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+
+		//現在地から機体の向きによって進む
+		vMove_ = XMVector3TransformCoord(vMove_, mRotate);
+		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
+		vPos += vMove_;
+		XMStoreFloat3(&transform_.position_, vPos);
+	}
 }
