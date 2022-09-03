@@ -2,7 +2,7 @@
 
 //コンストラクタ
 ButtonScene::ButtonScene(GameObject* parent)
-	: GameObject(parent, "ButtonScene"), mouseMoob_(false), button_(-1),first_(false)
+	: GameObject(parent, "ButtonScene"), mouseMoob_(false), button_(-1),first_(true)
 {
 }
 
