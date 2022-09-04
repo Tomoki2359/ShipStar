@@ -2,6 +2,7 @@
 #include "Course.h"
 #include "Player.h"
 #include "Computer.h"
+#include "Navigation.h"
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -23,12 +24,21 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
+
 	
 }
 
 //更新
 void PlayScene::Update()
 {
+	/*static int j = 0;
+	j++;
+	if (j == 2 && !Initcomprete_)
+	{
+		Instantiate<Navigation>(this);
+		Initcomprete_ = true;
+	}*/
+
 	//SCENE_CHANGE(SCENE_ID_RESULT);
 }
 

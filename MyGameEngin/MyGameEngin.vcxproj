@@ -180,6 +180,7 @@
     <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MatchingScene.cpp" />
+    <ClCompile Include="Navigation.cpp" />
     <ClCompile Include="OptionScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Image\TitleStart.h" />
     <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="MatchingScene.h" />
+    <ClInclude Include="Navigation.h" />
     <ClInclude Include="OptionScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />

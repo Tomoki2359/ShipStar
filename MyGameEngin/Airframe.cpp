@@ -233,7 +233,7 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
-	if (this->objectName_ == "Computer")
+	if (this->objectName_ == "Player")
 	{
 		cCamera_ = true;	//カメラON
 	}

@@ -5,6 +5,7 @@
 //■■シーンを管理するクラス
 class PlayScene : public GameObject
 {
+	bool Initcomprete_ = false;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

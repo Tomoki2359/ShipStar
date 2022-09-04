@@ -23,7 +23,7 @@ bool Math::Intersect(XMFLOAT3 start, XMFLOAT3 dir, XMFLOAT3 v0, XMFLOAT3 v1, XMF
     XMFLOAT3 result = XMFLOAT3{Det(start,e02,dir)/Det(e01,e02,dir),Det(e01,start,dir) / Det(e01,e02,dir),-Det(e01,e02,start) / Det(e01,e02,dir) };
 
     //u‚Ì“š‚¦‚ª0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢‚©
-    if (0 <= result.x  && result.x <= 1);
+    if (0 <= result.x  && result.x <= 1)
     {
         //v‚Ì“š‚¦‚ª0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢‚©
         if (0 <= result.y && result.y <= 1)
