@@ -119,8 +119,8 @@ void Navigation::Scan()
 	XMFLOAT3 Upper_Goal = XMFLOAT3(Upper_.x, Upper_.y + Adjuster_, Upper_.z);*/
 	//XMFLOAT3 Lower_Goal = Lower_;
 
-	while (!Math::Intersect(A_side_.start, A_side_.dir, Left_Goal, Right_Goal, Upper_Goal))
-	{
+	/*while (!Math::Intersect(A_side_.start, A_side_.dir, Left_Goal, Right_Goal, Upper_Goal))*/
+	//{
 		pCourse_ = (Course*)FindObject("Course");
 		int hCourseModel = pCourse_->GetModelHandle();
 
@@ -319,18 +319,18 @@ void Navigation::Scan()
 
 			transform_.position_ = XMFLOAT3AVERAGE(Upper_, Lower_);
 
-			if (R.dist > 10.0f)
+			/*if (R.dist > 10.0f)
 			{
 				Checkpoint_.push_back(transform_.position_);
-			}
-			
+			}*/
+			Checkpoint_.push_back(transform_.position_);
 
 			int s = (int)Checkpoint_.size();
-		}
+		/*}
 		else
 		{
 		transform_.rotate_.y += Turn_;
-		}
+		}*/
 		
 	}
 }

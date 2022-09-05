@@ -2,19 +2,20 @@
 #include "Course.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include <math.h>
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_()
+	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
-	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_()
+	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
@@ -50,6 +51,7 @@ void Airframe::Update()
 	//3秒後にスタートする
 	if (start_)
 	{
+		pNav_ = (Navigation*)FindObject("Navigation");
 		PrevPosition_ = transform_.position_;
 		//継承先で呼び出す
 		UpdateState();
@@ -126,6 +128,17 @@ void Airframe::Update()
 
 		//ターボ値を貯める
 		tTurbo_++;
+
+		/*auto it = pNav_->Checkpoint_.end();
+		if (Getdistance((*it), transform_.position_) < 10)
+		{
+			IsGoal_ = true;
+		}*/
+
+		if (transform_.position_.z > 40)
+		{
+			IsGoal_ = true;
+		}
 	}
 
 	//カウントダウン
@@ -171,6 +184,7 @@ void Airframe::Update()
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
 	}
+	
 }
 
 //描画
@@ -412,4 +426,12 @@ void Airframe::CourseoutSaver()
 		vPos += vMove_;
 		XMStoreFloat3(&transform_.position_, vPos);
 	}
+}
+
+float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
+{
+	float answer;
+	XMFLOAT3 c = XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
+	answer = sqrt(c.x * c.x + c.y * c.y + c.z * c.z);
+	return answer;
 }

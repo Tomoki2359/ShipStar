@@ -7,6 +7,8 @@ class Course;
 
 class Navigation : public GameObject
 {
+	//friend Airframe;
+
 	enum
 	{
 		left,
@@ -16,7 +18,6 @@ class Navigation : public GameObject
 	};
 
 	Course* pCourse_;
-	std::list<XMFLOAT3> Checkpoint_;
 	XMFLOAT3 Upper_;
 	XMFLOAT3 Lower_;
 	XMFLOAT3 Left_;
@@ -55,4 +56,7 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+
+	std::list<XMFLOAT3> Checkpoint_;
 };

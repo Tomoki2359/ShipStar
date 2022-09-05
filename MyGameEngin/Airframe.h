@@ -1,4 +1,5 @@
 #pragma once
+#include "Navigation.h"
 #include "CSVReader.h"
 #include "Engine/GameObject.h"
 
@@ -44,13 +45,18 @@ class Airframe : public GameObject
 	short timeCount_;	//レース時間の管理とカウントダウン
 
 	XMFLOAT3 PrevPosition_;	//
+
+	Navigation* pNav_;
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
 	XMFLOAT3 GetDistance(GameObject* pTarget);
 	float PrevHeight_;
 
+	
+
 public:
+	bool IsGoal_;
 	PARTS_NUM PartsSet;
 	float status_[MAX_STATUS];
 	std::string fileName_;
@@ -108,4 +114,6 @@ public:
 
 	//コース外に出ないようにしてみる
 	void CourseoutSaver();
+
+	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
 };

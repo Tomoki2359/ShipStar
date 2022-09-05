@@ -39,7 +39,12 @@ void PlayScene::Update()
 		Initcomprete_ = true;
 	}*/
 
-	//SCENE_CHANGE(SCENE_ID_RESULT);
+	Player* pPlayer = (Player*)FindObject("Player");
+	if (pPlayer->IsGoal_)
+	{
+		SCENE_CHANGE(SCENE_ID_RESULT);
+	}
+	
 }
 
 //•`‰æ
