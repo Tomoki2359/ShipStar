@@ -166,6 +166,7 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Image\BackButton.cpp" />
+    <ClCompile Include="Image\Background.cpp" />
     <ClCompile Include="Image\Button.cpp" />
     <ClCompile Include="Image\LobbyCourse.cpp" />
     <ClCompile Include="Image\LobbyCustom.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="Image\BackButton.h" />
+    <ClInclude Include="Image\Background.h" />
     <ClInclude Include="Image\Button.h" />
     <ClInclude Include="Image\LobbyCourse.h" />
     <ClInclude Include="Image\LobbyCustom.h" />

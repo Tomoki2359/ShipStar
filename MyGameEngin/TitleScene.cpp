@@ -1,6 +1,7 @@
 #include "TitleScene.h"
 #include "Engine/Input.h"
 #include "Image/TitleName.h"
+#include "Image/Background.h"
 
 //コンストラクタ
 TitleScene::TitleScene(GameObject* parent)
@@ -15,6 +16,7 @@ void TitleScene::Initialize()
 	Instantiate<TitleName>(this);
 	Instantiate<TitleStart>(this);
 	Instantiate<TitleOption>(this);
+	Instantiate<Background>(this);
 }
 
 //更新
