@@ -15,6 +15,14 @@ class Navigation : public GameObject
 		lower
 	};
 
+	enum
+	{
+		UPPER_LEFT,
+		UPPER_RIGHT,
+		LOWER_LEFT,
+		LOWER_RIGHT
+	};
+
 	Course* pCourse_;
 	XMFLOAT3 Left_;
 	XMFLOAT3 Right_;
@@ -36,6 +44,11 @@ class Navigation : public GameObject
 	XMFLOAT3 XMFLOAT3AVERAGE(XMFLOAT3 fl3a, XMFLOAT3 fl3b);			//2つのXMFLOAT3の中間を割り出す
 	//int ReturnShortest(float Left, float Right, float Upper, float Lower);
 	//int ReturnLongest(float Left, float Right, float Upper, float Lower);
+
+	const char Division_ = 4;		//コースを走査するための分割数
+	const char Range_ = 10;			//一区画あたりの走査範囲
+	const char Sky_ = 100;			//レイを飛ばす高さ
+	const char Move_ = 2;			//移動量
 
 	void Scan();	//コースを読み取ってチェックポイントを設置する
 
