@@ -34,6 +34,14 @@ enum STATUS_ID
 //■■シーンを管理するクラス
 class Airframe : public GameObject
 {
+	struct PASSAGE	//Checkpointとそこを通過したかの構造体
+	{
+		XMFLOAT3 Point;
+		bool Pass;
+	};
+	
+	std::vector<PASSAGE> PassageChecker_;
+
 	short hModel_;   //モデル番号
 	float speed_;	//現在の速度
 	bool cAscent_;	//上昇状態かどうか
@@ -47,6 +55,7 @@ class Airframe : public GameObject
 	XMFLOAT3 PrevPosition_;	//
 
 	Navigation* pNav_;
+
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか

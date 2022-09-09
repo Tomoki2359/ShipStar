@@ -7,20 +7,21 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(),
 	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
 Airframe::~Airframe()
 {
+	PassageChecker_.clear();
 }
 
 //初期化
@@ -30,6 +31,7 @@ void Airframe::Initialize()
 
 	//全てデフォルト値で初期化
 	PartsSet = { NULL, NULL, NULL, NULL, NULL, NULL };
+	PassageChecker_.clear();
 
 	//ステータスの取得
 	SetStatus();
@@ -432,6 +434,6 @@ float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 {
 	float answer;
 	XMFLOAT3 c = XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
-	answer = sqrt(c.x * c.x + c.y * c.y + c.z * c.z);
+	answer = sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
 	return answer;
 }

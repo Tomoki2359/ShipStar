@@ -1,7 +1,7 @@
 #pragma once
 #include"Engine/GameObject.h"
 #include"Engine/Model.h"
-#include <list>
+#include <vector>
 
 class Course;
 
@@ -20,7 +20,8 @@ class Navigation : public GameObject
 		UPPER_LEFT,
 		UPPER_RIGHT,
 		LOWER_LEFT,
-		LOWER_RIGHT
+		LOWER_RIGHT,
+		DIVISION_MAX
 	};
 
 	Course* pCourse_;
@@ -42,13 +43,14 @@ class Navigation : public GameObject
 
 	XMFLOAT3 XMFLOAT3PRUSXMFLOAT3(XMFLOAT3 fl3a, XMFLOAT3 fl3b);	//2つのXMFLOAT3を足す
 	XMFLOAT3 XMFLOAT3AVERAGE(XMFLOAT3 fl3a, XMFLOAT3 fl3b);			//2つのXMFLOAT3の中間を割り出す
+	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
 	//int ReturnShortest(float Left, float Right, float Upper, float Lower);
 	//int ReturnLongest(float Left, float Right, float Upper, float Lower);
 
-	const char Division_ = 4;		//コースを走査するための分割数
 	const char Range_ = 10;			//一区画あたりの走査範囲
 	const char Sky_ = 100;			//レイを飛ばす高さ
 	const char Move_ = 2;			//移動量
+	const XMFLOAT3 Shot_ = XMFLOAT3(0.0f, 1.0f, 0.0f);	//真下に発射するレイ
 
 	void Scan();	//コースを読み取ってチェックポイントを設置する
 
@@ -63,5 +65,5 @@ public:
 	void Release() override;
 
 
-	std::list<XMFLOAT3> Checkpoint_;
+	std::vector<XMFLOAT3> Checkpoint_;
 };

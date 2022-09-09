@@ -22,6 +22,14 @@ XMFLOAT3 Navigation::XMFLOAT3AVERAGE(XMFLOAT3 fl3a, XMFLOAT3 fl3b)
 	return result;
 }
 
+float Navigation::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
+{
+	float answer;
+	XMFLOAT3 c = XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
+	answer = sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
+	return answer;
+}
+
 //int Navigation::ReturnShortest(float Left, float Right, float Upper, float Lower)
 //{
 //	if (Left < Right && Left <= Upper && Left <= Lower)
@@ -89,7 +97,7 @@ void Navigation::Initialize()
 
 	Right_ = XMFLOAT3(transform_.position_.x + R_side_.dist - Adjuster_, transform_.position_.y, transform_.position_.z);
 
-	Checkpoint_.push_back(transform_.position_);
+	//Checkpoint_.push_back(transform_.position_);
 
 	Left_Goal = Left_;
 	Right_Goal = Right_;
@@ -292,16 +300,21 @@ void Navigation::Scan()
 //}
 //}
 
-for (int i = NULL; i < Division_; i++)
+for (int i = NULL; i < DIVISION_MAX; i++)
 {
 	//‘–¸‚·‚é‹æˆæ‚ÉˆÚ“®‚·‚é
 	switch (i)
 	{
 	case UPPER_LEFT:transform_.position_ = XMFLOAT3(-Range_, Sky_, Range_); break;
-	case UPPER_RIGHT:transform_.position_ = XMFLOAT3(Range_, Sky_, Range_); break;
-	case LOWER_LEFT:transform_.position_ = XMFLOAT3(-Range_, Sky_, -Range_); break;
-	case LOWER_RIGHT:transform_.position_ = XMFLOAT3(Range_, Sky_, -Range_); break;
+	case UPPER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, Range_); break;
+	case LOWER_LEFT:transform_.position_ = XMFLOAT3(-Range_, Sky_, NULL); break;
+	case LOWER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, NULL); break;
 	}
+
+	//‘–¸‹æˆæ“à‚ÅÅ‚à—£‚ê‚½êŠ‚ðŠi”[‚µ‚Ä‚¨‚­‚à‚Ì
+	XMFLOAT3 Storage = XMFLOAT3(NULL, NULL, NULL);
+
+	XMFLOAT3 Initial = XMFLOAT3(NULL, NULL, NULL);
 
 	//”ÍˆÍ“à‚Ì‘–¸‰ñ”
 	char Density = Range_ / Move_;
@@ -310,10 +323,23 @@ for (int i = NULL; i < Division_; i++)
 		for (int z = NULL; z < Density; z + Move_)
 		{
 			RayCastData data;
-			data.start = transform_.position_;
-			data.dir;
+			data.start = XMFLOAT3PRUSXMFLOAT3(transform_.position_, XMFLOAT3((float)x, NULL, (float)z));
+			data.dir = Shot_;
+
+			if (data.hit && Getdistance(XMFLOAT3(data.start.x, NULL, data.start.z), Initial) > Getdistance(Storage, Initial))
+			{
+				Storage = XMFLOAT3(data.start.x, NULL, data.start.z);
+			}
+
 		}
 	}
+
+	//Storage‚ª0‚Å‚È‚¯‚ê‚ÎCheckpoint_‚ÉŠi”[‚·‚é
+	if (Getdistance(Storage, Initial) != NULL)
+	{
+		Checkpoint_.push_back(Storage);
+	}
+
 }
 }
 
