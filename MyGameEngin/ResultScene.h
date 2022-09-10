@@ -2,7 +2,7 @@
 #include "Engine/GameObject.h"
 #include "Engine/SceneManager.h"
 #include "Image/BackButton.h"
-#include "Image/OKButton.h"
+#include "Image/RetryButton.h"
 
 enum RESULT
 {
@@ -24,7 +24,7 @@ class ResultScene : public GameObject
 
 	//画像のポインタ
 	BackButton* pBack_;
-	OKButton* pOK_;
+	RetryButton* pOK_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

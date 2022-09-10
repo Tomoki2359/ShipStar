@@ -41,6 +41,7 @@ HRESULT Sprite::Initialize(LPCWSTR fileName)
 void Sprite::Draw(Transform& transform, XMFLOAT4 color)
 {
 	Direct3D::SetShader(SHADER_2D);
+	Direct3D::SetDepthBafferWriteEnable(false);
 
 	//コンスタントバッファに渡す情報
 	transform.Calclation();
@@ -204,4 +205,5 @@ void Sprite::SetBufferToPipeline()
 	Direct3D::pContext->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
 	Direct3D::pContext->DrawIndexed(indexNum, 0, 0);
+	Direct3D::SetDepthBafferWriteEnable(true);
 }

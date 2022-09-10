@@ -13,10 +13,10 @@ TitleScene::TitleScene(GameObject* parent)
 void TitleScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<Background>(this);
 	Instantiate<TitleName>(this);
 	Instantiate<TitleStart>(this);
 	Instantiate<TitleOption>(this);
-	Instantiate<Background>(this);
 }
 
 //XV

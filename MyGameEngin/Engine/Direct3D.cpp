@@ -359,6 +359,22 @@ void Direct3D::SetColor(float red, float blue, float green)
 	green_ = green;
 }
 
+void Direct3D::SetDepthBafferWriteEnable(bool isWrite)
+{
+	//ON
+	if (isWrite)
+	{
+		//Zバッファ（デプスステンシルを指定する）
+		pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
+	}
+
+	//OFF
+	else
+	{
+		pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr);
+	}
+}
+
 //三角形と線分の衝突判定
 bool  Direct3D::Intersect(XMFLOAT3& start, XMFLOAT3& direction, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2, float* distance)
 {

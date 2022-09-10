@@ -175,6 +175,7 @@
     <ClCompile Include="Image\OKButton.cpp" />
     <ClCompile Include="Image\OptionButton.cpp" />
     <ClCompile Include="Image\OptionVolume.cpp" />
+    <ClCompile Include="Image\RetryButton.cpp" />
     <ClCompile Include="Image\TitleName.cpp" />
     <ClCompile Include="Image\TitleOption.cpp" />
     <ClCompile Include="Image\TitleStart.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Image\OKButton.h" />
     <ClInclude Include="Image\OptionButton.h" />
     <ClInclude Include="Image\OptionVolume.h" />
+    <ClInclude Include="Image\RetryButton.h" />
     <ClInclude Include="Image\TitleName.h" />
     <ClInclude Include="Image\TitleOption.h" />
     <ClInclude Include="Image\TitleStart.h" />

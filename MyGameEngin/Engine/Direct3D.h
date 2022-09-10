@@ -45,6 +45,10 @@ namespace Direct3D
 
 	//スクリーンの色の取得
 	void SetColor(float red, float blue, float green);
+
+	//ZバッファのON,OFF
+	void SetDepthBafferWriteEnable(bool isWrite);
+
 	//三角形と線分の衝突判定
 	bool Intersect(XMFLOAT3& start, XMFLOAT3& direction, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2, float* distance);
 };

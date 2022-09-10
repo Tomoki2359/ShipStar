@@ -11,7 +11,7 @@ void ResultScene::Initialize()
 {
 	SetScreen(0, 0, 0);
 	Instantiate<BackButton>(this);
-	Instantiate<OKButton>(this);
+	Instantiate<RetryButton>(this);
 }
 
 //çXêV
@@ -22,7 +22,7 @@ void ResultScene::Update()
 		first_ = false;
 		pBack_ = (BackButton*)FindObject("BackButton");
 		assert(pBack_ != nullptr);
-		pOK_ = (OKButton*)FindObject("OKButton");
+		pOK_ = (RetryButton*)FindObject("RetryButton");
 		assert(pOK_ != nullptr);
 	}
 	if (Input::IsKeyDown(DIK_S))
@@ -57,7 +57,7 @@ void ResultScene::Update()
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
 
-	if (FindObject("OKButton") == nullptr)
+	if (FindObject("RetryButton") == nullptr)
 	{
 		SCENE_CHANGE(SCENE_ID_PLAY);
 	}
