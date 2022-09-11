@@ -28,8 +28,7 @@ class Navigation : public GameObject
 	XMFLOAT3 Left_;
 	XMFLOAT3 Right_;
 
-	XMFLOAT3 Left_Goal;
-	XMFLOAT3 Right_Goal;
+
 
 	RayCastData L_side_;	//左側のレイ
 	RayCastData R_side_;	//右側のレイ
@@ -37,6 +36,7 @@ class Navigation : public GameObject
 
 	const XMFLOAT3 matL = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matR = XMFLOAT3(1.0f, 0.0f, 0.0f);
+	const XMFLOAT3 matU = XMFLOAT3(0.0f, 1.0f, 0.0f);
 
 	const char Turn_ = 5;			//回転に使う
 	const float Adjuster_ = 1.0f;	//位置の微調整に使う
@@ -64,6 +64,9 @@ public:
 	//開放
 	void Release() override;
 
-
 	std::vector<XMFLOAT3> Checkpoint_;
+
+	XMFLOAT3 Upper_Goal;
+	XMFLOAT3 Left_Goal;
+	XMFLOAT3 Right_Goal;
 };

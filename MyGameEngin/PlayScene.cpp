@@ -31,13 +31,13 @@ void PlayScene::Initialize()
 //更新
 void PlayScene::Update()
 {
-	/*static int j = 0;
+	static int j = 0;
 	j++;
-	if (j == 2 && !Initcomprete_)
+	if (j == 2 && !Initcomprete_)	//開始フレームは後ほど調整
 	{
 		Instantiate<Navigation>(this);
 		Initcomprete_ = true;
-	}*/
+	}
 
 	Player* pPlayer = (Player*)FindObject("Player");
 	if (pPlayer->IsGoal_)

@@ -26,7 +26,7 @@ float Navigation::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 {
 	float answer;
 	XMFLOAT3 c = XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
-	answer = sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
+	answer = (float)sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
 	return answer;
 }
 
@@ -66,7 +66,7 @@ float Navigation::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 
 Navigation::Navigation(GameObject* parent)
 	: GameObject(parent, "Navigation"), pCourse_(nullptr), Left_(), Right_(),
-	L_side_(), R_side_(), Left_Goal(), Right_Goal(), Finder_()
+	L_side_(), R_side_(), Upper_Goal(), Left_Goal(), Right_Goal(), Finder_()
 {
 	Checkpoint_.clear();
 }
@@ -85,7 +85,7 @@ void Navigation::Initialize()
 	pCourse_ = (Course*)FindObject("Course");
 	int hCourseModel = pCourse_->GetModelHandle();
 
-	L_side_.start = transform_.position_;
+	/*L_side_.start = transform_.position_;
 	L_side_.dir = matL;
 	Model::RayCast(hCourseModel, &L_side_);
 
@@ -95,14 +95,37 @@ void Navigation::Initialize()
 	R_side_.dir = matR;
 	Model::RayCast(hCourseModel, &R_side_);
 
-	Right_ = XMFLOAT3(transform_.position_.x + R_side_.dist - Adjuster_, transform_.position_.y, transform_.position_.z);
+	Right_ = XMFLOAT3(transform_.position_.x + R_side_.dist - Adjuster_, transform_.position_.y, transform_.position_.z);*/
 
 	//Checkpoint_.push_back(transform_.position_);
+
+	RayCastData ray;
+	ray.start = transform_.position_;
+	ray.dir = matR;
+	Model::RayCast(hCourseModel, &ray);
+
+	Right_ = XMFLOAT3(transform_.position_.x + ray.dist, transform_.position_.y, transform_.position_.z);
+
+	ray.dir = matL;
+	Model::RayCast(hCourseModel, &ray);
+
+	Left_ = XMFLOAT3(transform_.position_.x - ray.dist, transform_.position_.y, transform_.position_.z);
+
+	ray.dir = Shot_;
+	Model::RayCast(hCourseModel, &ray);
+
+	Right_ = XMFLOAT3(Right_.x, Right_.y - ray.dist, Right_.z);
+	Left_ = XMFLOAT3(Left_.x, Left_.y - ray.dist, Left_.z);
+
+	ray.dir = matU;
+	Model::RayCast(hCourseModel, &ray);
+
+	Upper_Goal = XMFLOAT3(transform_.position_.x, transform_.position_.y + ray.dist, transform_.position_.z);
 
 	Left_Goal = Left_;
 	Right_Goal = Right_;
 
-	transform_.position_ = XMFLOAT3AVERAGE(Left_, Right_);
+	//transform_.position_ = XMFLOAT3AVERAGE(Left_, Right_);
 
 	Scan();
 }
@@ -305,9 +328,9 @@ for (int i = NULL; i < DIVISION_MAX; i++)
 	//‘–¸‚·‚é‹æˆæ‚ÉˆÚ“®‚·‚é
 	switch (i)
 	{
-	case UPPER_LEFT:transform_.position_ = XMFLOAT3(-Range_, Sky_, Range_); break;
+	case UPPER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, Sky_, Range_); break;
 	case UPPER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, Range_); break;
-	case LOWER_LEFT:transform_.position_ = XMFLOAT3(-Range_, Sky_, NULL); break;
+	case LOWER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, Sky_, NULL); break;
 	case LOWER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, NULL); break;
 	}
 
@@ -317,13 +340,13 @@ for (int i = NULL; i < DIVISION_MAX; i++)
 	XMFLOAT3 Initial = XMFLOAT3(NULL, NULL, NULL);
 
 	//”ÍˆÍ“à‚Ì‘–¸‰ñ”
-	char Density = Range_ / Move_;
-	for (int x = NULL; x < Density; x + Move_)
+	//char Density = Range_ / Move_;
+	for (int x = NULL; x < Range_; x += Move_)
 	{
-		for (int z = NULL; z < Density; z + Move_)
+		for (int z = NULL; z < Range_; z += Move_)
 		{
 			RayCastData data;
-			data.start = XMFLOAT3PRUSXMFLOAT3(transform_.position_, XMFLOAT3((float)x, NULL, (float)z));
+			data.start = XMFLOAT3PRUSXMFLOAT3(transform_.position_, XMFLOAT3((float)x, NULL, (float)-z));
 			data.dir = Shot_;
 
 			if (data.hit && Getdistance(XMFLOAT3(data.start.x, NULL, data.start.z), Initial) > Getdistance(Storage, Initial))
@@ -333,6 +356,8 @@ for (int i = NULL; i < DIVISION_MAX; i++)
 
 		}
 	}
+	
+	Storage = XMFLOAT3(Storage.x * pCourse_->GetScale().x, Storage.y * pCourse_->GetScale().y, Storage.z * pCourse_->GetScale().z);
 
 	//Storage‚ª0‚Å‚È‚¯‚ê‚ÎCheckpoint_‚ÉŠi”[‚·‚é
 	if (Getdistance(Storage, Initial) != NULL)

@@ -1,7 +1,9 @@
 #include "Airframe.h"
 #include "Course.h"
+#include "Engine/Math.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include <algorithm>
 #include <math.h>
 
 //コンストラクタ
@@ -50,10 +52,30 @@ void Airframe::Initialize()
 //更新
 void Airframe::Update()
 {
+	static int i = 0;
+	if (i == 6)	//後ほど修正
+	{
+		pNav_ = (Navigation*)FindObject("Navigation");
+		for (auto it = pNav_->Checkpoint_.begin(); it != pNav_->Checkpoint_.end(); it++)
+		{
+			PASSAGE pas;
+			pas.Point = (*it);
+			pas.Pass = false;
+			PassageChecker_.push_back(pas);
+		}
+	}
+	if (i < 10)
+	{
+		i++;
+	}
+
 	//3秒後にスタートする
 	if (start_)
 	{
 		pNav_ = (Navigation*)FindObject("Navigation");
+
+		PassPoint();
+
 		PrevPosition_ = transform_.position_;
 		//継承先で呼び出す
 		UpdateState();
@@ -137,10 +159,12 @@ void Airframe::Update()
 			IsGoal_ = true;
 		}*/
 
-		if (transform_.position_.z > 40)
+		/*if (transform_.position_.z > 40)
 		{
 			IsGoal_ = true;
-		}
+		}*/
+
+		//JudgeGoal();
 	}
 
 	//カウントダウン
@@ -186,7 +210,6 @@ void Airframe::Update()
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
 	}
-	
 }
 
 //描画
@@ -434,6 +457,33 @@ float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 {
 	float answer;
 	XMFLOAT3 c = XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);
-	answer = sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
+	answer = (float)sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
 	return answer;
+}
+
+void Airframe::PassPoint()
+{
+	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
+	{
+		float dist = Getdistance(transform_.position_, (*it).Point);
+		if(dist < 5)
+		{
+			(*it).Pass = true;
+		}
+	}
+}
+
+void Airframe::JudgeGoal()
+{
+	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
+	{
+		if ((*it).Pass == false)	//1つでも通過していなければそのまま返す
+		{
+			return;
+		}
+	}
+	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal))
+	{
+		IsGoal_ = true;
+	}
 }

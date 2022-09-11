@@ -125,4 +125,9 @@ public:
 	void CourseoutSaver();
 
 	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
+
+	//各チェックポイントを通過したか判定
+	void PassPoint();
+
+	void JudgeGoal();
 };
