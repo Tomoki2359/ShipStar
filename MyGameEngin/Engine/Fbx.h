@@ -38,6 +38,10 @@ class Fbx
 		XMMATRIX	matNormal;
 		XMFLOAT4	diffuseColor;
 		int			isTexture;
+		float		red_;
+		float		green_;
+		float		blue_;
+		float		alpha_;
 	};
 
 	struct VERTEX
@@ -66,7 +70,7 @@ public:
 	Fbx();
 	~Fbx();
 	HRESULT Load(std::string fileName);
-	void    Draw(Transform& transform);
+	void    Draw(Transform& transform, float alpha, XMFLOAT3 color);
 	void    Release();
 
 	void RayCast(RayCastData* data);

@@ -8,6 +8,8 @@ namespace Model
 		Fbx* pFbx = nullptr;
 		Transform TransformModel;
 		std::string FileModel;
+		float alpha_ = 1.0f;
+		XMFLOAT3 color_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
 	};
 	std::vector<MODEL*> modelList_;
 }
@@ -35,7 +37,7 @@ int Model::Load(std::string fileName)
 
 void Model::Draw(int hModel_)
 {
-	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel);
+	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel, modelList_[hModel_]->alpha_, modelList_[hModel_]->color_);
 }
 
 void Model::Release()
@@ -59,6 +61,16 @@ void Model::Release()
 		SAFE_DELETE(modelList_[i]);
 	}
 	modelList_.clear();
+}
+
+void Model::SetAlpha(int hModel_, int alpha)
+{
+	modelList_[hModel_]->alpha_ = (float)alpha / 255;
+}
+
+void Model::SetColor(int hModel_, int red, int green, int blue)
+{
+	modelList_[hModel_]->color_ = XMFLOAT3((float)red / 255, (float)green / 255, (float)blue / 255);
 }
 
 void Model::AllRelease()

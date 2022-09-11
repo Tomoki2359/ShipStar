@@ -257,7 +257,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 }
 
 
-void Fbx::Draw(Transform& transform)
+void Fbx::Draw(Transform& transform, float alpha, XMFLOAT3 color)
 {
 	Direct3D::SetShader(SHADER_3D);
 
@@ -272,6 +272,10 @@ void Fbx::Draw(Transform& transform)
 		cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
 		cb.diffuseColor = pMaterialList_[i].diffuse;
 		cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+		cb.red_ = color.x;
+		cb.green_ = color.y;
+		cb.blue_ = color.z;
+		cb.alpha_ = alpha;
 
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める

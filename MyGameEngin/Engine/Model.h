@@ -12,5 +12,7 @@ namespace Model
 	void Draw(int hModel_);
 	void Release();
 
+	void SetAlpha(int hModel_, int alpha);	//“§–¾“x‚ÌŽæ“¾
+	void SetColor(int hModel_, int red, int green, int blue);	//RGB
 	void AllRelease();
 };
