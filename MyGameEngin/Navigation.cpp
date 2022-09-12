@@ -78,9 +78,9 @@ Navigation::~Navigation()
 
 void Navigation::Initialize()
 {
-	transform_.scale_.x = 0.25f;
+	/*transform_.scale_.x = 0.25f;
 	transform_.scale_.y = 0.25f;
-	transform_.scale_.z = 0.25f;
+	transform_.scale_.z = 0.25f;*/
 
 	pCourse_ = (Course*)FindObject("Course");
 	int hCourseModel = pCourse_->GetModelHandle();
@@ -348,20 +348,42 @@ for (int i = NULL; i < DIVISION_MAX; i++)
 			RayCastData data;
 			data.start = XMFLOAT3PRUSXMFLOAT3(transform_.position_, XMFLOAT3((float)x, NULL, (float)-z));
 			data.dir = Shot_;
+			Model::RayCast(hCourseModel, &data);
 
 			if (data.hit && Getdistance(XMFLOAT3(data.start.x, NULL, data.start.z), Initial) > Getdistance(Storage, Initial))
 			{
-				Storage = XMFLOAT3(data.start.x, NULL, data.start.z);
+				RayCastData data;
+				data.start = Storage;
+				data.dir = matL;
+				Model::RayCast(hCourseModel, &data);
+				Left_ = XMFLOAT3(Storage.x - data.dist, Storage.y, Storage.z);
+
+				if (data.hit)
+				{
+					data.dir = matR;
+					Model::RayCast(hCourseModel, &data);
+					Right_ = XMFLOAT3(Storage.x + data.dist, Storage.y, Storage.z);
+
+					if (data.hit)
+					{
+						Storage = XMFLOAT3AVERAGE(Left_, Right_);
+					}
+
+				}
+
 			}
-
 		}
-	}
-	
-	Storage = XMFLOAT3(Storage.x * pCourse_->GetScale().x, Storage.y * pCourse_->GetScale().y, Storage.z * pCourse_->GetScale().z);
 
+		
+
+	}
+	Storage = XMFLOAT3(Storage.x * pCourse_->GetScale().x, Storage.y, Storage.z * pCourse_->GetScale().z);
+	
 	//Storage‚ª0‚Å‚È‚¯‚ê‚ÎCheckpoint_‚ÉŠi”[‚·‚é
 	if (Getdistance(Storage, Initial) != NULL)
 	{
+		char Size_ = 25;
+		Storage = XMFLOAT3(Storage.x * Size_, Storage.y, Storage.z * Size_);
 		Checkpoint_.push_back(Storage);
 	}
 

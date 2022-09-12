@@ -75,6 +75,7 @@ void Airframe::Update()
 		pNav_ = (Navigation*)FindObject("Navigation");
 
 		PassPoint();
+		JudgeGoal();
 
 		PrevPosition_ = transform_.position_;
 		//継承先で呼び出す
@@ -164,7 +165,6 @@ void Airframe::Update()
 			IsGoal_ = true;
 		}*/
 
-		//JudgeGoal();
 	}
 
 	//カウントダウン
@@ -466,7 +466,7 @@ void Airframe::PassPoint()
 	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
 	{
 		float dist = Getdistance(transform_.position_, (*it).Point);
-		if(dist < 5)
+		if(dist < 55 && (*it).Pass == false)
 		{
 			(*it).Pass = true;
 		}

@@ -50,7 +50,7 @@ class Navigation : public GameObject
 	const char Range_ = 10;			//一区画あたりの走査範囲
 	const char Sky_ = 100;			//レイを飛ばす高さ
 	const char Move_ = 2;			//移動量
-	const XMFLOAT3 Shot_ = XMFLOAT3(0.0f, 1.0f, 0.0f);	//真下に発射するレイ
+	const XMFLOAT3 Shot_ = XMFLOAT3(0.0f, -1.0f, 0.0f);	//真下に発射するレイ
 
 	void Scan();	//コースを読み取ってチェックポイントを設置する
 

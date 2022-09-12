@@ -10,11 +10,12 @@ Course::Course(GameObject* parent)
 void Course::Initialize()
 {
 	//モデルデータのロード
-	hModel_ = Model::Load("Assets\\DemoCourse1.fbx");
+	hModel_ = Model::Load("Assets\\DemoCourse2.fbx");
 	assert(hModel_ >= 0);
-	//transform_.scale_.x = 10;
-	//transform_.scale_.y = 10;
-	//transform_.scale_.z = 55;
+	transform_.scale_.x = Size_;
+	transform_.scale_.y = 10;
+	transform_.scale_.z = Size_;
+	Model::SetColor(hModel_, 255, 255, 255);
 	//transform_.rotate_.y = 90;
 }
 

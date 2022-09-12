@@ -15,7 +15,7 @@ void PlayScene::Initialize()
 {
 	char PlayerNum = NULL;
 	PlayerList_.clear();
-	SetScreen(0, 0, 0);
+	SetScreen(255, 255, 255);
 	Instantiate<Course>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
