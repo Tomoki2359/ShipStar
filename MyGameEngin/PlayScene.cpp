@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Computer.h"
 #include "Navigation.h"
+#include "Image/PlayBackground.h"
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -16,6 +17,7 @@ void PlayScene::Initialize()
 	char PlayerNum = NULL;
 	PlayerList_.clear();
 	SetScreen(255, 255, 255);
+	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
@@ -24,7 +26,6 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
-
 	
 }
 

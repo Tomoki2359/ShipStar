@@ -2,13 +2,13 @@
 #include "../Engine/GameObject.h"
 
 //■■シーンを管理するクラス
-class Background : public GameObject
+class PlayBackground : public GameObject
 {
-	short hPict_;    //モデル番号
+	short hPict_[2];    //モデル番号
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	Background(GameObject* parent);
+	PlayBackground(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

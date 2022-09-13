@@ -4,7 +4,7 @@
 //■■シーンを管理するクラス
 class Button : public GameObject
 {
-	int hPict_;    //モデル番号
+	short hPict_;    //モデル番号
 	bool change_;	//選択されているかどうか
 protected:
 	XMFLOAT3 MousePos_;	//マウスの位置

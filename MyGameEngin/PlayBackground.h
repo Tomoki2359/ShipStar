@@ -4,7 +4,7 @@
 //■■シーンを管理するクラス
 class Background : public GameObject
 {
-	short hPict_;    //モデル番号
+	int hPict_;    //モデル番号
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
