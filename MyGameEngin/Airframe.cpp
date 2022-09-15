@@ -153,18 +153,6 @@ void Airframe::Update()
 
 		//ターボ値を貯める
 		tTurbo_++;
-
-		/*auto it = pNav_->Checkpoint_.end();
-		if (Getdistance((*it), transform_.position_) < 10)
-		{
-			IsGoal_ = true;
-		}*/
-
-		/*if (transform_.position_.z > 40)
-		{
-			IsGoal_ = true;
-		}*/
-
 	}
 
 	//カウントダウン
@@ -223,6 +211,7 @@ void Airframe::Draw()
 //開放
 void Airframe::Release()
 {
+	SAFE_RELEASE(pNav_);
 }
 
 //速さや位置などの限界
@@ -280,9 +269,9 @@ void Airframe::SetStatus()
 	{
 		cCamera_ = false;	//カメラOFF
 	}
-	transform_.scale_.x = 0.25f;
-	transform_.scale_.y = 0.25f;
-	transform_.scale_.z = 0.25f;
+
+	const float Scale = 0.25f;
+	transform_.scale_ = XMFLOAT3(Scale, Scale, Scale);
 }
 
 void Airframe::Accelerate()
@@ -466,7 +455,7 @@ void Airframe::PassPoint()
 	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
 	{
 		float dist = Getdistance(transform_.position_, (*it).Point);
-		if(dist < 55 && (*it).Pass == false)
+		if(dist < 35 && (*it).Pass == false)
 		{
 			(*it).Pass = true;
 		}

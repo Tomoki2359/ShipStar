@@ -15,8 +15,6 @@ void Course::Initialize()
 	transform_.scale_.x = Size_;
 	transform_.scale_.y = 10;
 	transform_.scale_.z = Size_;
-	Model::SetColor(hModel_, 255, 255, 255);
-	//transform_.rotate_.y = 90;
 }
 
 //çXêV

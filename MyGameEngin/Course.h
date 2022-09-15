@@ -1,12 +1,9 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Navigation.h"
 
 //■■シーンを管理するクラス
 class Course : public GameObject
 {
-	friend Navigation;
-
 	int hModel_;    //モデル番号
 	const char Size_ = 25;
 public:

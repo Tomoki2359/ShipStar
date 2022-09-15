@@ -28,12 +28,6 @@ class Navigation : public GameObject
 	XMFLOAT3 Left_;
 	XMFLOAT3 Right_;
 
-
-
-	RayCastData L_side_;	//左側のレイ
-	RayCastData R_side_;	//右側のレイ
-	RayCastData Finder_;
-
 	const XMFLOAT3 matL = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matR = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matU = XMFLOAT3(0.0f, 1.0f, 0.0f);
@@ -44,12 +38,10 @@ class Navigation : public GameObject
 	XMFLOAT3 XMFLOAT3PRUSXMFLOAT3(XMFLOAT3 fl3a, XMFLOAT3 fl3b);	//2つのXMFLOAT3を足す
 	XMFLOAT3 XMFLOAT3AVERAGE(XMFLOAT3 fl3a, XMFLOAT3 fl3b);			//2つのXMFLOAT3の中間を割り出す
 	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
-	//int ReturnShortest(float Left, float Right, float Upper, float Lower);
-	//int ReturnLongest(float Left, float Right, float Upper, float Lower);
 
-	const char Range_ = 10;			//一区画あたりの走査範囲
+	const short Range_ = 500;			//一区画あたりの走査範囲
 	const char Sky_ = 100;			//レイを飛ばす高さ
-	const char Move_ = 2;			//移動量
+	const char Move_ = 50;			//移動量
 	const XMFLOAT3 Shot_ = XMFLOAT3(0.0f, -1.0f, 0.0f);	//真下に発射するレイ
 
 	void Scan();	//コースを読み取ってチェックポイントを設置する

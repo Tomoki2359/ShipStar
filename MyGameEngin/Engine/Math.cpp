@@ -1,4 +1,5 @@
 #include "Math.h"
+#include <math.h>
 
 float Math::Det(XMFLOAT3 a, XMFLOAT3 b, XMFLOAT3 c)
 {
@@ -44,32 +45,27 @@ bool Math::Intersect(XMFLOAT3 start, XMFLOAT3 dir, XMFLOAT3 v0, XMFLOAT3 v1, XMF
 
 bool Math::SegmentToPlane(XMFLOAT3 segstart, XMFLOAT3 segend, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2)
 {
-    //平面の作成
-    XMFLOAT3 e1 = XMFLOAT3(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
-    XMFLOAT3 e2 = XMFLOAT3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
+    XMFLOAT3 a = XMFLOAT3(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
+    XMFLOAT3 b = XMFLOAT3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
+    XMFLOAT3 d = XMFLOAT3(segstart.x - v0.x, segstart.y - v0.y, segstart.z - v0.z);
 
-    //平面上の点pを求める
-    XMFLOAT3 p = XMFLOAT3((e1.x + e2.x) / 2, (e1.y + e2.y) / 2, (e1.z + e2.z) / 2);
+    XMFLOAT3 dir = XMFLOAT3(segend.x - segstart.x, segend.y - segstart.y, segend.z - segstart.z);
+    float dist;
+    dist = (float)sqrt(pow(dir.x, 2.0) + pow(dir.y, 2.0) + pow(dir.z, 2.0));
 
-    //点pから線分の始点、終点それぞれのベクトルを作成
-    XMFLOAT3 p1 = XMFLOAT3(e1.x - p.x, e1.y - p.y, e1.z - p.z);
-    XMFLOAT3 p2 = XMFLOAT3(e2.x - p.x, e2.y - p.y, e2.z - p.z);
+    XMVECTOR vDir = XMLoadFloat3(&dir);
+    vDir = XMVector3Normalize(vDir);
+    XMStoreFloat3(&dir, vDir);
 
-    //法線ベクトルを作成
-    XMVECTOR V1 = XMLoadFloat3(&e1);
-    XMVECTOR V2 = XMLoadFloat3(&e2);
-    XMVECTOR normal = XMVector3Cross(V1, V2);
-    normal = XMVector3Normalize(normal);
-    XMFLOAT3 fnormal;
-    XMStoreFloat3(&fnormal, normal);
+    dir = XMFLOAT3(-dir.x, -dir.y, -dir.z);
 
-    float pr1 = p1.x * fnormal.x + p1.y * fnormal.y + p1.z * fnormal.z;
-    float pr2 = p2.x * fnormal.x + p2.y * fnormal.y + p2.z * fnormal.z;
-    if ((pr1 * pr2) <= 0)
+    float u, v, l;
+    u = Det(d, b, dir) / Det(a, b, dir);
+    v = Det(a, d, dir) / Det(a, b, dir);
+    l = Det(a, b, d) / Det(a, b, dir);
+    if (u + v <= 1 && l >= 0 && u >= 0 && v >= 0 && l < dist)
     {
         return true;
     }
-
-
     return false;
 }
