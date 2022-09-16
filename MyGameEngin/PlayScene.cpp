@@ -1,8 +1,9 @@
 #include "PlayScene.h"
-#include "Course.h"
-#include "Player.h"
 #include "Computer.h"
+#include "Course.h"
+#include "GoalObject.h"
 #include "Navigation.h"
+#include "Player.h"
 #include "Image/PlayBackground.h"
 
 //コンストラクタ
@@ -19,6 +20,7 @@ void PlayScene::Initialize()
 	SetScreen(255, 255, 255);
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
+	Instantiate<GoalObject>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)
@@ -27,6 +29,7 @@ void PlayScene::Initialize()
 		PlayerNum++;
 	}
 	
+
 }
 
 //更新
@@ -41,7 +44,7 @@ void PlayScene::Update()
 	}
 
 	Player* pPlayer = (Player*)FindObject("Player");
-	if (pPlayer->IsGoal_)
+	if (pPlayer->GetisGoal())
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
 	}

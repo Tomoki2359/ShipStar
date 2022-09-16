@@ -6,6 +6,10 @@ Course::Course(GameObject* parent)
 {
 }
 
+Course::~Course()
+{
+}
+
 //‰Šú‰»
 void Course::Initialize()
 {

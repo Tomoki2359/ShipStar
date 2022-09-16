@@ -11,6 +11,8 @@ public:
 	//引数：parent  親オブジェクト（SceneManager）
 	Course(GameObject* parent);
 
+	~Course();
+
 	//初期化
 	void Initialize() override;
 

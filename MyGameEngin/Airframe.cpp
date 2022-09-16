@@ -9,14 +9,14 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent)
 	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(), Lap_(NULL),
 	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(), Lap_(NULL),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
@@ -75,6 +75,7 @@ void Airframe::Update()
 		pNav_ = (Navigation*)FindObject("Navigation");
 
 		PassPoint();
+		LapMeasure();
 		JudgeGoal();
 
 		PrevPosition_ = transform_.position_;
@@ -362,7 +363,7 @@ void Airframe::Descent()
 void Airframe::Turbo()
 {
 	cTurbo_ = true;
-	tTurbo_ = 0;
+	tTurbo_ = NULL;
 }
 
 XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
@@ -474,5 +475,24 @@ void Airframe::JudgeGoal()
 	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal))
 	{
 		IsGoal_ = true;
+	}
+}
+
+void Airframe::LapMeasure()
+{
+	//逆走でゴールラインを通過した場合
+	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) &&
+		PrevPosition_.z > transform_.position_.z)
+	{
+		Lap_--;
+	}
+	else if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) &&
+		Lap_ < NULL)
+	{
+		Lap_++;
+		for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
+		{
+			it->Pass = false;
+		}
 	}
 }

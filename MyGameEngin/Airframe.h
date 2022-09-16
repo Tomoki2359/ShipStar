@@ -52,9 +52,19 @@ class Airframe : public GameObject
 	bool start_;	//スタートしたかどうか
 	short timeCount_;	//レース時間の管理とカウントダウン
 
-	XMFLOAT3 PrevPosition_;	//
+	XMFLOAT3 PrevPosition_;	//直前の位置
 
 	Navigation* pNav_;
+
+	short Lap_;		//周回数(不正対策)
+
+	bool IsGoal_;	//ゴールした判定
+
+	void PassPoint();	//各チェックポイントを通過したか判定
+
+	void LapMeasure();	//周回数の判定
+
+	void JudgeGoal();	//ゴールの判定
 
 protected:
 	short tTurbo_;	//ターボ値を貯める
@@ -62,10 +72,7 @@ protected:
 	XMFLOAT3 GetDistance(GameObject* pTarget);
 	float PrevHeight_;
 
-	
-
 public:
-	bool IsGoal_;
 	PARTS_NUM PartsSet;
 	float status_[MAX_STATUS];
 	std::string fileName_;
@@ -126,8 +133,5 @@ public:
 
 	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
 
-	//各チェックポイントを通過したか判定
-	void PassPoint();
-
-	void JudgeGoal();
+	bool GetisGoal() { return IsGoal_; }
 };

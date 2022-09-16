@@ -4,6 +4,7 @@
 #include <vector>
 
 class Course;
+class Airframe;
 
 class Navigation : public GameObject
 {
@@ -24,9 +25,14 @@ class Navigation : public GameObject
 		DIVISION_MAX
 	};
 
+	std::vector<XMFLOAT3> Checkpoint_;
 	Course* pCourse_;
 	XMFLOAT3 Left_;
 	XMFLOAT3 Right_;
+
+	XMFLOAT3 Upper_Goal;
+	XMFLOAT3 Left_Goal;
+	XMFLOAT3 Right_Goal;
 
 	const XMFLOAT3 matL = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matR = XMFLOAT3(1.0f, 0.0f, 0.0f);
@@ -47,6 +53,8 @@ class Navigation : public GameObject
 	void Scan();	//コースを読み取ってチェックポイントを設置する
 
 public:
+	friend Airframe;
+
 	Navigation(GameObject* parent);
 	~Navigation();
 
@@ -56,9 +64,4 @@ public:
 	//開放
 	void Release() override;
 
-	std::vector<XMFLOAT3> Checkpoint_;
-
-	XMFLOAT3 Upper_Goal;
-	XMFLOAT3 Left_Goal;
-	XMFLOAT3 Right_Goal;
 };

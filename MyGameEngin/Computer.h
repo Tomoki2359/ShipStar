@@ -27,9 +27,7 @@ class Computer : public Airframe
 		float Move_Right;	//右移動
 		float Move_Above;	//上移動
 		float Move_Under;	//下移動
-	};
-
-	Priority PrCommand;	//各コマンドの優先順位を判定
+	} PrCommand;	//各コマンドの優先順位を判定
 
 	void PosRel(GameObject* pTarget);		//他オブジェクトとの位置関係を判定
 
