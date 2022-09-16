@@ -5,7 +5,7 @@
 #include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(),Hate_(5.0f), Search_(15)
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand()
 {
 }
 
@@ -15,16 +15,16 @@ Computer::~Computer()
 
 void Computer::UpdateState()
 {
-	static char UpdateLimit = 0;	//XV‰ñ”‚É§ŒÀ‚ð‚©‚¯‚Ä‚Ý‚é
+	static char UpdateLimit = NULL;	//XV‰ñ”‚É§ŒÀ‚ð‚©‚¯‚Ä‚Ý‚é
 	char Random = rand() % 100;
 
-	if (UpdateLimit == 0)
+	if (UpdateLimit == NULL)
 	{
 		
 		RayCasting();
 		TurnDirection();
 
-		if (PrCommand.Move_Front > 0 && PrCommand.Move_Right > 0 && PrCommand.Move_Left > 0)
+		if (PrCommand.Move_Front > NULL && PrCommand.Move_Right > NULL && PrCommand.Move_Left > NULL)
 		{
 			SetNextState(M_ACCEL);
 
@@ -46,7 +46,7 @@ void Computer::UpdateState()
 			}
 			if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
 			{
-				if (Random < 95)
+				if (Random < Accuracy_)
 				{
 					SetNextState(M_TURNR);
 					ResetNextState(M_TURNL);
@@ -60,7 +60,7 @@ void Computer::UpdateState()
 			}
 			if (PrCommand.Move_Left > PrCommand.Move_Front && PrCommand.Move_Left > PrCommand.Move_Right)
 			{
-				if (Random < 95)
+				if (Random < Accuracy_)
 				{
 					SetNextState(M_TURNL);
 					ResetNextState(M_TURNR);
@@ -74,7 +74,7 @@ void Computer::UpdateState()
 
 			if (/*PrCommand.Move_Above > PrCommand.Move_Front &&*/ PrCommand.Move_Above > PrCommand.Move_Under)
 			{
-				if (Random < 95)
+				if (Random < Accuracy_)
 				{
 					SetNextState(M_RISE);
 					ResetNextState(M_DESCENT);
@@ -87,7 +87,7 @@ void Computer::UpdateState()
 			}
 			else if (/*PrCommand.Move_Under > PrCommand.Move_Front &&*/ PrCommand.Move_Under > PrCommand.Move_Above)
 			{
-				if (Random < 95)
+				if (Random < Accuracy_)
 				{
 					SetNextState(M_DESCENT);
 					ResetNextState(M_RISE);
@@ -152,7 +152,7 @@ void Computer::UpdateState()
 	//300‚Í‡ˆÊ‚É‚æ‚Á‚Ä”­“®‚·‚éŽžŠÔ‚ª•Ï“®‚·‚é(Å‰ºˆÊ‚©‚ç5•b,10•b,15•b,20•b)
 	if (tTurbo_ >= 300 && (VirtualState_ & M_TURBO))
 	{
-		tTurbo_ = 0;
+		tTurbo_ = NULL;
 		Turbo();
 	}
 
@@ -415,11 +415,11 @@ void Computer::PosRel(GameObject* pTarget)
 	{
 		XMFLOAT3 Dis;
 		XMStoreFloat3(&Dis, vec);
-		if (Dis.x > 0)
+		if (Dis.x > NULL)
 		{
 			PrCommand.Move_Left += (Search_ - Length) / Hate_;
 		}
-		else if (Dis.x < 0)
+		else if (Dis.x < NULL)
 		{
 			PrCommand.Move_Right += (Search_ - Length) / Hate_;
 		}

@@ -12,6 +12,11 @@ PlayScene::PlayScene(GameObject* parent)
 {
 }
 
+PlayScene::~PlayScene()
+{
+	PlayerList_.clear();
+}
+
 //‰Šú‰»
 void PlayScene::Initialize()
 {

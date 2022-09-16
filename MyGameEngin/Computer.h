@@ -17,8 +17,9 @@ class Computer : public Airframe
 
 	char UpdateDecider;	//更新頻度を生成
 
-	const float Hate_;	//他オブジェクトの影響力を指定(後ほど調整)
-	const char Search_;	//他オブジェクトに影響される距離
+	const float Hate_ = 5.0f;	//他オブジェクトの影響力を指定(後ほど調整)
+	const char Search_ = 15;	//他オブジェクトに影響される距離
+	const char Accuracy_ = 95;	//判断の正確さ
 
 	struct Priority
 	{
