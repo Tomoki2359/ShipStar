@@ -1,12 +1,14 @@
 #include "Button.h"
 #include "../Engine/Image.h"
+
 //コンストラクタ
-Button::Button(GameObject* parent)
-	: GameObject(parent, "Button"), hPict_(-1), change_(false)
+Button::Button(GameObject* parent, std::string name)
+	: GameObject(parent, name), hPict_(-1), change_(false), MousePos_()
 {
 }
-Button::Button(GameObject* parent, std::string name)
-	: GameObject(parent, name), hPict_(-1), change_(false)
+
+Button::Button(GameObject* parent)
+	: Button(parent, "Button")
 {
 }
 

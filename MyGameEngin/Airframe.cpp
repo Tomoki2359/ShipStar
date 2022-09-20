@@ -7,17 +7,15 @@
 #include <math.h>
 
 //コンストラクタ
-Airframe::Airframe(GameObject* parent)
-	: GameObject(parent, "Airframe"), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(), Lap_(NULL),
-	cCamera_(false), status_(), PartsSet(),start_(false),timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
+Airframe::Airframe(GameObject* parent, std::string name)
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), PassageChecker_(), Lap_(NULL),
+	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
 
-Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(0), PassageChecker_(), Lap_(NULL),
-	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
+Airframe::Airframe(GameObject* parent)
+	: Airframe(parent, "Airframe")
 {
 }
 
