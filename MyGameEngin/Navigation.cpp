@@ -125,7 +125,8 @@ void Navigation::Scan()
 				if (data.hit && Getdistance(XMFLOAT3(data.start.x, NULL, data.start.z), Initial) > Getdistance(Storage, Initial))
 				{
 					//Storage = XMFLOAT3((float)-x, NULL, (float)z);
-					XMFLOAT3 prevSto = XMFLOAT3((float)-x, NULL, (float)z);
+					//XMFLOAT3 prevSto = XMFLOAT3((float)-x, NULL, (float)z);
+					XMFLOAT3 prevSto = data.start;
 
 					RayCastData L_data;
 					L_data.start = prevSto;

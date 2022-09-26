@@ -72,37 +72,37 @@ void Computer::UpdateState()
 				}
 			}
 
-			if (/*PrCommand.Move_Above > PrCommand.Move_Front &&*/ PrCommand.Move_Above > PrCommand.Move_Under)
-			{
-				if (Random < Accuracy_)
-				{
-					SetNextState(M_RISE);
-					ResetNextState(M_DESCENT);
-				}
-				else
-				{
-					ResetNextState(M_RISE);
-					ResetNextState(M_DESCENT);
-				}
-			}
-			else if (/*PrCommand.Move_Under > PrCommand.Move_Front &&*/ PrCommand.Move_Under > PrCommand.Move_Above)
-			{
-				if (Random < Accuracy_)
-				{
-					SetNextState(M_DESCENT);
-					ResetNextState(M_RISE);
-				}
-				else
-				{
-					ResetNextState(M_RISE);
-					ResetNextState(M_DESCENT);
-				}
-			}
-			else
-			{
-				ResetNextState(M_RISE);
-				ResetNextState(M_DESCENT);
-			}
+			//if (/*PrCommand.Move_Above > PrCommand.Move_Front &&*/ PrCommand.Move_Above > PrCommand.Move_Under)
+			//{
+			//	if (Random < Accuracy_)
+			//	{
+			//		SetNextState(M_RISE);
+			//		ResetNextState(M_DESCENT);
+			//	}
+			//	else
+			//	{
+			//		ResetNextState(M_RISE);
+			//		ResetNextState(M_DESCENT);
+			//	}
+			//}
+			//else if (/*PrCommand.Move_Under > PrCommand.Move_Front &&*/ PrCommand.Move_Under > PrCommand.Move_Above)
+			//{
+			//	if (Random < Accuracy_)
+			//	{
+			//		SetNextState(M_DESCENT);
+			//		ResetNextState(M_RISE);
+			//	}
+			//	else
+			//	{
+			//		ResetNextState(M_RISE);
+			//		ResetNextState(M_DESCENT);
+			//	}
+			//}
+			//else
+			//{
+			//	ResetNextState(M_RISE);
+			//	ResetNextState(M_DESCENT);
+			//}
 			HeightAdjustment();
 		}
 	}
