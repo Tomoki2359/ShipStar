@@ -4,24 +4,13 @@
 #include <fbxsdk.h>
 #include <string>
 #include "Transform.h"
+#include "Texture.h"
 
 #pragma comment(lib, "LibFbxSDK-MT.lib")
 #pragma comment(lib, "LibXml2-MT.lib")
 #pragma comment(lib, "zlib-MT.lib")
 
 class Texture;
-
-//レイキャスト用構造体
-struct RayCastData
-{
-	XMFLOAT3	start;	//レイ発射位置
-	XMFLOAT3	dir;	//レイの向きベクトル
-	float       dist;	//衝突点までの距離
-	BOOL        hit;	//レイが当たったか
-	XMFLOAT3 normal;	//法線
-
-	RayCastData() : start(), dir(), dist(), hit(), normal() { dist = 99999.0f; }
-};
 
 class Fbx
 {
@@ -70,7 +59,7 @@ public:
 	Fbx();
 	~Fbx();
 	HRESULT Load(std::string fileName);
-	void    Draw(Transform& transform, float alpha, XMFLOAT3 color);
+	void    Draw(Transform& transform, float alpha, XMFLOAT3 color,bool zBuffer);
 	void    Release();
 
 	void RayCast(RayCastData* data);

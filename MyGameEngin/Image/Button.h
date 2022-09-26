@@ -34,7 +34,7 @@ public:
 	virtual void InitialPoint() = 0;
 
 	//画像の位置の判定
-	virtual bool IsImage() = 0;
+	bool IsImage();
 
 	//画像ファイルの名前を取得
 	virtual LPCWSTR SetFile() = 0;

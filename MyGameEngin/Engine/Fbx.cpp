@@ -1,7 +1,6 @@
 #include "Fbx.h"
 #include "Direct3D.h"
 #include "Camera.h"
-#include "Texture.h"
 
 Fbx::Fbx() :
 	vertexCount_(0), polygonCount_(0), materialCount_(0),
@@ -257,11 +256,12 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 }
 
 
-void Fbx::Draw(Transform& transform, float alpha, XMFLOAT3 color)
+void Fbx::Draw(Transform& transform, float alpha, XMFLOAT3 color, bool zBuffer)
 {
 	Direct3D::SetShader(SHADER_3D);
 
-	transform.Calclation();
+	//ZバッファのON/OFF
+	Direct3D::SetDepthBafferWriteEnable(zBuffer);
 
 
 
@@ -310,6 +310,7 @@ void Fbx::Draw(Transform& transform, float alpha, XMFLOAT3 color)
 		//描画
 		Direct3D::pContext->DrawIndexed(indexCount_[i], 0, 0);
 	}
+	Direct3D::SetDepthBafferWriteEnable(true);
 }
 
 void Fbx::Release()

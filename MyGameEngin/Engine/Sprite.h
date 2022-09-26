@@ -42,7 +42,9 @@ public:
 	HRESULT Initialize(LPCWSTR fileName);
 	void Draw(Transform& transform, XMFLOAT4 color);
 	void Release();
+	void RayCast(RayCastData* data);
 private:
+	XMMATRIX size_;	//画像のサイズ
 	virtual void Index();
 	HRESULT CreateVertexBuffer();		//頂点バッファを作成
 

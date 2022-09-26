@@ -15,4 +15,8 @@ namespace Model
 	void SetAlpha(int hModel_, int alpha);	//透明度の取得
 	void SetColor(int hModel_, int red, int green, int blue);	//RGB
 	void AllRelease();
+
+	//ZバッファのON/OFF
+	//遠くのものや隠れて見えないものを表示させたい場合はfalse
+	void IsZBuffer(int hModel_, bool zBuffer);	
 };

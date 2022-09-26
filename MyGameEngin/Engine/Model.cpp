@@ -10,6 +10,7 @@ namespace Model
 		std::string FileModel;
 		float alpha_ = 1.0f;
 		XMFLOAT3 color_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
+		bool zBuffer_ = true;
 	};
 	std::vector<MODEL*> modelList_;
 }
@@ -37,7 +38,7 @@ int Model::Load(std::string fileName)
 
 void Model::Draw(int hModel_)
 {
-	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel, modelList_[hModel_]->alpha_, modelList_[hModel_]->color_);
+	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel, modelList_[hModel_]->alpha_, modelList_[hModel_]->color_,modelList_[hModel_]->zBuffer_);
 }
 
 void Model::Release()
@@ -83,6 +84,12 @@ void Model::AllRelease()
 		}
 	}
 	modelList_.clear();
+}
+
+//ZバッファのON/OFF
+void Model::IsZBuffer(int hModel_, bool zBuffer)
+{
+	modelList_[hModel_]->zBuffer_ = zBuffer;
 }
 
 void Model::SetTransform(int hModel_, Transform transform_)

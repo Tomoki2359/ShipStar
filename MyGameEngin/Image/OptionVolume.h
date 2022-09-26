@@ -13,7 +13,7 @@ public:
 	void InitialPoint() override;
 
 	//画像の位置の判定
-	bool IsImage() override;
+	//bool IsImage() override;
 
 	//画像ファイルの名前を取得
 	LPCWSTR SetFile() override;
