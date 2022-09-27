@@ -34,13 +34,13 @@ enum STATUS_ID
 //■■シーンを管理するクラス
 class Airframe : public GameObject
 {
-	struct PASSAGE	//Checkpointとそこを通過したかの構造体
-	{
-		XMFLOAT3 Point;
-		bool Pass;
-	};
-	
-	std::vector<PASSAGE> PassageChecker_;
+	//struct PASSAGE	//Checkpointとそこを通過したかの構造体
+	//{
+	//	XMFLOAT3 Point;
+	//	bool Pass;
+	//};
+	//
+	//std::vector<PASSAGE> PassageChecker_;
 
 	short hModel_;   //モデル番号
 	float speed_;	//現在の速度
@@ -77,6 +77,7 @@ public:
 	float status_[MAX_STATUS];
 	std::string fileName_;
 	bool cCamera_;	//カメラをつけるかどうか
+
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
 	Airframe(GameObject* parent);

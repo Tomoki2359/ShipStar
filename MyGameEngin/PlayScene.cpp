@@ -8,7 +8,7 @@
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
-	: GameObject(parent, "PlayScene"), PlayerList_()
+	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL)
 {
 }
 
@@ -40,12 +40,16 @@ void PlayScene::Initialize()
 //更新
 void PlayScene::Update()
 {
-	static int j = 0;
-	j++;
-	if (j == 2 && !Initcomprete_)	//開始フレームは後ほど調整
+	
+	
+	if (CallNav_ == 2 && !Initcomprete_)	//開始フレームは後ほど調整
 	{
 		Instantiate<Navigation>(this);
 		Initcomprete_ = true;
+	}
+	else if(!Initcomprete_)
+	{
+		CallNav_++;
 	}
 
 	Player* pPlayer = (Player*)FindObject("Player");

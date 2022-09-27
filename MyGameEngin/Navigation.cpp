@@ -76,8 +76,8 @@ void Navigation::Initialize()
 	ray.dir = Shot_;
 	Model::RayCast(hCourseModel, &ray);
 
-	Right_ = XMFLOAT3(Right_.x, Right_.y - ray.dist, Right_.z);
-	Left_ = XMFLOAT3(Left_.x, Left_.y - ray.dist, Left_.z);
+	/*Right_ = XMFLOAT3(Right_.x, Right_.y - ray.dist, Right_.z);
+	Left_ = XMFLOAT3(Left_.x, Left_.y - ray.dist, Left_.z);*/
 
 	ray.dir = matU;
 	Model::RayCast(hCourseModel, &ray);
@@ -87,7 +87,7 @@ void Navigation::Initialize()
 	Left_Goal = Left_;
 	Right_Goal = Right_;
 
-	Scan();
+	//Scan();
 }
 
 void Navigation::Scan()

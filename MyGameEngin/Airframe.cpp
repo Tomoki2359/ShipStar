@@ -9,7 +9,7 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), PassageChecker_(), Lap_(NULL),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
@@ -21,7 +21,6 @@ Airframe::Airframe(GameObject* parent)
 
 Airframe::~Airframe()
 {
-	PassageChecker_.clear();
 }
 
 //初期化
@@ -31,7 +30,6 @@ void Airframe::Initialize()
 
 	//全てデフォルト値で初期化
 	PartsSet = { NULL, NULL, NULL, NULL, NULL, NULL };
-	PassageChecker_.clear();
 
 	//ステータスの取得
 	SetStatus();
@@ -50,29 +48,12 @@ void Airframe::Initialize()
 //更新
 void Airframe::Update()
 {
-	static int i = 0;
-	if (i == 6)	//後ほど修正
-	{
-		pNav_ = (Navigation*)FindObject("Navigation");
-		for (auto it = pNav_->Checkpoint_.begin(); it != pNav_->Checkpoint_.end(); it++)
-		{
-			PASSAGE pas;
-			pas.Point = (*it);
-			pas.Pass = false;
-			PassageChecker_.push_back(pas);
-		}
-	}
-	if (i < 10)
-	{
-		i++;
-	}
-
 	//3秒後にスタートする
 	if (start_)
 	{
 		pNav_ = (Navigation*)FindObject("Navigation");
 
-		PassPoint();
+		//PassPoint();
 		LapMeasure();
 		JudgeGoal();
 
@@ -374,70 +355,19 @@ XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
 
 void Airframe::CourseoutSaver()
 {
-	//レイ変換用
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+	XMFLOAT3 fRay = XMFLOAT3(0.0f, -1.0f, 0.0f);
 
-	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 1.0f, 0.0f);
-	XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f);
-
-	Left = XMVector3TransformCoord(Left, mRotate);
-	Right = XMVector3TransformCoord(Right, mRotate);
-
-	Left = XMVector3Normalize(Left);
-	Right = XMVector3Normalize(Right);
-
-	XMFLOAT3 matL, matR;
-	XMStoreFloat3(&matL, Left);
-	XMStoreFloat3(&matR, Right);
-
-	//レイキャスト
 	Course* pCourse = (Course*)FindObject("Course");
-	short hCourseModel = (short)pCourse->GetModelHandle();
+	int hCourseModel = pCourse->GetModelHandle();
 
-	RayCastData Ray_Right;		//斜め右にレイを飛ばす
-	Ray_Right.start = transform_.position_;   //レイの発射位置
-	Ray_Right.dir = matR;				      //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
-	if (!Ray_Right.hit)
+	RayCastData data;
+	data.start = transform_.position_;   //レイの発射位置
+	data.dir = fRay;				      //レイの方向
+	Model::RayCast(hCourseModel, &data); //レイを発射
+
+	if (!data.hit)
 	{
-		transform_.position_ = PrevPosition_;
-		speed_ *= 0.6f;
-		XMFLOAT3 Move_ = { -0.1f,0,0 };
-		XMVECTOR vMove_ = XMLoadFloat3(&Move_);
-
-		//機体のX軸,Y軸の角度の取得
-		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-		mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-
-		//現在地から機体の向きによって進む
-		vMove_ = XMVector3TransformCoord(vMove_, mRotate);
-		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
-		vPos += vMove_;
-		XMStoreFloat3(&transform_.position_, vPos);
-	}
-	
-	RayCastData Ray_Left;		//斜め左にレイを飛ばす
-	Ray_Left.start = transform_.position_;   //レイの発射位置
-	Ray_Left.dir = matL;				     //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
-	if (!Ray_Left.hit)
-	{
-		transform_.position_ = PrevPosition_;
-		speed_ *= 0.6f;
-		XMFLOAT3 Move_ = { 0.1f,0,0 };
-		XMVECTOR vMove_ = XMLoadFloat3(&Move_);
-
-		//機体のX軸,Y軸の角度の取得
-		XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-		mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-
-		//現在地から機体の向きによって進む
-		vMove_ = XMVector3TransformCoord(vMove_, mRotate);
-		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
-		vPos += vMove_;
-		XMStoreFloat3(&transform_.position_, vPos);
+		speed_ *= 0.97f;
 	}
 }
 
@@ -449,28 +379,21 @@ float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 	return answer;
 }
 
-void Airframe::PassPoint()
-{
-	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
-	{
-		float dist = Getdistance(transform_.position_, (*it).Point);
-		if(dist < 35 && (*it).Pass == false)
-		{
-			(*it).Pass = true;
-		}
-	}
-}
+//void Airframe::PassPoint()
+//{
+//	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
+//	{
+//		float dist = Getdistance(transform_.position_, (*it).Point);
+//		if(dist < 35 && (*it).Pass == false)
+//		{
+//			(*it).Pass = true;
+//		}
+//	}
+//}
 
 void Airframe::JudgeGoal()
 {
-	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
-	{
-		if ((*it).Pass == false)	//1つでも通過していなければそのまま返す
-		{
-			return;
-		}
-	}
-	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal))
+	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) && Lap_ > NULL)
 	{
 		IsGoal_ = true;
 	}
@@ -484,13 +407,8 @@ void Airframe::LapMeasure()
 	{
 		Lap_--;
 	}
-	else if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) &&
-		Lap_ < NULL)
+	else if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal))
 	{
 		Lap_++;
-		for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
-		{
-			it->Pass = false;
-		}
 	}
 }
