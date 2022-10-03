@@ -6,6 +6,7 @@
 class PlayScene : public GameObject
 {
 	bool Initcomprete_ = false;
+	int CallNav_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

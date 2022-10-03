@@ -1,5 +1,6 @@
 #include "Navigation.h"
 #include "Course.h"
+#include "CourseOutObject.h"
 #include "Engine/Math.h"
 
 XMFLOAT3 Navigation::XMFLOAT3PRUSXMFLOAT3(XMFLOAT3 fl3a, XMFLOAT3 fl3b)
@@ -87,7 +88,7 @@ void Navigation::Initialize()
 	Left_Goal = Left_;
 	Right_Goal = Right_;
 
-	//Scan();
+	Scan();
 }
 
 void Navigation::Scan()
@@ -100,19 +101,17 @@ void Navigation::Scan()
 		//ëñç∏Ç∑ÇÈãÊàÊÇ…à⁄ìÆÇ∑ÇÈ
 		switch (i)
 		{
-		case UPPER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, Sky_, Range_); break;
-		case UPPER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, Range_); break;
-		case LOWER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, Sky_, NULL); break;
-		case LOWER_RIGHT:transform_.position_ = XMFLOAT3(NULL, Sky_, NULL); break;
+		case UPPER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, NULL, Range_); break;
+		case UPPER_RIGHT:transform_.position_ = XMFLOAT3(NULL, NULL, Range_); break;
+		case LOWER_LEFT:transform_.position_ = XMFLOAT3((float)-Range_, NULL, NULL); break;
+		case LOWER_RIGHT:transform_.position_ = Initial; break;
 		}
 
 		//ëñç∏ãÊàÊì‡Ç≈ç≈Ç‡ó£ÇÍÇΩèÍèäÇäiî[ÇµÇƒÇ®Ç≠Ç‡ÇÃ
-		XMFLOAT3 Storage = XMFLOAT3(NULL, NULL, NULL);
+		XMFLOAT3 Storage = transform_.position_;
 
-		const XMFLOAT3 Initial = XMFLOAT3(NULL, NULL, NULL);
 
 		//îÕàÕì‡ÇÃëñç∏âÒêî
-		//char Density = Range_ / Move_;
 		for (int x = NULL; x < Range_; x += Move_)
 		{
 			for (int z = NULL; z < Range_; z += Move_)
@@ -122,10 +121,8 @@ void Navigation::Scan()
 				data.dir = Shot_;
 				Model::RayCast(hCourseModel, &data);
 
-				if (data.hit && Getdistance(XMFLOAT3(data.start.x, NULL, data.start.z), Initial) > Getdistance(Storage, Initial))
+				if (!data.hit)
 				{
-					//Storage = XMFLOAT3((float)-x, NULL, (float)z);
-					//XMFLOAT3 prevSto = XMFLOAT3((float)-x, NULL, (float)z);
 					XMFLOAT3 prevSto = data.start;
 
 					RayCastData L_data;
@@ -138,22 +135,70 @@ void Navigation::Scan()
 					R_data.dir = matR;
 					Model::RayCast(hCourseModel, &R_data);
 
-					if (L_data.hit && R_data.hit)
+					RayCastData B_data;
+					B_data.start = prevSto;
+					B_data.dir = matB;
+					Model::RayCast(hCourseModel, &B_data);
+
+					RayCastData F_data;
+					F_data.start = prevSto;
+					F_data.dir = matF;
+					Model::RayCast(hCourseModel, &F_data);
+
+					int dir = GetShortest(L_data, R_data, F_data, B_data);
+
+					switch (dir)
 					{
-						Left_ = XMFLOAT3(prevSto.x - L_data.dist, prevSto.y, prevSto.z);
-						Right_ = XMFLOAT3(prevSto.x + R_data.dist, prevSto.y, prevSto.z);
-						Storage = XMFLOAT3AVERAGE(Left_, Right_);
+					case left: Storage.x = transform_.position_.x - L_data.dist + out; break;
+					case right: Storage.x = transform_.position_.x + R_data.dist - out; break;
+					case front: Storage.z = transform_.position_.z - F_data.dist + out; break;
+					case back: Storage.z = transform_.position_.z + B_data.dist - out; break;
 					}
+
+					bool Near = false;
+
+					for (auto it = Checkpoint_.begin(); it != Checkpoint_.end(); it++)
+					{
+						float dist = Getdistance(*it, Storage);
+						if (dist < 5)
+						{
+							Near = true;
+						}
+						else
+						{
+							Near = false;
+						}
+					}
+
+					if (!Near)
+					{
+						Checkpoint_.push_back(Storage);
+					}
+					
 				}
 			}
 		}
-		
-		//StorageÇ™0Ç≈Ç»ÇØÇÍÇŒCheckpoint_Ç…äiî[Ç∑ÇÈ
-		if (Getdistance(Storage, Initial) != NULL)
-		{
-			Checkpoint_.push_back(Storage);
-		}
+	}
+	Instantiate<CourseOutObject>(pParent_);
+}
 
+int Navigation::GetShortest(RayCastData L, RayCastData R, RayCastData F, RayCastData B)
+{
+	if (L.dist > R.dist && L.dist > F.dist && L.dist > B.dist)
+	{
+		return left;
+	}
+	else if (R.dist > F.dist && R.dist > B.dist)
+	{
+		return right;
+	}
+	else if (F.dist > B.dist)
+	{
+		return front;
+	}
+	else
+	{
+		return back;
 	}
 }
 

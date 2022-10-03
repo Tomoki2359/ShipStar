@@ -149,6 +149,7 @@
     <ClCompile Include="ButtonScene.cpp" />
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Course.cpp" />
+    <ClCompile Include="CourseOutObject.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="CustomScene.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="ButtonScene.h" />
     <ClInclude Include="Computer.h" />
     <ClInclude Include="Course.h" />
+    <ClInclude Include="CourseOutObject.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="CustomScene.h" />
     <ClInclude Include="Engine\Camera.h" />

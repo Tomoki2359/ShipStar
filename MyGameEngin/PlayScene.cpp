@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Computer.h"
 #include "Course.h"
+#include "CourseOutObject.h"
 #include "GoalObject.h"
 #include "Navigation.h"
 #include "Player.h"
@@ -45,9 +46,15 @@ void PlayScene::Update()
 	if (CallNav_ == 2 && !Initcomprete_)	//開始フレームは後ほど調整
 	{
 		Instantiate<Navigation>(this);
+		Navigation* pNav = (Navigation*)FindObject("Navigation");
+		for (auto it = pNav->Checkpoint_.begin(); it != pNav->Checkpoint_.end(); it++)
+		{
+			GameObject* pObj = Instantiate<CourseOutObject>(this);
+			pObj->SetPosition(*it);
+		}
 		Initcomprete_ = true;
 	}
-	else if(!Initcomprete_)
+	else if(!Initcomprete_ && CallNav_ < 5)
 	{
 		CallNav_++;
 	}

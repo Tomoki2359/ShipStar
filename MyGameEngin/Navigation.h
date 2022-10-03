@@ -5,6 +5,7 @@
 
 class Course;
 class Airframe;
+class PlayScene;
 
 class Navigation : public GameObject
 {
@@ -12,8 +13,8 @@ class Navigation : public GameObject
 	{
 		left,
 		right,
-		upper,
-		lower
+		front,
+		back
 	};
 
 	enum
@@ -37,9 +38,14 @@ class Navigation : public GameObject
 	const XMFLOAT3 matL = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matR = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	const XMFLOAT3 matU = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	const XMFLOAT3 matD = XMFLOAT3(0.0f, -1.0f, 0.0f);
+	const XMFLOAT3 matB = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	const XMFLOAT3 matF = XMFLOAT3(0.0f, 0.0f, -1.0f);
 
 	const char Turn_ = 5;			//回転に使う
 	const float Adjuster_ = 1.0f;	//位置の微調整に使う
+	const XMFLOAT3 Initial = XMFLOAT3(NULL, NULL, NULL);
+	const int out = 10;
 
 	XMFLOAT3 XMFLOAT3PRUSXMFLOAT3(XMFLOAT3 fl3a, XMFLOAT3 fl3b);	//2つのXMFLOAT3を足す
 	XMFLOAT3 XMFLOAT3AVERAGE(XMFLOAT3 fl3a, XMFLOAT3 fl3b);			//2つのXMFLOAT3の中間を割り出す
@@ -52,8 +58,11 @@ class Navigation : public GameObject
 
 	void Scan();	//コースを読み取ってチェックポイントを設置する
 
+	int GetShortest(RayCastData L, RayCastData R, RayCastData F, RayCastData B);
+
 public:
 	friend Airframe;
+	friend PlayScene;
 
 	Navigation(GameObject* parent);
 	~Navigation();
