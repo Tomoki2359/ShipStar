@@ -60,12 +60,13 @@ class Airframe : public GameObject
 
 	bool IsGoal_;	//ゴールした判定
 
-	void PassPoint();	//各チェックポイントを通過したか判定
+	//void PassPoint();	//各チェックポイントを通過したか判定
 
 	void LapMeasure();	//周回数の判定
 
 	void JudgeGoal();	//ゴールの判定
 
+	void ResetOverRotate(float* rotate);	//0~360°に留めておく為のもの
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか

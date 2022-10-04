@@ -62,6 +62,8 @@ class Navigation : public GameObject
 
 	int GetShortest(RayCastData L, RayCastData R, RayCastData F, RayCastData B);
 
+	int Correcter(float Target);	//15‹‚İ‚É‹¸³‚·‚é
+
 public:
 	friend Airframe;
 	friend PlayScene;

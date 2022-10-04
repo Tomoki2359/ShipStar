@@ -151,6 +151,11 @@ void Airframe::Update()
 	XMFLOAT3 Move_ = { 0,0,speed_ };
 	XMVECTOR vMove_ = XMLoadFloat3(&Move_);
 
+	//‰ñ“]‚Ì’l‚ð‹¸³‚·‚é
+	ResetOverRotate(&transform_.rotate_.x);
+	ResetOverRotate(&transform_.rotate_.y);
+	ResetOverRotate(&transform_.rotate_.z);
+
 	//‹@‘Ì‚ÌXŽ²,YŽ²‚ÌŠp“x‚ÌŽæ“¾
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
@@ -396,6 +401,21 @@ void Airframe::JudgeGoal()
 	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) && Lap_ > NULL)
 	{
 		IsGoal_ = true;
+	}
+}
+
+void Airframe::ResetOverRotate(float* rotate)
+{
+	const int of = 360;
+	const int uf = 0;
+
+	if (*rotate > of)
+	{
+		*rotate -= of;
+	}
+	if (*rotate < uf)
+	{
+		*rotate += of;
 	}
 }
 
