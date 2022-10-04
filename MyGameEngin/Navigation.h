@@ -5,6 +5,7 @@
 
 class Course;
 class Airframe;
+class Player;
 class PlayScene;
 
 class Navigation : public GameObject
@@ -28,6 +29,7 @@ class Navigation : public GameObject
 
 	std::vector<XMFLOAT3> Checkpoint_;
 	Course* pCourse_;
+	Player* pPlayer_;
 	XMFLOAT3 Left_;
 	XMFLOAT3 Right_;
 
@@ -69,6 +71,8 @@ public:
 
 	//‰Šú‰»
 	void Initialize() override;
+
+	void Update() override;
 
 	//ŠJ•ú
 	void Release() override;
