@@ -136,4 +136,6 @@ public:
 	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
 
 	bool GetisGoal() { return IsGoal_; }
+
+	bool GetStart() { return start_; }
 };

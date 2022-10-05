@@ -9,7 +9,7 @@
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
-	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL)
+	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL), UdCobj_(NULL)
 {
 }
 
@@ -27,6 +27,7 @@ void PlayScene::Initialize()
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
 	Instantiate<GoalObject>(this);
+	Instantiate<CourseOutObject>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)
@@ -34,24 +35,16 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
-	
+
 
 }
 
 //更新
 void PlayScene::Update()
 {
-	
-	
 	if (CallNav_ == 2 && !Initcomprete_)	//開始フレームは後ほど調整
 	{
 		Instantiate<Navigation>(this);
-		Navigation* pNav = (Navigation*)FindObject("Navigation");
-		for (auto it = pNav->Checkpoint_.begin(); it != pNav->Checkpoint_.end(); it++)
-		{
-			GameObject* pObj = Instantiate<CourseOutObject>(this);
-			pObj->SetPosition(*it);
-		}
 		Initcomprete_ = true;
 	}
 	else if(!Initcomprete_ && CallNav_ < 5)
@@ -60,11 +53,20 @@ void PlayScene::Update()
 	}
 
 	Player* pPlayer = (Player*)FindObject("Player");
+
+	if (pPlayer->GetStart() && UdCobj_ > 300)
+	{
+		Navigation* pNav = (Navigation*)FindObject("Navigation");
+		CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
+		pCobj->SetPosition(pNav->GetLeft());
+		UdCobj_ = NULL;
+	}
 	if (pPlayer->GetisGoal())
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
 	}
 	
+	UdCobj_++;
 }
 
 //描画

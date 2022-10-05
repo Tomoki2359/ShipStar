@@ -17,7 +17,7 @@ void CourseOutObject::Initialize()
 	assert(hModel_ >= 0);
 
 	const float Size = 0.1f;
-	transform_.scale_ = XMFLOAT3(Size, Size, Size);
+	//transform_.scale_ = XMFLOAT3(Size, Size, Size);
 }
 
 void CourseOutObject::Draw()

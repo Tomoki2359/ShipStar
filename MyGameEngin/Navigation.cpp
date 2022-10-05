@@ -47,7 +47,7 @@ float Navigation::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 
 Navigation::Navigation(GameObject* parent)
 	: GameObject(parent, "Navigation"), pCourse_(nullptr),pPlayer_(nullptr), Left_(), Right_(),
-	Upper_Goal(), Left_Goal(), Right_Goal()
+	Upper_Goal(), Left_Goal(), Right_Goal(), Limit_(NULL)
 {
 	Checkpoint_.clear();
 }
@@ -93,65 +93,15 @@ void Navigation::Initialize()
 
 void Navigation::Update()
 {
-	pPlayer_ = (Player*)FindObject("Player");
-
-	transform_.position_ = pPlayer_->GetPosition();
-	transform_.rotate_ = pPlayer_->GetRotate();
-
-	transform_.rotate_.y = (float)Correcter(transform_.rotate_.y);
-
-	//‹@‘Ì‚ÌXŽ²,YŽ²‚ÌŠp“x‚ÌŽæ“¾
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-
-	XMVECTOR vLeft = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
-	vLeft = XMVector3TransformCoord(vLeft, mRotate);
-	vLeft = XMVector3Normalize(vLeft);
-	XMFLOAT3 matLeft;
-	XMStoreFloat3(&matLeft, vLeft);
-
-	XMVECTOR vRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	vRight = XMVector3TransformCoord(vRight, mRotate);
-	vRight = XMVector3Normalize(vRight);
-	XMFLOAT3 matRight;
-	XMStoreFloat3(&matRight, vRight);
-
-	pCourse_ = (Course*)FindObject("Course");
-	short hCourseModel = (short)pCourse_->GetModelHandle();
-
-	RayCastData LeftData;
-	LeftData.start = transform_.position_;
-	LeftData.dir = matLeft;
-	Model::RayCast(hCourseModel, &LeftData);
-
-	RayCastData RightData;
-	RightData.start = transform_.position_;
-	RightData.dir = matRight;
-	Model::RayCast(hCourseModel, &RightData);
-
-	const float adj = 5.0f;
-
-	if (LeftData.hit)
+	if (Limit_ > UpdateLimit)
 	{
-		XMFLOAT3 ObjLeft;
-
-		XMVECTOR vPos = XMVectorSet(-LeftData.dist - adj, NULL, NULL, NULL);
-		vPos = XMVector3TransformCoord(vPos, mRotate);
-		XMVECTOR pos = XMLoadFloat3(&transform_.position_);
-		pos += vPos;
-		XMStoreFloat3(&ObjLeft, pos);
+		UpdateCourseout();
+		Limit_ = NULL;
 	}
-	if (RightData.hit)
+	else
 	{
-		XMFLOAT3 ObjRight;
-
-		XMVECTOR vPos = XMVectorSet(RightData.dist + adj, NULL, NULL, NULL);
-		vPos = XMVector3TransformCoord(vPos, mRotate);
-		XMVECTOR pos = XMLoadFloat3(&transform_.position_);
-		pos += vPos;
-		XMStoreFloat3(&ObjRight, pos);
+		Limit_++;
 	}
-
 }
 
 void Navigation::Scan()
@@ -272,6 +222,67 @@ int Navigation::Correcter(float Target)
 	Target = (int)(Target + 0.8f);
 	Target = Target * 15;
 	return Target;
+}
+
+void Navigation::UpdateCourseout()
+{
+	pPlayer_ = (Player*)FindObject("Player");
+
+	transform_.position_ = pPlayer_->GetPosition();
+	transform_.rotate_ = pPlayer_->GetRotate();
+
+	transform_.rotate_.y = (float)Correcter(transform_.rotate_.y);
+
+	//‹@‘Ì‚ÌXŽ²,YŽ²‚ÌŠp“x‚ÌŽæ“¾
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+
+	XMVECTOR vLeft = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
+	vLeft = XMVector3TransformCoord(vLeft, mRotate);
+	vLeft = XMVector3Normalize(vLeft);
+	XMFLOAT3 matLeft;
+	XMStoreFloat3(&matLeft, vLeft);
+
+	XMVECTOR vRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	vRight = XMVector3TransformCoord(vRight, mRotate);
+	vRight = XMVector3Normalize(vRight);
+	XMFLOAT3 matRight;
+	XMStoreFloat3(&matRight, vRight);
+
+	pCourse_ = (Course*)FindObject("Course");
+	short hCourseModel = (short)pCourse_->GetModelHandle();
+
+	RayCastData LeftData;
+	LeftData.start = transform_.position_;
+	LeftData.dir = matLeft;
+	Model::RayCast(hCourseModel, &LeftData);
+
+	RayCastData RightData;
+	RightData.start = transform_.position_;
+	RightData.dir = matRight;
+	Model::RayCast(hCourseModel, &RightData);
+
+	const float adj = 5.0f;
+
+	
+
+	if (LeftData.hit)
+	{
+		XMVECTOR vPos = XMVectorSet(-LeftData.dist - adj, NULL, NULL, NULL);
+		vPos = XMVector3TransformCoord(vPos, mRotate);
+		XMVECTOR pos = XMLoadFloat3(&transform_.position_);
+		pos += vPos;
+		XMStoreFloat3(&ObjLeft, pos);
+	}
+	if (RightData.hit)
+	{
+		XMVECTOR vPos = XMVectorSet(RightData.dist + adj, NULL, NULL, NULL);
+		vPos = XMVector3TransformCoord(vPos, mRotate);
+		XMVECTOR pos = XMLoadFloat3(&transform_.position_);
+		pos += vPos;
+		XMStoreFloat3(&ObjRight, pos);
+	}
+
 }
 
 void Navigation::Release()

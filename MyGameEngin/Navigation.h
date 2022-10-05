@@ -64,6 +64,14 @@ class Navigation : public GameObject
 
 	int Correcter(float Target);	//15ÅãçèÇ›Ç…ã∏ê≥Ç∑ÇÈ
 
+	void UpdateCourseout();
+
+	short Limit_;
+	const short UpdateLimit = 60;
+
+	XMFLOAT3 ObjRight = Initial;
+	XMFLOAT3 ObjLeft = Initial;
+
 public:
 	friend Airframe;
 	friend PlayScene;
@@ -79,4 +87,6 @@ public:
 	//äJï˙
 	void Release() override;
 
+	XMFLOAT3 GetLeft() { return ObjLeft; }
+	XMFLOAT3 GetRight() { return ObjRight; }
 };
