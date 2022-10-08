@@ -9,7 +9,7 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1), Side_(true),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
@@ -166,7 +166,18 @@ void Airframe::Update()
 	vPos += vMove_;
 	XMStoreFloat3(&transform_.position_, vPos);
 
-	CourseoutSaver();
+	JudgeSide();
+
+	if (Side_)	//コース内にいる場合
+	{
+		StayInside();
+	}
+	else		//コース外にいる場合
+	{
+		speed_ *= 0.97f;
+		StayOutside();
+	}
+	//CourseoutSaver();
 
 	//カメラを使用するかどうか
 	if (cCamera_ == true)
@@ -183,6 +194,18 @@ void Airframe::Update()
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
 	}
+}
+
+void Airframe::JudgeSide()
+{
+	Course* pCourse = (Course*)FindObject("Course");
+	int hCourseModel = pCourse->GetModelHandle();
+
+	RayCastData data;
+	data.start = transform_.position_;
+	data.dir = XMFLOAT3(NULL, -1.0, NULL);
+	Model::RayCast(hCourseModel, &data);
+	Side_ = data.hit;
 }
 
 //描画

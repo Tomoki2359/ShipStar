@@ -51,6 +51,7 @@ class Airframe : public GameObject
 	CSVReader csv;	//csvを読み込むための関数
 	bool start_;	//スタートしたかどうか
 	short timeCount_;	//レース時間の管理とカウントダウン
+	bool Side_;		//内側にいるか外側にいるか(trueで内側、falseで外側)
 
 	XMFLOAT3 PrevPosition_;	//直前の位置
 
@@ -66,12 +67,17 @@ class Airframe : public GameObject
 
 	void JudgeGoal();	//ゴールの判定
 
+	void JudgeSide();
+
 	void ResetOverRotate(float* rotate);	//0~360°に留めておく為のもの
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
 	XMFLOAT3 GetDistance(GameObject* pTarget);
 	float PrevHeight_;
+
+	virtual void StayInside() = 0;
+	virtual void StayOutside() = 0;
 
 public:
 	PARTS_NUM PartsSet;

@@ -219,9 +219,9 @@ int Navigation::GetShortest(RayCastData L, RayCastData R, RayCastData F, RayCast
 int Navigation::Correcter(float Target)
 {
 	Target = Target / 15;
-	Target = (int)(Target + 0.8f);
+	Target = (float)(int)(Target + 0.8f);
 	Target = Target * 15;
-	return Target;
+	return (int)Target;
 }
 
 void Navigation::UpdateCourseout()

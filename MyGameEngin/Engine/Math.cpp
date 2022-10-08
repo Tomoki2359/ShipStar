@@ -69,3 +69,20 @@ bool Math::SegmentToPlane(XMFLOAT3 segstart, XMFLOAT3 segend, XMFLOAT3 v0, XMFLO
     }
     return false;
 }
+
+bool Math::CircleToPlane(XMFLOAT3 center, float size, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2)
+{
+    XMFLOAT3 a = XMFLOAT3(v1.x - v0.x, v1.y - v0.y, v1.z - v0.z);
+    XMFLOAT3 b = XMFLOAT3(v2.x - v0.x, v2.y - v0.y, v2.z - v0.z);
+    XMVECTOR vA = XMLoadFloat3(&a), vB = XMLoadFloat3(&b);
+    XMVECTOR outer = XMVector3Cross(vA, vB);
+    outer = XMVector3Normalize(outer);
+    outer = outer * size;
+    outer = -outer;
+    XMVECTOR vCenter = XMLoadFloat3(&center);
+    outer += vCenter;
+    XMFLOAT3 fouter;
+    XMStoreFloat3(&fouter, outer);
+    bool hit = SegmentToPlane(center, fouter, v0, v1, v2);
+    return hit;
+}

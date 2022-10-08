@@ -3,6 +3,14 @@
 #include "Course.h"
 #include "Engine/Model.h"
 
+void Player::StayInside()
+{
+}
+
+void Player::StayOutside()
+{
+}
+
 //コンストラクタ
 Player::Player(GameObject* parent)
 	: Airframe(parent, "Player")

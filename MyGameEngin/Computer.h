@@ -42,6 +42,9 @@ class Computer : public Airframe
 
 	//曲がる方向を示す
 	void TurnDirection();
+
+	void StayInside() override;
+	void StayOutside() override;
 public:
 	//コンストラクタ
 	Computer(GameObject* parent);

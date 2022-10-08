@@ -4,6 +4,8 @@
 //■■シーンを管理するクラス
 class Player : public Airframe
 {
+	void StayInside() override;
+	void StayOutside() override;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

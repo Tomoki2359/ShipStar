@@ -302,6 +302,14 @@ void Computer::TurnDirection()
 	}
 }
 
+void Computer::StayInside()
+{
+}
+
+void Computer::StayOutside()
+{
+}
+
 void Computer::RayCasting()
 {
 	//ƒŒƒC•ÏŠ·—p

@@ -12,5 +12,8 @@ namespace Math
 
 	//ü•ª‚Æ•½–Ê‚Ì“–‚½‚è”»’è
 	bool SegmentToPlane(XMFLOAT3 segstart, XMFLOAT3 segend, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
+
+	//‹…‚Æ•½–Ê‚Ì“–‚½‚è”»’è
+	bool CircleToPlane(XMFLOAT3 center, float size, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
 };
 
