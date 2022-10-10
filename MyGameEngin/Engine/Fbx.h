@@ -64,6 +64,8 @@ public:
 
 	void RayCast(RayCastData* data);
 
+	void PushOut(XMFLOAT3* position, float size, XMFLOAT3 dir);
+
 private:
 	void InitVertex(fbxsdk::FbxMesh* pMesh);
 	void InitIndex(fbxsdk::FbxMesh* pMesh);

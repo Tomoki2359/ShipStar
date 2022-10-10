@@ -9,6 +9,7 @@ namespace Model
 	int Load(std::string fileName);
 	void SetTransform(int hModel_, Transform transform_);
 	void RayCast(int handle, RayCastData* data);
+	void PushOut(int handle, XMFLOAT3* position, float size, XMFLOAT3 dir);
 	void Draw(int hModel_);
 	void Release();
 

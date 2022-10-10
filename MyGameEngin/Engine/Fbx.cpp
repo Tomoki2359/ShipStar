@@ -1,6 +1,7 @@
 #include "Fbx.h"
 #include "Direct3D.h"
 #include "Camera.h"
+#include "Math.h"
 
 Fbx::Fbx() :
 	vertexCount_(0), polygonCount_(0), materialCount_(0),
@@ -356,4 +357,34 @@ void Fbx::RayCast(RayCastData* data)
 			}
 		}
 	}
+}
+
+void Fbx::PushOut(XMFLOAT3* position, float size, XMFLOAT3 dir)
+{
+	float dist1 = 9999.0f;
+	float dist2 = 9999.0f;
+	XMFLOAT3 pos1 = *position;
+	XMFLOAT3 pos2 = XMFLOAT3(position->x + dir.x, position->y + dir.y, position->z + dir.z);
+
+	//マテリアル毎
+	for (DWORD i = 0; i < (unsigned)materialCount_; i++)
+	{
+		//そのマテリアルのポリゴン毎
+		for (DWORD j = 0; j < pMaterialList_[i].polygonCount; j++)
+		{
+			//3頂点
+			XMFLOAT3 ver[3];
+
+			ver[0] = vertices[ppIndexData_[i][j * 3 + 0]].position;
+			ver[1] = vertices[ppIndexData_[i][j * 3 + 1]].position;
+			ver[2] = vertices[ppIndexData_[i][j * 3 + 2]].position;
+
+			Math::CircleToPlane(pos1, size, ver[0], ver[1], ver[2], &dist1);
+			Math::CircleToPlane(pos2, size, ver[0], ver[1], ver[2], &dist2);
+		}
+	}
+
+	float ans = size / (dist2 - dist1);
+	XMFLOAT3 adir = XMFLOAT3(dir.x * ans, dir.y * ans, dir.z * ans);
+	*position = XMFLOAT3(position->x + adir.x, position->y + adir.y, position->z + adir.z);
 }
