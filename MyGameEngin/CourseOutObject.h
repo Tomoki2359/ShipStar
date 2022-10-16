@@ -18,4 +18,6 @@ public:
 
 	//•`‰æ
 	void Draw() override;
+
+	int GetModelHandle() { return hModel_; }
 };

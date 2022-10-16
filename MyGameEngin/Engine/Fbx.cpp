@@ -361,6 +361,10 @@ void Fbx::RayCast(RayCastData* data)
 
 void Fbx::PushOut(XMFLOAT3* position, float size, XMFLOAT3 dir)
 {
+	XMVECTOR vDir = XMLoadFloat3(&dir);
+	vDir = -vDir;
+	vDir = XMVector3Normalize(vDir);
+	XMStoreFloat3(&dir, vDir);
 	float dist1 = 9999.0f;
 	float dist2 = 9999.0f;
 	XMFLOAT3 pos1 = *position;

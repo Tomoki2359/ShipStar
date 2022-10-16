@@ -54,19 +54,19 @@ void PlayScene::Update()
 
 	Player* pPlayer = (Player*)FindObject("Player");
 
-	if (pPlayer->GetStart() && UdCobj_ > 300)
+	/*if (pPlayer->GetStart() && UdCobj_ > 300)
 	{
 		Navigation* pNav = (Navigation*)FindObject("Navigation");
 		CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
 		pCobj->SetPosition(pNav->GetLeft());
 		UdCobj_ = NULL;
-	}
+	}*/
 	if (pPlayer->GetisGoal())
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
 	}
 	
-	UdCobj_++;
+	//UdCobj_++;
 }
 
 //•`‰æ
