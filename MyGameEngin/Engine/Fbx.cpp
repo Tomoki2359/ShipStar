@@ -370,6 +370,8 @@ void Fbx::PushOut(XMFLOAT3* position, float size, XMFLOAT3 dir)
 	XMFLOAT3 pos1 = *position;
 	XMFLOAT3 pos2 = XMFLOAT3(position->x + dir.x, position->y + dir.y, position->z + dir.z);
 
+	float Storage = dist1;
+
 	//ƒ}ƒeƒŠƒAƒ‹–ˆ
 	for (DWORD i = 0; i < (unsigned)materialCount_; i++)
 	{
@@ -383,8 +385,18 @@ void Fbx::PushOut(XMFLOAT3* position, float size, XMFLOAT3 dir)
 			ver[1] = vertices[ppIndexData_[i][j * 3 + 1]].position;
 			ver[2] = vertices[ppIndexData_[i][j * 3 + 2]].position;
 
+
 			Math::CircleToPlane(pos1, size, ver[0], ver[1], ver[2], &dist1);
-			Math::CircleToPlane(pos2, size, ver[0], ver[1], ver[2], &dist2);
+			if (dist1 < Storage)
+			{
+				Storage = dist1;
+				Math::CircleToPlane(pos2, size, ver[0], ver[1], ver[2], &dist2);
+			}
+			else
+			{
+				dist1 = Storage;
+			}
+			
 		}
 	}
 

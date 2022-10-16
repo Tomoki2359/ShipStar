@@ -80,11 +80,6 @@ bool Math::SegmentToPlane(XMFLOAT3 segstart, XMFLOAT3 segend, XMFLOAT3 v0, XMFLO
     float Dist;
     Dist = (float)sqrt(pow(dir.x, 2.0) + pow(dir.y, 2.0) + pow(dir.z, 2.0));
 
-    if (*dist > Dist && Dist > 0.0f)
-    {
-        *dist = Dist;
-    }
-
     XMVECTOR vDir = XMLoadFloat3(&dir);
     vDir = XMVector3Normalize(vDir);
     XMStoreFloat3(&dir, vDir);
@@ -95,6 +90,12 @@ bool Math::SegmentToPlane(XMFLOAT3 segstart, XMFLOAT3 segend, XMFLOAT3 v0, XMFLO
     u = Det(d, b, dir) / Det(a, b, dir);
     v = Det(a, d, dir) / Det(a, b, dir);
     l = Det(a, b, d) / Det(a, b, dir);
+
+    if (*dist > l && l > 0.0f)
+    {
+        *dist = l;
+    }
+
     if (u + v <= 1 && l >= 0 && u >= 0 && v >= 0 && l <= Dist)
     {
         return true;

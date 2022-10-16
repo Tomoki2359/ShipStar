@@ -10,7 +10,7 @@ void Player::StayInside()
 
 void Player::StayOutside()
 {
-	XMMATRIX mRotate;// = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	XMMATRIX mRotate = XMMatrixIdentity();// = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
 	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
 
@@ -70,8 +70,8 @@ void Player::UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir)
 	XMFLOAT3 direction = XMFLOAT3(COpos.x - pos.x, COpos.y - pos.y, COpos.z - pos.z);
 
 	XMVECTOR vDir = XMLoadFloat3(&dir);
-	vDir = -vDir;
 	vDir = XMVector3Normalize(vDir);
+	vDir = -vDir;
 	XMStoreFloat3(&dir, vDir);
 
 	Model::PushOut(hCourseModel, &COpos, 5, dir);
