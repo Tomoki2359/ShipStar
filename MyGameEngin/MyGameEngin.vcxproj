@@ -152,6 +152,7 @@
     <ClCompile Include="CourseOutObject.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="CustomScene.cpp" />
+    <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
     <ClCompile Include="Engine\Fbx.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MatchingScene.cpp" />
     <ClCompile Include="Navigation.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="OptionScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -220,6 +222,7 @@
     <ClInclude Include="CourseOutObject.h" />
     <ClInclude Include="CSVReader.h" />
     <ClInclude Include="CustomScene.h" />
+    <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Define.h" />
     <ClInclude Include="Engine\Direct3D.h" />
@@ -254,6 +257,7 @@
     <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="MatchingScene.h" />
     <ClInclude Include="Navigation.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="OptionScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
