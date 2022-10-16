@@ -10,9 +10,9 @@ void Player::StayInside()
 
 void Player::StayOutside()
 {
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	XMMATRIX mRotate;// = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
 
 	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
@@ -40,17 +40,24 @@ void Player::StayOutside()
 	Ray_Left.dir = matL;				     //ƒŒƒC‚Ì•ûŒü
 	Model::RayCast(hCourseModel, &Ray_Left); //ƒŒƒC‚ð”­ŽË
 
+	XMFLOAT3 pos = transform_.position_;
+	XMVECTOR vPos = XMLoadFloat3(&pos);
+
 	if (Ray_Left.dist > Ray_Right.dist)
 	{
-		UpdateCObject(matR);
+		vPos = vPos * Right;
+		XMStoreFloat3(&pos, vPos);
+		UpdateCObject(pos, Ray_Right.dir);
 	}
 	else
 	{
-		UpdateCObject(matL);
+		vPos = vPos * Left;
+		XMStoreFloat3(&pos, vPos);
+		UpdateCObject(pos, Ray_Left.dir);
 	}
 }
 
-void Player::UpdateCObject(XMFLOAT3 dir)
+void Player::UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir)
 {
 	Course* pCourse = (Course*)FindObject("Course");
 	int hCourseModel = pCourse->GetModelHandle();
@@ -59,6 +66,8 @@ void Player::UpdateCObject(XMFLOAT3 dir)
 	int hCO = pCO->GetModelHandle();
 
 	XMFLOAT3 COpos = transform_.position_;
+
+	XMFLOAT3 direction = XMFLOAT3(COpos.x - pos.x, COpos.y - pos.y, COpos.z - pos.z);
 
 	XMVECTOR vDir = XMLoadFloat3(&dir);
 	vDir = -vDir;
