@@ -31,6 +31,7 @@ void Course::Draw()
 {
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
+	Model::SetAlpha(hModel_, 0xcf);
 }
 
 //ŠJ•ú

@@ -8,7 +8,7 @@
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f),
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f), Respawn_(), SaveCount_(NULL),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1), Side_(true),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
@@ -174,7 +174,7 @@ void Airframe::Update()
 	}
 	else		//コース外にいる場合
 	{
-		speed_ *= 0.97f;
+		//speed_ *= 0.97f;
 		StayOutside();
 	}
 	//CourseoutSaver();

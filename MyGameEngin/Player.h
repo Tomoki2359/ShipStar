@@ -4,10 +4,13 @@
 //■■シーンを管理するクラス
 class Player : public Airframe
 {
+	XMFLOAT3 PrevPos_;
+	int CountInside_;
+	int CountOutside_;
 	void StayInside() override;
 	void StayOutside() override;
 
-	void UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir);
+	void UpdateCObject(XMFLOAT3 dir);
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

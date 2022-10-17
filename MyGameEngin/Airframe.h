@@ -42,6 +42,9 @@ class Airframe : public GameObject
 	//
 	//std::vector<PASSAGE> PassageChecker_;
 
+	XMFLOAT3 Respawn_;
+	int SaveCount_;
+
 	short hModel_;   //ƒ‚ƒfƒ‹”Ô†
 	float speed_;	//Œ»İ‚Ì‘¬“x
 	bool cAscent_;	//ã¸ó‘Ô‚©‚Ç‚¤‚©

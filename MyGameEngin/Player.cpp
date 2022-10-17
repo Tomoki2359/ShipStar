@@ -6,6 +6,12 @@
 
 void Player::StayInside()
 {
+	if (CountInside_ == 60)
+	{
+		PrevPos_ = transform_.position_;
+		CountInside_ = NULL;
+	}
+	CountInside_++;
 }
 
 void Player::StayOutside()
@@ -14,50 +20,18 @@ void Player::StayOutside()
 	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
 	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
 
-	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	XMFLOAT3 dir = XMFLOAT3(transform_.position_.x - PrevPos_.x, transform_.position_.y - PrevPos_.y, transform_.position_.z - PrevPos_.z);
 
-	Left = XMVector3TransformCoord(Left, mRotate);
-	Right = XMVector3TransformCoord(Right, mRotate);
-
-	Left = XMVector3Normalize(Left);
-	Right = XMVector3Normalize(Right);
-
-	XMFLOAT3 matL, matR;
-	XMStoreFloat3(&matL, Left);
-	XMStoreFloat3(&matR, Right);
-
-	Course* pCourse = (Course*)FindObject("Course");
-	int hCourseModel = pCourse->GetModelHandle();
-
-	RayCastData Ray_Right;		//右にレイを飛ばす
-	Ray_Right.start = transform_.position_;   //レイの発射位置
-	Ray_Right.dir = matR;				      //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Right); //レイを発射
-
-	RayCastData Ray_Left;		//左にレイを飛ばす
-	Ray_Left.start = transform_.position_;   //レイの発射位置
-	Ray_Left.dir = matL;				     //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
-
-	XMFLOAT3 pos = transform_.position_;
-	XMVECTOR vPos = XMLoadFloat3(&pos);
-
-	if (Ray_Left.dist > Ray_Right.dist)
+	if (CountOutside_ == 60)
 	{
-		vPos = vPos * Right;
-		XMStoreFloat3(&pos, vPos);
-		UpdateCObject(pos, Ray_Right.dir);
+		UpdateCObject(dir);
+		CountOutside_ = NULL;
 	}
-	else
-	{
-		vPos = vPos * Left;
-		XMStoreFloat3(&pos, vPos);
-		UpdateCObject(pos, Ray_Left.dir);
-	}
+	
+	CountOutside_++;
 }
 
-void Player::UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir)
+void Player::UpdateCObject(XMFLOAT3 dir)
 {
 	Course* pCourse = (Course*)FindObject("Course");
 	int hCourseModel = pCourse->GetModelHandle();
@@ -66,8 +40,6 @@ void Player::UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir)
 	int hCO = pCO->GetModelHandle();
 
 	XMFLOAT3 COpos = transform_.position_;
-
-	XMFLOAT3 direction = XMFLOAT3(COpos.x - pos.x, COpos.y - pos.y, COpos.z - pos.z);
 
 	XMVECTOR vDir = XMLoadFloat3(&dir);
 	vDir = XMVector3Normalize(vDir);
@@ -81,7 +53,7 @@ void Player::UpdateCObject(XMFLOAT3 pos, XMFLOAT3 dir)
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-	: Airframe(parent, "Player")
+	: Airframe(parent, "Player"), PrevPos_(), CountInside_(), CountOutside_()
 {
 }
 
