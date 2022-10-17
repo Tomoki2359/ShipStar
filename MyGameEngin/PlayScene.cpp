@@ -6,10 +6,12 @@
 #include "Navigation.h"
 #include "Player.h"
 #include "Image/PlayBackground.h"
+#include "Observer.h"
+
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
-	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL), UdCobj_(NULL)
+	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL), UdCobj_(NULL),hPict_1(-1), hPict_2(-1), hPict_3(-1), timer(0),Start_(false)
 {
 }
 
@@ -28,6 +30,7 @@ void PlayScene::Initialize()
 	Instantiate<Course>(this);
 	Instantiate<GoalObject>(this);
 	Instantiate<CourseOutObject>(this);
+	Instantiate<Observer>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)
@@ -35,8 +38,6 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
-
-
 }
 
 //更新
@@ -65,16 +66,27 @@ void PlayScene::Update()
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
 	}
-	
 	//UdCobj_++;
+
 }
 
 //描画
 void PlayScene::Draw()
 {
+	
 }
 
 //開放
 void PlayScene::Release()
 {
+}
+
+void PlayScene::SetStart(bool start)
+{
+	Start_ = start;
+}
+
+bool PlayScene::GetStart()
+{
+	return Start_;
 }
