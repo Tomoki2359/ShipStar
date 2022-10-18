@@ -1,4 +1,5 @@
 #include "ButtonScene.h"
+#include "Image/ButtonArrangement.h"
 
 //コンストラクタ
 ButtonScene::ButtonScene(GameObject* parent)
@@ -11,6 +12,7 @@ void ButtonScene::Initialize()
 {
 	Instantiate<BackButton>(this);
 	Instantiate<OKButton>(this);
+	Instantiate<ButtonArrangement>(this);
 	SetScreen(0, 0, 0);
 }
 

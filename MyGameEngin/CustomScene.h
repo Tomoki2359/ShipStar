@@ -3,6 +3,11 @@
 #include "Engine/SceneManager.h"
 #include "Image/OKButton.h"
 #include "Image/BackButton.h"
+#include "Image/FixeButton.h"
+#include "Image/CurrentStatus.h"
+#include "Image/PartsList.h"
+#include "Image/OriginalStatus.h"
+#include "Image/ChangeStatus.h"
 
 enum CUSTOM
 {
@@ -26,6 +31,11 @@ class CustomScene : public GameObject
 	//画像のポインタ
 	BackButton* pBack_;
 	OKButton* pOK_;
+	CurrentStatus* pCurrent_;
+	PartsList* pParts_;
+	FixeButton* pFixe_;
+	OriginalStatus* pOriginal_;
+	ChangeStatus* pChange_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -42,4 +52,8 @@ public:
 
 	//開放
 	void Release() override;
+
+	void BeforeChange();
+
+	void AfterChange();
 };

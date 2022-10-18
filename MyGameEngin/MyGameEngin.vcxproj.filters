@@ -194,6 +194,27 @@
     <ClCompile Include="Engine\Audio.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Image\ButtonArrangement.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\ChangeStatus.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\CurrentStatus.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\FixeButton.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\MatchingCourse.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\OriginalStatus.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\PartsList.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input.h">
@@ -345,6 +366,27 @@
     </ClInclude>
     <ClInclude Include="Engine\Audio.h">
       <Filter>ヘッダー ファイル\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\ButtonArrangement.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\ChangeStatus.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\CurrentStatus.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\FixeButton.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\MatchingCourse.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\OriginalStatus.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\PartsList.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

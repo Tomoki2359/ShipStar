@@ -12,6 +12,8 @@ void CustomScene::Initialize()
 	SetScreen(0, 0, 0);
 	Instantiate<OKButton>(this);
 	Instantiate<BackButton>(this);
+	Instantiate<CurrentStatus>(this);
+	Instantiate<PartsList>(this);
 }
 
 //更新
@@ -24,6 +26,10 @@ void CustomScene::Update()
 		assert(pBack_ != nullptr);
 		pOK_ = (OKButton*)FindObject("OKButton");
 		assert(pOK_ != nullptr);
+		pCurrent_ = (CurrentStatus*)FindObject("CurrentStatus");
+		assert(pCurrent_ != nullptr);
+		pParts_ = (PartsList*)FindObject("PartsList");
+		assert(pParts_ != nullptr);
 	}
 	if (Input::IsKeyDown(DIK_S))
 	{
@@ -51,65 +57,16 @@ void CustomScene::Update()
 	{
 		mouseMoob_ = true;
 	}
-
 	//変更するかどうか
 	if (change_ == false)
 	{
-		if (FindObject("BackButton") == nullptr)
-		{
-			SCENE_CHANGE(SCENE_ID_LOBBY);
-		}
-
-		if (FindObject("OKButton") == nullptr)
-		{
-			Instantiate<OKButton>(this);
-			first_ = true;
-			change_ = true;
-		}
-
-		//キー操作
-		if (mouseMoob_ == false)
-		{
-			if (custom_ == CUSTOM_BACK)
-			{
-				pBack_->IsButton();
-			}
-			if (custom_ == CUSTOM_OK)
-			{
-				pOK_->IsButton();
-			}
-		}
+		BeforeChange();
 	}
 
 	//本当に変更するかどうか
-	if (change_ == true)
+	else if (change_ == true)
 	{
-		if (FindObject("BackButton") == nullptr)
-		{
-			Instantiate<BackButton>(this);
-			first_ = true;
-			change_ = false;
-		}
-
-		if (FindObject("OKButton") == nullptr)
-		{
-			Instantiate<OKButton>(this);
-			first_ = true;
-			change_ = false;
-		}
-
-		//キー操作
-		if (mouseMoob_ == false)
-		{
-			if (custom_ == CUSTOM_BACK)
-			{
-				pBack_->IsButton();
-			}
-			if (custom_ == CUSTOM_OK)
-			{
-				pOK_->IsButton();
-			}
-		}
+		AfterChange();
 	}
 }
 
@@ -121,4 +78,83 @@ void CustomScene::Draw()
 //開放
 void CustomScene::Release()
 {
+}
+
+void CustomScene::BeforeChange()
+{
+	if (FindObject("BackButton") == nullptr)
+	{
+		SCENE_CHANGE(SCENE_ID_LOBBY);
+	}
+
+	if (FindObject("OKButton") == nullptr)
+	{
+		pCurrent_->KillMe();
+		pParts_->KillMe();
+		Instantiate<FixeButton>(this);
+		Instantiate<OriginalStatus>(this);
+		Instantiate<ChangeStatus>(this);
+		change_ = true;
+	}
+
+	//キー操作
+	if (mouseMoob_ == false)
+	{
+		if (custom_ == CUSTOM_BACK)
+		{
+			pBack_->IsButton();
+		}
+		if (custom_ == CUSTOM_OK)
+		{
+			pOK_->IsButton();
+		}
+	}
+}
+
+void CustomScene::AfterChange()
+{
+	if (FindObject("BackButton") == nullptr)
+	{
+		Instantiate<BackButton>(this);
+		Instantiate<OKButton>(this);
+		Instantiate<CurrentStatus>(this);
+		Instantiate<PartsList>(this);
+		pFixe_->KillMe();
+		pOriginal_->KillMe();
+		pChange_->KillMe();
+		first_ = true;
+		change_ = false;
+		return;
+	}
+
+	if (FindObject("FixeButton") == nullptr)
+	{
+		Instantiate<OKButton>(this);
+		Instantiate<CurrentStatus>(this);
+		Instantiate<PartsList>(this);
+		pOriginal_->KillMe();
+		pChange_->KillMe();
+		first_ = true;
+		change_ = false;
+		return;
+	}
+	pFixe_ = (FixeButton*)FindObject("FixeButton");
+	assert(pFixe_ != nullptr);
+	pOriginal_ = (OriginalStatus*)FindObject("OriginalStatus");
+	assert(pOriginal_ != nullptr);
+	pChange_ = (ChangeStatus*)FindObject("ChangeStatus");
+	assert(pChange_ != nullptr);
+
+	//キー操作
+	if (mouseMoob_ == false)
+	{
+		if (custom_ == CUSTOM_BACK)
+		{
+			pBack_->IsButton();
+		}
+		if (custom_ == CUSTOM_OK)
+		{
+			pFixe_->IsButton();
+		}
+	}
 }
