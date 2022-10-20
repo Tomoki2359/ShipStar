@@ -215,6 +215,9 @@
     <ClCompile Include="Image\PartsList.cpp">
       <Filter>ソース ファイル\Image</Filter>
     </ClCompile>
+    <ClCompile Include="Building.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input.h">
@@ -387,6 +390,9 @@
     </ClInclude>
     <ClInclude Include="Image\PartsList.h">
       <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Building.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

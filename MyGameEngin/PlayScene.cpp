@@ -1,4 +1,5 @@
 #include "PlayScene.h"
+#include "Building.h"
 #include "Computer.h"
 #include "Course.h"
 #include "CourseOutObject.h"
@@ -31,6 +32,7 @@ void PlayScene::Initialize()
 	Instantiate<GoalObject>(this);
 	Instantiate<CourseOutObject>(this);
 	Instantiate<Observer>(this);
+	Instantiate<Building>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)

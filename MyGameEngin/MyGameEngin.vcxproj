@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Airframe.cpp" />
+    <ClCompile Include="Building.cpp" />
     <ClCompile Include="ButtonScene.cpp" />
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Course.cpp" />
@@ -231,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Airframe.h" />
+    <ClInclude Include="Building.h" />
     <ClInclude Include="ButtonScene.h" />
     <ClInclude Include="Computer.h" />
     <ClInclude Include="Course.h" />
