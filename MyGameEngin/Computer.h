@@ -44,7 +44,6 @@ class Computer : public Airframe
 	void TurnDirection();
 
 	void StayInside() override;
-	void StayOutside() override;
 public:
 	//コンストラクタ
 	Computer(GameObject* parent);

@@ -8,7 +8,8 @@
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f), Respawn_(), SaveCount_(NULL),
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f)
+	, RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1), Side_(true),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
@@ -52,12 +53,10 @@ void Airframe::Update()
 	if (start_)
 	{
 		pNav_ = (Navigation*)FindObject("Navigation");
-
-		//PassPoint();
 		LapMeasure();
 		JudgeGoal();
-
 		PrevPosition_ = transform_.position_;
+
 		//継承先で呼び出す
 		UpdateState();
 
@@ -154,8 +153,7 @@ void Airframe::Update()
 	//回転の値を矯正する
 	ResetOverRotate(&transform_.rotate_.x);
 	ResetOverRotate(&transform_.rotate_.y);
-	ResetOverRotate(&transform_.rotate_.z);
-
+	
 	//機体のX軸,Y軸の角度の取得
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
@@ -171,13 +169,18 @@ void Airframe::Update()
 	if (Side_)	//コース内にいる場合
 	{
 		StayInside();
+		RespawnPos_[RespawnUpdate_] = PrevPosition_;
+		RespawnRot_[RespawnUpdate_] = transform_.rotate_;
+		RespawnUpdate_++;
+		if (RespawnUpdate_ >= Past)	//配列の最大数は超えないようにする
+		{
+			RespawnUpdate_ = NULL;
+		}
 	}
 	else		//コース外にいる場合
 	{
-		//speed_ *= 0.97f;
-		StayOutside();
+		Respawn();
 	}
-	//CourseoutSaver();
 
 	//カメラを使用するかどうか
 	if (cCamera_ == true)
@@ -454,4 +457,12 @@ void Airframe::LapMeasure()
 	{
 		Lap_++;
 	}
+}
+
+void Airframe::Respawn()
+{
+	transform_.position_ = RespawnPos_[RespawnUpdate_ + 1];			//所定の位置に戻す
+	transform_.rotate_.x = RespawnRot_[RespawnUpdate_ + 1].x;		//回転も戻す
+	transform_.rotate_.y = RespawnRot_[RespawnUpdate_ + 1].y;
+	speed_ = NULL;						//スピードを0にする
 }

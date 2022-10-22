@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "Engine/Input.h"
 #include "Course.h"
-#include "CourseOutObject.h"
 #include "Engine/Model.h"
 
 void Player::StayInside()
@@ -12,43 +11,6 @@ void Player::StayInside()
 		CountInside_ = NULL;
 	}
 	CountInside_++;
-}
-
-void Player::StayOutside()
-{
-	XMMATRIX mRotate = XMMatrixIdentity();// = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
-
-	XMFLOAT3 dir = XMFLOAT3(transform_.position_.x - PrevPos_.x, transform_.position_.y - PrevPos_.y, transform_.position_.z - PrevPos_.z);
-
-	if (CountOutside_ == 60)
-	{
-		UpdateCObject(dir);
-		CountOutside_ = NULL;
-	}
-	
-	CountOutside_++;
-}
-
-void Player::UpdateCObject(XMFLOAT3 dir)
-{
-	Course* pCourse = (Course*)FindObject("Course");
-	int hCourseModel = pCourse->GetModelHandle();
-
-	CourseOutObject* pCO = (CourseOutObject*)FindObject("CourseOutObject");
-	int hCO = pCO->GetModelHandle();
-
-	XMFLOAT3 COpos = transform_.position_;
-
-	XMVECTOR vDir = XMLoadFloat3(&dir);
-	vDir = XMVector3Normalize(vDir);
-	vDir = -vDir;
-	XMStoreFloat3(&dir, vDir);
-
-	Model::PushOut(hCourseModel, &COpos, 5, dir);
-
-	pCO->SetPosition(COpos);
 }
 
 //コンストラクタ

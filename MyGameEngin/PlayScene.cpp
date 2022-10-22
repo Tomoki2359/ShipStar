@@ -2,7 +2,6 @@
 #include "Building.h"
 #include "Computer.h"
 #include "Course.h"
-#include "CourseOutObject.h"
 #include "GoalObject.h"
 #include "Navigation.h"
 #include "Player.h"
@@ -30,7 +29,6 @@ void PlayScene::Initialize()
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
 	Instantiate<GoalObject>(this);
-	Instantiate<CourseOutObject>(this);
 	Instantiate<Observer>(this);
 	Instantiate<Building>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));

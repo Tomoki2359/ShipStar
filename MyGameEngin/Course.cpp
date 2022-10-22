@@ -17,7 +17,7 @@ void Course::Initialize()
 	hModel_ = Model::Load("Assets\\DemoCourse3.fbx");
 	assert(hModel_ >= 0);
 	transform_.scale_.x = Size_;
-	transform_.scale_.y = 10;
+	transform_.scale_.y = 25;
 	transform_.scale_.z = Size_;
 }
 
@@ -31,7 +31,7 @@ void Course::Draw()
 {
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
-	Model::SetAlpha(hModel_, 0xcf);
+	//Model::SetAlpha(hModel_, 0xcf);
 }
 
 //ŠJ•ú

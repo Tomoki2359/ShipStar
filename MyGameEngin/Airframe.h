@@ -3,6 +3,8 @@
 #include "CSVReader.h"
 #include "Engine/GameObject.h"
 
+const short Past = 120;
+
 struct PARTS_NUM
 {
 	char COST;		//コスト
@@ -34,16 +36,9 @@ enum STATUS_ID
 //■■シーンを管理するクラス
 class Airframe : public GameObject
 {
-	//struct PASSAGE	//Checkpointとそこを通過したかの構造体
-	//{
-	//	XMFLOAT3 Point;
-	//	bool Pass;
-	//};
-	//
-	//std::vector<PASSAGE> PassageChecker_;
-
-	XMFLOAT3 Respawn_;
-	int SaveCount_;
+	XMFLOAT3 RespawnPos_[Past];
+	XMFLOAT3 RespawnRot_[Past];
+	short RespawnUpdate_;
 
 	short hModel_;   //モデル番号
 	float speed_;	//現在の速度
@@ -64,8 +59,6 @@ class Airframe : public GameObject
 
 	bool IsGoal_;	//ゴールした判定
 
-	//void PassPoint();	//各チェックポイントを通過したか判定
-
 	void LapMeasure();	//周回数の判定
 
 	void JudgeGoal();	//ゴールの判定
@@ -80,7 +73,7 @@ protected:
 	float PrevHeight_;
 
 	virtual void StayInside() = 0;
-	virtual void StayOutside() = 0;
+	void Respawn();
 
 public:
 	PARTS_NUM PartsSet;

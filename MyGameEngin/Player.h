@@ -8,9 +8,6 @@ class Player : public Airframe
 	int CountInside_;
 	int CountOutside_;
 	void StayInside() override;
-	void StayOutside() override;
-
-	void UpdateCObject(XMFLOAT3 dir);
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
