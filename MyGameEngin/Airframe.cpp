@@ -461,8 +461,9 @@ void Airframe::LapMeasure()
 
 void Airframe::Respawn()
 {
-	transform_.position_ = RespawnPos_[RespawnUpdate_ + 1];			//所定の位置に戻す
-	transform_.rotate_.x = RespawnRot_[RespawnUpdate_ + 1].x;		//回転も戻す
-	transform_.rotate_.y = RespawnRot_[RespawnUpdate_ + 1].y;
+	transform_.position_ = RespawnPos_[RespawnUpdate_];			//所定の位置に戻す
+	transform_.rotate_.x = RespawnRot_[RespawnUpdate_].x;		//回転も戻す
+	transform_.rotate_.y = RespawnRot_[RespawnUpdate_].y;
+	transform_.rotate_.z = NULL;
 	speed_ = NULL;						//スピードを0にする
 }
