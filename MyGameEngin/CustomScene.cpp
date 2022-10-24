@@ -136,6 +136,7 @@ void CustomScene::AfterChange()
 		pChange_->KillMe();
 		first_ = true;
 		change_ = false;
+		SCENE_CHANGE(SCENE_ID_LOBBY);
 		return;
 	}
 	pFixe_ = (FixeButton*)FindObject("FixeButton");
