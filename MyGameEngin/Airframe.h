@@ -66,14 +66,14 @@ class Airframe : public GameObject
 	void JudgeSide();
 
 	void ResetOverRotate(float* rotate);	//0~360°に留めておく為のもの
+
+	void Respawn();
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
 	XMFLOAT3 GetDistance(GameObject* pTarget);
-	float PrevHeight_;
 
 	virtual void StayInside() = 0;
-	void Respawn();
 
 public:
 	PARTS_NUM PartsSet;
@@ -131,9 +131,6 @@ public:
 
 	//ターボ
 	void Turbo();
-
-	//コース外に出ないようにしてみる
-	void CourseoutSaver();
 
 	float Getdistance(XMFLOAT3 a, XMFLOAT3 b);
 

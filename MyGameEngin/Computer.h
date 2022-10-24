@@ -26,8 +26,6 @@ class Computer : public Airframe
 		float Move_Front;	//正面
 		float Move_Left;	//左移動
 		float Move_Right;	//右移動
-		float Move_Above;	//上移動
-		float Move_Under;	//下移動
 	} PrCommand;	//各コマンドの優先順位を判定
 
 	void PosRel(GameObject* pTarget);		//他オブジェクトとの位置関係を判定
@@ -36,9 +34,6 @@ class Computer : public Airframe
 
 	void SetNextState(char M_STATUS);
 	void ResetNextState(char M_STATUS);
-
-	//コース底からの高さを一定にする
-	void HeightAdjustment();
 
 	//曲がる方向を示す
 	void TurnDirection();

@@ -71,39 +71,6 @@ void Computer::UpdateState()
 					ResetNextState(M_TURNL);
 				}
 			}
-
-			//if (/*PrCommand.Move_Above > PrCommand.Move_Front &&*/ PrCommand.Move_Above > PrCommand.Move_Under)
-			//{
-			//	if (Random < Accuracy_)
-			//	{
-			//		SetNextState(M_RISE);
-			//		ResetNextState(M_DESCENT);
-			//	}
-			//	else
-			//	{
-			//		ResetNextState(M_RISE);
-			//		ResetNextState(M_DESCENT);
-			//	}
-			//}
-			//else if (/*PrCommand.Move_Under > PrCommand.Move_Front &&*/ PrCommand.Move_Under > PrCommand.Move_Above)
-			//{
-			//	if (Random < Accuracy_)
-			//	{
-			//		SetNextState(M_DESCENT);
-			//		ResetNextState(M_RISE);
-			//	}
-			//	else
-			//	{
-			//		ResetNextState(M_RISE);
-			//		ResetNextState(M_DESCENT);
-			//	}
-			//}
-			//else
-			//{
-			//	ResetNextState(M_RISE);
-			//	ResetNextState(M_DESCENT);
-			//}
-			HeightAdjustment();
 		}
 	}
 	
@@ -184,37 +151,6 @@ void Computer::ResetNextState(char M_STATUS)
 	}
 }
 
-void Computer::HeightAdjustment()
-{
-	//レイ変換用
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
-
-	XMFLOAT3 Ray = XMFLOAT3(0.0f, -1.0f, 0.0f);
-
-	//レイキャスト
-	Course* pCourse = (Course*)FindObject("Course");
-	short hCourseModel = (short)pCourse->GetModelHandle();
-
-	RayCastData RayCast;
-	RayCast.start = transform_.position_;   //レイの発射位置
-	RayCast.dir = Ray;					 //レイの方向
-	Model::RayCast(hCourseModel, &RayCast); //レイを発射
-	if (RayCast.hit && RayCast.dist != PrevHeight_)
-	{
-		if (PrevHeight_ > RayCast.dist)
-		{
-			Descent();
-		}
-		else
-		{
-			Rise();
-		}
-		PrevHeight_ = RayCast.dist;
-	}
-}
-
 void Computer::TurnDirection()
 {
 	//レイ変換用
@@ -244,23 +180,17 @@ void Computer::TurnDirection()
 
 		mRotate = XMMatrixRotationX(XMConvertToRadians(tr.rotate_.x));
 		mRotate *= XMMatrixRotationY(XMConvertToRadians(tr.rotate_.y));
-		mRotate *= XMMatrixRotationZ(XMConvertToRadians(tr.rotate_.z));
+		//mRotate *= XMMatrixRotationZ(XMConvertToRadians(tr.rotate_.z));
 
 		XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 0.0f, 0.0f);
 		XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-		XMVECTOR Above = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-		XMVECTOR Under = XMVectorSet(0.0f, -1.0f, 0.0f, 0.0f);
 
 		Left = XMVector3TransformCoord(Left, mRotate);
 		Right = XMVector3TransformCoord(Right, mRotate);
-		Above = XMVector3TransformCoord(Above, mRotate);
-		Under = XMVector3TransformCoord(Under, mRotate);
 
-		XMFLOAT3 matL, matR, matA, matU;
+		XMFLOAT3 matL, matR;
 		XMStoreFloat3(&matL, Left);
 		XMStoreFloat3(&matR, Right);
-		XMStoreFloat3(&matA, Above);
-		XMStoreFloat3(&matU, Under);
 
 		RayCastData Ray_Right;		//斜め右にレイを飛ばす
 		Ray_Right.start = tr.position_;   //レイの発射位置
@@ -272,16 +202,6 @@ void Computer::TurnDirection()
 		Ray_Left.dir = matL;				     //レイの方向
 		Model::RayCast(hCourseModel, &Ray_Left); //レイを発射
 
-		RayCastData Ray_Above;	//上にレイを飛ばす
-		Ray_Above.start = tr.position_;   //レイの発射位置
-		Ray_Above.dir = matA;					 //レイの方向
-		Model::RayCast(hCourseModel, &Ray_Above); //レイを発射
-
-		RayCastData Ray_Under;	//下にレイを飛ばす
-		Ray_Under.start = tr.position_;   //レイの発射位置
-		Ray_Under.dir = matU;					 //レイの方向
-		Model::RayCast(hCourseModel, &Ray_Under); //レイを発射
-
 		if (Ray_Right.dist > Ray_Left.dist)
 		{
 			PrCommand.Move_Right = Ray_Right.dist * 2;
@@ -289,15 +209,6 @@ void Computer::TurnDirection()
 		if (Ray_Left.dist > Ray_Right.dist)
 		{
 			PrCommand.Move_Left = Ray_Left.dist * 2;
-		}
-
-		if (Ray_Above.dist > Ray_Under.dist)
-		{
-			PrCommand.Move_Above = Ray_Above.dist * 2;
-		}
-		if (Ray_Above.dist < Ray_Under.dist)
-		{
-			PrCommand.Move_Under = Ray_Under.dist * 2;
 		}
 	}
 }
@@ -311,32 +222,24 @@ void Computer::RayCasting()
 	//レイ変換用
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
+	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
 
 	XMVECTOR Straight = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR Right = XMVectorSet(1.0f, 0.0f, 1.0f, 0.0f);
-	XMVECTOR Above = XMVectorSet(0.0f, 1.0f, 1.0f, 0.0f);
-	XMVECTOR Under = XMVectorSet(0.0f, -1.0f, 1.0f, 0.0f);
 
 	Straight = XMVector3TransformCoord(Straight, mRotate);
 	Left = XMVector3TransformCoord(Left, mRotate);
 	Right = XMVector3TransformCoord(Right, mRotate);
-	Above = XMVector3TransformCoord(Above, mRotate);
-	Under = XMVector3TransformCoord(Under, mRotate);
 
 	Straight = XMVector3Normalize(Straight);
 	Left = XMVector3Normalize(Left);
 	Right = XMVector3Normalize(Right);
-	Above = XMVector3Normalize(Above);
-	Under = XMVector3Normalize(Under);
 
-	XMFLOAT3 matS, matL, matR, matA, matU;
+	XMFLOAT3 matS, matL, matR;
 	XMStoreFloat3(&matS, Straight);
 	XMStoreFloat3(&matL, Left);
 	XMStoreFloat3(&matR, Right);
-	XMStoreFloat3(&matA, Above);
-	XMStoreFloat3(&matU, Under);
 
 	//レイキャスト
 	Course* pCourse = (Course*)FindObject("Course");
@@ -380,33 +283,6 @@ void Computer::RayCasting()
 	{
 		PrCommand.Move_Left = -1;
 	}
-
-	RayCastData Ray_Above;	//上にレイを飛ばす
-	Ray_Above.start = transform_.position_;   //レイの発射位置
-	Ray_Above.dir = matA;					 //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Above); //レイを発射
-	if (Ray_Above.hit)
-	{
-		PrCommand.Move_Above = Ray_Above.dist;
-	}
-	else
-	{
-		PrCommand.Move_Above = -1;
-	}
-
-	RayCastData Ray_Under;	//下にレイを飛ばす
-	Ray_Under.start = transform_.position_;   //レイの発射位置
-	Ray_Under.dir = matU;					 //レイの方向
-	Model::RayCast(hCourseModel, &Ray_Under); //レイを発射
-	if (Ray_Under.hit)
-	{
-		PrCommand.Move_Under = Ray_Under.dist;
-	}
-	else
-	{
-		PrCommand.Move_Under = -1;
-	}
-	
 }
 
 void Computer::PosRel(GameObject* pTarget)

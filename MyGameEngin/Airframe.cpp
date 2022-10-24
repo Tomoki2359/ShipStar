@@ -8,9 +8,8 @@
 
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
-	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f)
-	, RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(0), Side_(true),
+	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(NULL), RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(NULL), Side_(true),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
@@ -30,8 +29,7 @@ void Airframe::Initialize()
 	csv.Load("Assets/PartsStatus.csv");
 
 	//全てデフォルト値で初期化
-	PartsSet = { NULL, NULL, NULL, NULL, NULL, NULL };
-
+	ZeroMemory(&PartsSet, sizeof(PartsSet));
 	//ステータスの取得
 	SetStatus();
 
@@ -43,7 +41,6 @@ void Airframe::Initialize()
 	status_[MAX_SPEED] = (float)((int)status_[MAX_SPEED] * 10000000 / 216000) / 10000;	//最高速度
 	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//加速度
 	status_[TURBO] = status_[TURBO] / 100 * 60;	//ターボ値
-	speed_ = 0;	//現在の速度
 
 	transform_.position_.z = 0.1f;
 	PrevPosition_ = transform_.position_;
@@ -67,7 +64,7 @@ void Airframe::Update()
 		if (lCurve_ == true)
 		{
 			//角度を戻す処理
-			transform_.rotate_.z -= 1;
+			transform_.rotate_.z--;
 			if (transform_.rotate_.z <= 0)
 			{
 				lCurve_ = false;
@@ -79,7 +76,7 @@ void Airframe::Update()
 		if (rCurve_ == true)
 		{
 			//角度を戻す処理
-			transform_.rotate_.z += 1;
+			transform_.rotate_.z++;
 			if (transform_.rotate_.z >= 0)
 			{
 				rCurve_ = false;
@@ -387,24 +384,6 @@ XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
 	return XMFLOAT3(DisX, DisY, DisZ);
 }
 
-void Airframe::CourseoutSaver()
-{
-	XMFLOAT3 fRay = XMFLOAT3(0.0f, -1.0f, 0.0f);
-
-	Course* pCourse = (Course*)FindObject("Course");
-	int hCourseModel = pCourse->GetModelHandle();
-
-	RayCastData data;
-	data.start = transform_.position_;   //レイの発射位置
-	data.dir = fRay;				      //レイの方向
-	Model::RayCast(hCourseModel, &data); //レイを発射
-
-	if (!data.hit)
-	{
-		speed_ *= 0.97f;
-	}
-}
-
 float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 {
 	float answer;
@@ -412,18 +391,6 @@ float Airframe::Getdistance(XMFLOAT3 a, XMFLOAT3 b)
 	answer = (float)sqrt(pow(c.x, 2.0) + pow(c.y, 2.0) + pow(c.z, 2.0));
 	return answer;
 }
-
-//void Airframe::PassPoint()
-//{
-//	for (auto it = PassageChecker_.begin(); it != PassageChecker_.end(); it++)
-//	{
-//		float dist = Getdistance(transform_.position_, (*it).Point);
-//		if(dist < 35 && (*it).Pass == false)
-//		{
-//			(*it).Pass = true;
-//		}
-//	}
-//}
 
 void Airframe::JudgeGoal()
 {
