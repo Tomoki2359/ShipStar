@@ -36,6 +36,10 @@ enum STATUS_ID
 //■■シーンを管理するクラス
 class Airframe : public GameObject
 {
+	const float RotationRate_Y = 1.5f;
+	const float RotationRate_Z = 2.0f;
+	const float RotationMax_Z = 40.0f;
+
 	XMFLOAT3 RespawnPos_[Past];
 	XMFLOAT3 RespawnRot_[Past];
 	short RespawnUpdate_;
@@ -67,7 +71,13 @@ class Airframe : public GameObject
 
 	void ResetOverRotate(float* rotate);	//0~360°に留めておく為のもの
 
-	void Respawn();
+	void Respawn();			//復帰処理
+
+	void FixInclination();	//回転の調整
+	void TurboProcess();	//ターボ処理
+	void MoveProcess();		//移動処理
+	void ChaseCamera();		//カメラを追わせる
+
 protected:
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
@@ -122,12 +132,6 @@ public:
 
 	//左カーブ
 	void TurnLeft();
-
-	//上昇
-	void Rise();
-
-	//下降
-	void Descent();
 
 	//ターボ
 	void Turbo();

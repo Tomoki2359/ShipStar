@@ -4,9 +4,6 @@
 //■■シーンを管理するクラス
 class Player : public Airframe
 {
-	XMFLOAT3 PrevPos_;
-	int CountInside_;
-	int CountOutside_;
 	void StayInside() override;
 public:
 	//コンストラクタ

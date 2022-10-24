@@ -60,78 +60,12 @@ void Airframe::Update()
 		//継承先で呼び出す
 		UpdateState();
 
-		//左に傾いている状態のとき
-		if (lCurve_ == true)
-		{
-			//角度を戻す処理
-			transform_.rotate_.z--;
-			if (transform_.rotate_.z <= 0)
-			{
-				lCurve_ = false;
-				transform_.rotate_.z = 0;
-			}
-		}
-
-		//右に傾いている状態のとき
-		if (rCurve_ == true)
-		{
-			//角度を戻す処理
-			transform_.rotate_.z++;
-			if (transform_.rotate_.z >= 0)
-			{
-				rCurve_ = false;
-				transform_.rotate_.z = 0;
-			}
-		}
-		
-		//上昇状態なら
-		if (cAscent_ == true)
-		{
-			if (transform_.position_.y >= 15)
-			{
-				transform_.rotate_.x += 0.4f;
-			}
-			transform_.rotate_.x += 0.2f;
-			if (transform_.rotate_.x >= 0)
-			{
-				cAscent_ = false;
-				transform_.rotate_.x = 0;
-			}
-		}
-
-		//下降状態なら
-		if (cDescent_ == true)
-		{
-			if (transform_.position_.y <= -5)
-			{
-				transform_.rotate_.x -= 0.4f;
-			}
-			transform_.rotate_.x -= 0.2f;
-			if (transform_.rotate_.x <= 0)
-			{
-				cDescent_ = false;
-				transform_.rotate_.x = 0;
-			}
-		}
+		FixInclination();
 
 		//速さや位置を一定にする
 		Limit();
 
-		//ターボ中の処理
-		if (cTurbo_ == true)
-		{
-			//スピードを上げる
-			speed_ = status_[MAX_SPEED] * 2.0f;
-			//時間が経ったら終わる
-			if (tTurbo_ >= status_[TURBO])
-			{
-				cTurbo_ = false;
-				tTurbo_ = 0;
-			}
-		}
-
-		//ターボ値を貯める
-		tTurbo_++;
+		TurboProcess();
 	}
 
 	//カウントダウン
@@ -145,25 +79,7 @@ void Airframe::Update()
 		}
 	}
 
-	//移動処理
-	//速度をベクターに変換
-	XMFLOAT3 Move_ = { 0,0,speed_ };
-	XMVECTOR vMove_ = XMLoadFloat3(&Move_);
-
-	//回転の値を矯正する
-	ResetOverRotate(&transform_.rotate_.x);
-	//ResetOverRotate(&transform_.rotate_.y);
-	
-	//機体のX軸,Y軸の角度の取得
-	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
-	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-
-	//現在地から機体の向きによって進む
-	vMove_ = XMVector3TransformCoord(vMove_, mRotate);
-	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
-	vPos += vMove_;
-	XMStoreFloat3(&transform_.position_, vPos);
-
+	MoveProcess();
 	JudgeSide();
 
 	if (Side_)	//コース内にいる場合
@@ -179,25 +95,12 @@ void Airframe::Update()
 	}
 	else		//コース外にいる場合
 	{
-		//Respawn();
+		Respawn();
 	}
 
-	//カメラを使用するかどうか
-	if (cCamera_ == true)
-	{
-		//カメラの設置
-		XMFLOAT3 camPos;
-		XMVECTOR vCam = XMVectorSet(0.0f, 5.0f, -10.0f, 0.0f);	//カメラの位置
-		XMMATRIX mRotate_ = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));	//Y軸回転
-		vCam = XMVector3TransformCoord(vCam, mRotate_);	//角度でカメラの位置を変更
-		XMStoreFloat3(&camPos, vPos + vCam);	//カメラの位置と自分の位置を合わせる
-		Camera::SetPosition(XMVectorSet(camPos.x, camPos.y, camPos.z, 1.0));
-
-		//カメラは自分の位置を見てる
-		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
-		Camera::SetTarget(Pos_);
-	}
+	ChaseCamera();
 }
+
 
 void Airframe::JudgeSide()
 {
@@ -233,18 +136,6 @@ void Airframe::Limit()
 	{
 		speed_ = status_[MAX_SPEED];
 	}
-
-	////一定以上上昇しない
-	//if (transform_.position_.y >= 15)
-	//{
-	//	transform_.position_.y = 15;
-	//}
-
-	////一定以下下降しない
-	//if (transform_.position_.y <= -5)
-	//{
-	//	transform_.position_.y = -5;
-	//}
 }
 
 void Airframe::SetPartsNum(char engine, char body, char wing, char cockpit, char pattern)
@@ -304,68 +195,36 @@ void Airframe::Decelerate()
 
 void Airframe::TurnRight()
 {
-	if (speed_ > 0)
+	if (speed_ > NULL)
 	{
-		transform_.rotate_.y += 1.5f;
+		transform_.rotate_.y += RotationRate_Y;
 	}
 	if (lCurve_ != true)
 	{
 		//右に曲がるときの傾き
-		transform_.rotate_.z -= 2;
+		transform_.rotate_.z -= RotationRate_Z;
 		rCurve_ = true;
-		if (transform_.rotate_.z <= -40)
+		if (transform_.rotate_.z <= -RotationMax_Z)
 		{
-			transform_.rotate_.z = -40;
+			transform_.rotate_.z = -RotationMax_Z;
 		}
 	}
 }
 
 void Airframe::TurnLeft()
 {
-	if (speed_ > 0)
+	if (speed_ > NULL)
 	{
-		transform_.rotate_.y -= 1.5f;
+		transform_.rotate_.y -= RotationRate_Y;
 	}
 	if (rCurve_ != true)
 	{
 		//左に曲がるときの傾き
-		transform_.rotate_.z += 2;
+		transform_.rotate_.z += RotationRate_Z;
 		lCurve_ = true;
-		if (transform_.rotate_.z >= 40)
+		if (transform_.rotate_.z >= RotationMax_Z)
 		{
-			transform_.rotate_.z = 40;
-		}
-	}
-}
-
-void Airframe::Rise()
-{
-	//下降状態ではないとき
-	if (cDescent_ != true)
-	{
-		//上昇状態にする
-		transform_.rotate_.x -= 0.4f;
-		cAscent_ = true;
-		//角度が15を超えたら15にする
-		if (transform_.rotate_.x <= -25)
-		{
-			transform_.rotate_.x = -25;
-		}
-	}
-}
-
-void Airframe::Descent()
-{
-	//上昇状態ではないとき
-	if (cAscent_ != true)
-	{
-		//下降状態にする
-		transform_.rotate_.x += 0.4f;
-		cDescent_ = true;
-		//角度が－15を超えたら-15にする
-		if (transform_.rotate_.x >= 25)
-		{
-			transform_.rotate_.x = 25;
+			transform_.rotate_.z = RotationMax_Z;
 		}
 	}
 }
@@ -436,4 +295,89 @@ void Airframe::Respawn()
 	transform_.rotate_.y = RespawnRot_[RespawnUpdate_].y;
 	transform_.rotate_.z = NULL;
 	speed_ = NULL;						//スピードを0にする
+}
+
+void Airframe::FixInclination()
+{
+	//左に傾いている状態のとき
+	if (lCurve_)
+	{
+		//角度を戻す処理
+		transform_.rotate_.z--;
+		if (transform_.rotate_.z <= NULL)
+		{
+			lCurve_ = false;
+			transform_.rotate_.z = NULL;
+		}
+	}
+
+	//右に傾いている状態のとき
+	if (rCurve_)
+	{
+		//角度を戻す処理
+		transform_.rotate_.z++;
+		if (transform_.rotate_.z >= NULL)
+		{
+			rCurve_ = false;
+			transform_.rotate_.z = NULL;
+		}
+	}
+}
+
+void Airframe::TurboProcess()
+{
+	//ターボ中の処理
+	if (cTurbo_)
+	{
+		//スピードを上げる
+		speed_ = status_[MAX_SPEED] * 2.0f;
+		//時間が経ったら終わる
+		if (tTurbo_ >= status_[TURBO])
+		{
+			cTurbo_ = false;
+			tTurbo_ = NULL;
+		}
+	}
+
+	//ターボ値を貯める
+	tTurbo_++;
+}
+
+void Airframe::MoveProcess()
+{
+	//移動処理
+	//速度をベクターに変換
+	//XMFLOAT3 Move_ = { 0,0,speed_ };
+	XMVECTOR vMove_ = XMVectorSet(NULL, NULL, speed_, NULL);//XMLoadFloat3(&Move_);
+
+	//機体のX軸,Y軸の角度の取得
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+
+	//現在地から機体の向きによって進む
+	vMove_ = XMVector3TransformCoord(vMove_, mRotate);
+	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
+	vPos += vMove_;
+	XMStoreFloat3(&transform_.position_, vPos);
+}
+
+void Airframe::ChaseCamera()
+{
+	//カメラを使用するかどうか
+	if (cCamera_)
+	{
+		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
+
+		//カメラの設置
+		XMFLOAT3 camPos;
+		XMVECTOR vCam = XMVectorSet(0.0f, 5.0f, -10.0f, 0.0f);	//カメラの位置
+		XMMATRIX mRotate_ = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));	//Y軸回転
+		vCam = XMVector3TransformCoord(vCam, mRotate_);	//角度でカメラの位置を変更
+		XMStoreFloat3(&camPos, vPos + vCam);	//カメラの位置と自分の位置を合わせる
+		Camera::SetPosition(XMVectorSet(camPos.x, camPos.y, camPos.z, 1.0));
+
+		//カメラは自分の位置を見てる
+		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
+		Camera::SetTarget(Pos_);
+	}
 }

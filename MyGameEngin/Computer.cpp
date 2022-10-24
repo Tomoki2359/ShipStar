@@ -104,16 +104,6 @@ void Computer::UpdateState()
 	{
 		TurnLeft();
 	}
-	//‰º~‚·‚é
-	if (VirtualState_ & M_DESCENT && !(VirtualState_ & M_RISE))
-	{
-		Descent();
-	}
-	//ã¸‚·‚é
-	if (VirtualState_ & M_RISE && !(VirtualState_ & M_DESCENT))
-	{
-		Rise();
-	}
 	
 	//ƒ^[ƒ{
 	//300‚Í‡ˆÊ‚É‚æ‚Á‚Ä”­“®‚·‚éŠÔ‚ª•Ï“®‚·‚é(Å‰ºˆÊ‚©‚ç5•b,10•b,15•b,20•b)

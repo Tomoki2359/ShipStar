@@ -5,8 +5,6 @@ class Computer : public Airframe
 {
 	//Šeó‘Ô‚Ì’è‹`
 	const char M_TURBO = 0x20;
-	const char M_RISE = 0x10;
-	const char M_DESCENT = 0x08;
 	const char M_TURNL = 0x04;
 	const char M_TURNR = 0x02;
 	const char M_ACCEL = 0x01;

@@ -5,17 +5,11 @@
 
 void Player::StayInside()
 {
-	if (CountInside_ == 60)
-	{
-		PrevPos_ = transform_.position_;
-		CountInside_ = NULL;
-	}
-	CountInside_++;
 }
 
 //ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 Player::Player(GameObject* parent)
-	: Airframe(parent, "Player"), PrevPos_(), CountInside_(), CountOutside_()
+	: Airframe(parent, "Player")
 {
 }
 
@@ -45,16 +39,7 @@ void Player::UpdateState()
 	{
 		TurnRight();
 	}
-	//ã¸‚·‚é
-	if (Input::IsKey(DIK_E) && !Input::IsKey(DIK_Q))
-	{
-		Rise();
-	}
-	//‰º~‚·‚é
-	if (Input::IsKey(DIK_Q) && !Input::IsKey(DIK_E))
-	{
-		Descent();
-	}
+
 	//ƒ^[ƒ{
 	//300‚Í‡ˆÊ‚É‚æ‚Á‚Ä”­“®‚·‚éŽžŠÔ‚ª•Ï“®‚·‚é(Å‰ºˆÊ‚©‚ç5•b,10•b,15•b,20•b)
 	if (tTurbo_ >= 300 && Input::IsKeyDown(DIK_C))
