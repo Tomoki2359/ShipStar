@@ -25,7 +25,7 @@ void PlayBackground::Initialize()
 void PlayBackground::Update()
 {
 	Player* pPlayer = (Player*)FindObject("Player");
-	transform_.position_.x = -pPlayer->GetRotate().y / 400;
+	transform_.position_.x = -pPlayer->GetRotate().y / 800;
 }
 
 //•`‰æ
