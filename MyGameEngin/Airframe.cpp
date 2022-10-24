@@ -152,7 +152,7 @@ void Airframe::Update()
 
 	//回転の値を矯正する
 	ResetOverRotate(&transform_.rotate_.x);
-	ResetOverRotate(&transform_.rotate_.y);
+	//ResetOverRotate(&transform_.rotate_.y);
 	
 	//機体のX軸,Y軸の角度の取得
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
@@ -179,7 +179,7 @@ void Airframe::Update()
 	}
 	else		//コース外にいる場合
 	{
-		Respawn();
+		//Respawn();
 	}
 
 	//カメラを使用するかどうか
