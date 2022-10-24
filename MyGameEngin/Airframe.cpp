@@ -10,7 +10,7 @@
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(0.0f), PrevHeight_(10.0f)
 	, RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(-1), Side_(true),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(0), Side_(true),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
 {
 }
@@ -44,6 +44,9 @@ void Airframe::Initialize()
 	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//加速度
 	status_[TURBO] = status_[TURBO] / 100 * 60;	//ターボ値
 	speed_ = 0;	//現在の速度
+
+	transform_.position_.z = 0.1f;
+	PrevPosition_ = transform_.position_;
 }
 
 //更新
