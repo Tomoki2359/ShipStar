@@ -19,6 +19,8 @@ void Course::Initialize()
 	transform_.scale_.x = Size_;
 	transform_.scale_.y = 25;
 	transform_.scale_.z = Size_;
+	Model::SetAlpha(hModel_, 200);
+	Model::IsZBuffer(hModel_, false);
 }
 
 //çXêV

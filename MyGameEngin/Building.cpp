@@ -19,6 +19,7 @@ void Building::Initialize()
 	transform_.scale_.x = Size_;
 	transform_.scale_.y = 10;
 	transform_.scale_.z = Size_;
+	//Model::IsZBuffer(hModel_, false);
 }
 
 //çXêV
