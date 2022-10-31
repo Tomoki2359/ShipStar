@@ -5,7 +5,7 @@
 #include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand()
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(), Future_()
 {
 }
 
@@ -28,16 +28,16 @@ void Computer::UpdateState()
 		{
 			SetNextState(M_ACCEL);
 
-			PlayScene* pPlayScene = (PlayScene*)FindObject("PlayScene");
+			/*PlayScene* pPlayScene = (PlayScene*)FindObject("PlayScene");
 			for (auto i = pPlayScene->PlayerList_.begin(); i != pPlayScene->PlayerList_.end(); i++)
 			{
 				if (*i != this)
 				{
 					PosRel(*i);
 				}
-			}
-			/*GameObject* pPlayer = FindObject("Player");
-			PosRel(pPlayer);*/
+			}*/
+			GameObject* pPlayer = FindObject("Player");
+			PosRel(pPlayer);
 
 			if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//真っ直ぐに飛ばしたレイが最も長かった場合
 			{
@@ -107,7 +107,7 @@ void Computer::UpdateState()
 	
 	//ターボ
 	//300は順位によって発動する時間が変動する(最下位から5秒,10秒,15秒,20秒)
-	if (tTurbo_ >= 300 && (VirtualState_ & M_TURBO))
+	if (VirtualState_ & M_TURBO)
 	{
 		tTurbo_ = NULL;
 		Turbo();
@@ -207,12 +207,36 @@ void Computer::StayInside()
 {
 }
 
+void Computer::UseTurbo(float dist)
+{
+	if (dist > 100 && tTurbo_ >= 300)
+	{
+		cTurbo_ = true;
+		SetNextState(M_TURBO);
+	}
+}
+
+char Computer::GetHighestPriority()
+{
+	if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//真っ直ぐに飛ばしたレイが最も長かった場合
+	{
+		return PR_Front;
+	}
+	if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
+	{
+		return PR_Right;
+	}
+	if (PrCommand.Move_Left > PrCommand.Move_Front && PrCommand.Move_Left > PrCommand.Move_Right)
+	{
+		return PR_Left;
+	}
+}
+
 void Computer::RayCasting()
 {
 	//レイ変換用
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate *= XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
-	//mRotate *= XMMatrixRotationZ(XMConvertToRadians(transform_.rotate_.z));
 
 	XMVECTOR Straight = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR Left = XMVectorSet(-1.0f, 0.0f, 1.0f, 0.0f);
@@ -273,6 +297,26 @@ void Computer::RayCasting()
 	{
 		PrCommand.Move_Left = -1;
 	}
+
+	UseTurbo(Ray_Straight.dist);
+}
+
+void Computer::LookFuture()
+{
+	XMVECTOR vMove_ = XMVectorSet(NULL, NULL, this->GetSpeed(), NULL);
+
+	//機体のX軸,Y軸の角度の取得
+	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
+	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
+
+	//現在地から機体の向きによって進む
+	vMove_ = XMVector3TransformCoord(vMove_, mRotate);
+	vMove_ = vMove_ * 60;
+	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
+	vPos += vMove_;
+	XMStoreFloat3(&Future_, vPos);
+
+	bool FSide = JudgeSide(Future_);
 }
 
 void Computer::PosRel(GameObject* pTarget)

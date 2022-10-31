@@ -114,6 +114,18 @@ void Airframe::JudgeSide()
 	Side_ = data.hit;
 }
 
+bool Airframe::JudgeSide(XMFLOAT3 pos)
+{
+	Course* pCourse = (Course*)FindObject("Course");
+	int hCourseModel = pCourse->GetModelHandle();
+
+	RayCastData data;
+	data.start = pos;
+	data.dir = XMFLOAT3(NULL, -1.0, NULL);
+	Model::RayCast(hCourseModel, &data);
+	return data.hit;
+}
+
 //描画
 void Airframe::Draw()
 {
@@ -346,9 +358,7 @@ void Airframe::TurboProcess()
 void Airframe::MoveProcess()
 {
 	//移動処理
-	//速度をベクターに変換
-	//XMFLOAT3 Move_ = { 0,0,speed_ };
-	XMVECTOR vMove_ = XMVectorSet(NULL, NULL, speed_, NULL);//XMLoadFloat3(&Move_);
+	XMVECTOR vMove_ = XMVectorSet(NULL, NULL, speed_, NULL);
 
 	//機体のX軸,Y軸の角度の取得
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));

@@ -7,7 +7,6 @@ const short Past = 120;
 
 struct PARTS_NUM
 {
-	char COST;		//コスト
 	short ENGINE;	//エンジン
 	short BODY;		//ボディ
 	short WING;		//翼
@@ -67,7 +66,7 @@ class Airframe : public GameObject
 
 	void JudgeGoal();	//ゴールの判定
 
-	void JudgeSide();
+
 
 	void ResetOverRotate(float* rotate);	//0~360°に留めておく為のもの
 
@@ -79,6 +78,9 @@ class Airframe : public GameObject
 	void ChaseCamera();		//カメラを追わせる
 
 protected:
+	void JudgeSide();
+	bool JudgeSide(XMFLOAT3 pos);
+
 	short tTurbo_;	//ターボ値を貯める
 	bool cTurbo_;	//ターボ状態かどうか
 	XMFLOAT3 GetDistance(GameObject* pTarget);
@@ -141,4 +143,6 @@ public:
 	bool GetisGoal() { return IsGoal_; }
 
 	bool GetStart() { return start_; }
+
+	float GetSpeed() { return speed_; }
 };

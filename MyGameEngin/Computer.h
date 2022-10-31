@@ -3,6 +3,13 @@
 
 class Computer : public Airframe
 {
+	enum
+	{
+		PR_Front,
+		PR_Right,
+		PR_Left
+	};
+
 	//各状態の定義
 	const char M_TURBO = 0x20;
 	const char M_TURNL = 0x04;
@@ -26,6 +33,9 @@ class Computer : public Airframe
 		float Move_Right;	//右移動
 	} PrCommand;	//各コマンドの優先順位を判定
 
+	XMFLOAT3 Future_;
+	void LookFuture();
+
 	void PosRel(GameObject* pTarget);		//他オブジェクトとの位置関係を判定
 
 	void RayCasting();
@@ -37,6 +47,10 @@ class Computer : public Airframe
 	void TurnDirection();
 
 	void StayInside() override;
+
+	void UseTurbo(float dist);
+
+	char GetHighestPriority();
 public:
 	//コンストラクタ
 	Computer(GameObject* parent);

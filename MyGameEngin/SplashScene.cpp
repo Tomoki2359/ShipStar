@@ -1,6 +1,8 @@
 #include "SplashScene.h"
 #include "Engine/Image.h"
 #include "Engine/Input.h"
+#include "Option.h"
+
 //コンストラクタ
 SplashScene::SplashScene(GameObject* parent)
 	: GameObject(parent, "SplashScene"), startTime_(35), change_(290),alpha_(0),time_(0), MoveAlpha_(4), hPict_{ -1 ,-1 }
@@ -19,6 +21,8 @@ void SplashScene::Initialize()
 	assert(hPict_[LOGO_SCHOOL] >= 0);
 	SetScreen(UINT8_MAX, UINT8_MAX, UINT8_MAX);
 	Image::SetAlpha(hPict_[LOGO_TEAM], 0);
+
+	Option::Init();
 }
 
 //更新
