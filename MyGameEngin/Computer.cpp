@@ -26,40 +26,27 @@ void Computer::UpdateState()
 
 		if (PrCommand.Move_Front > NULL && PrCommand.Move_Right > NULL && PrCommand.Move_Left > NULL)
 		{
-			SetNextState(M_ACCEL);
-
-			/*PlayScene* pPlayScene = (PlayScene*)FindObject("PlayScene");
-			for (auto i = pPlayScene->PlayerList_.begin(); i != pPlayScene->PlayerList_.end(); i++)
+			if (PrCommand.Move_Front < 3)
 			{
-				if (*i != this)
-				{
-					PosRel(*i);
-				}
-			}*/
+				ResetNextState(M_ACCEL);
+			}
+			else
+			{
+				SetNextState(M_ACCEL);
+			}
+
+			PrCommand.Move_Front -= 3;	//試験的に影響度を下げてみる
+
 			GameObject* pPlayer = FindObject("Player");
 			PosRel(pPlayer);
 
-			if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//真っ直ぐに飛ばしたレイが最も長かった場合
+			switch (GetHighestPriority())
 			{
+			case PR_Front:
 				ResetNextState(M_TURNR);
 				ResetNextState(M_TURNL);
-			}
-			if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
-			{
-				if (Random < Accuracy_)
-				{
-					SetNextState(M_TURNR);
-					ResetNextState(M_TURNL);
-				}
-				else
-				{
-					ResetNextState(M_TURNR);
-					ResetNextState(M_TURNL);
-				}
-				
-			}
-			if (PrCommand.Move_Left > PrCommand.Move_Front && PrCommand.Move_Left > PrCommand.Move_Right)
-			{
+				break;
+			case PR_Left:
 				if (Random < Accuracy_)
 				{
 					SetNextState(M_TURNL);
@@ -70,6 +57,19 @@ void Computer::UpdateState()
 					ResetNextState(M_TURNR);
 					ResetNextState(M_TURNL);
 				}
+				break;
+			case PR_Right:
+				if (Random < Accuracy_)
+				{
+					SetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				else
+				{
+					ResetNextState(M_TURNR);
+					ResetNextState(M_TURNL);
+				}
+				break;
 			}
 		}
 	}
@@ -83,35 +83,8 @@ void Computer::UpdateState()
 	{
 		UpdateLimit++;
 	}
-	
-	//前進する
-	if (VirtualState_ & M_ACCEL)
-	{
-		Accelerate();
-	}
-	//ブレーキする
-	if (VirtualState_ & NULL)
-	{
-		Decelerate();
-	}
-	//右にカーブする
-	if (VirtualState_ & M_TURNR && !(VirtualState_ & M_TURNL))
-	{
-		TurnRight();
-	}
-	//左にカーブする
-	if (VirtualState_ & M_TURNL && !(VirtualState_ & M_TURNR))
-	{
-		TurnLeft();
-	}
-	
-	//ターボ
-	//300は順位によって発動する時間が変動する(最下位から5秒,10秒,15秒,20秒)
-	if (VirtualState_ & M_TURBO)
-	{
-		tTurbo_ = NULL;
-		Turbo();
-	}
+
+	Reflect();
 
 	//状態変化がある場合にのみ呼び出す
 	if (VirtualState_ != NextState_)
@@ -218,10 +191,6 @@ void Computer::UseTurbo(float dist)
 
 char Computer::GetHighestPriority()
 {
-	if (PrCommand.Move_Front > PrCommand.Move_Right && PrCommand.Move_Front > PrCommand.Move_Left)	//真っ直ぐに飛ばしたレイが最も長かった場合
-	{
-		return PR_Front;
-	}
 	if (PrCommand.Move_Right > PrCommand.Move_Front && PrCommand.Move_Right > PrCommand.Move_Left)
 	{
 		return PR_Right;
@@ -230,6 +199,52 @@ char Computer::GetHighestPriority()
 	{
 		return PR_Left;
 	}
+	return PR_Front;
+}
+
+void Computer::Reflect()
+{
+	//前進する
+	if (VirtualState_ & M_ACCEL)
+	{
+		Accelerate();
+	}
+	//ブレーキする
+	if (VirtualState_ & NULL)
+	{
+		Decelerate();
+	}
+	//右にカーブする
+	if (VirtualState_ & M_TURNR && !(VirtualState_ & M_TURNL))
+	{
+		TurnRight();
+	}
+	//左にカーブする
+	if (VirtualState_ & M_TURNL && !(VirtualState_ & M_TURNR))
+	{
+		TurnLeft();
+	}
+
+	//ターボ
+	//300は順位によって発動する時間が変動する(最下位から5秒,10秒,15秒,20秒)
+	if (VirtualState_ & M_TURBO)
+	{
+		tTurbo_ = NULL;
+		Turbo();
+	}
+}
+
+std::pair<char, float> Computer::Deduction(float DistF, float DistL, float DistR)
+{
+	if (PrCommand.Move_Right < PrCommand.Move_Front && PrCommand.Move_Right < PrCommand.Move_Left)
+	{
+		return { PR_Right, DistR };
+	}
+	if (PrCommand.Move_Left < PrCommand.Move_Front && PrCommand.Move_Left < PrCommand.Move_Right)
+	{
+		return { PR_Left, DistL };
+	}
+	return { PR_Front, DistF };
 }
 
 void Computer::RayCasting()
@@ -298,6 +313,18 @@ void Computer::RayCasting()
 		PrCommand.Move_Left = -1;
 	}
 
+	const short Increase = 5;
+	switch (Deduction(Ray_Straight.dist, Ray_Left.dist, Ray_Right.dist).first)
+	{
+	case PR_Left:
+		PrCommand.Move_Right += Increase;
+		break;
+	case PR_Right:
+		PrCommand.Move_Left += Increase;
+		break;
+	}
+	
+	
 	UseTurbo(Ray_Straight.dist);
 }
 

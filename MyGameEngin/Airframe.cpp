@@ -90,11 +90,14 @@ void Airframe::Update()
 		RespawnUpdate_++;
 		if (RespawnUpdate_ >= Past)	//配列の最大数は超えないようにする
 		{
+			cTurbo_ = false;
+			tTurbo_ = NULL;
 			RespawnUpdate_ = NULL;
 		}
 	}
 	else		//コース外にいる場合
 	{
+
 		Respawn();
 	}
 
@@ -175,7 +178,7 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
-	if (this->objectName_ == "Player")
+	if (this->objectName_ == "Computer")
 	{
 		cCamera_ = true;	//カメラON
 	}

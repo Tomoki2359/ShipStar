@@ -51,6 +51,10 @@ class Computer : public Airframe
 	void UseTurbo(float dist);
 
 	char GetHighestPriority();
+
+	void Reflect();
+
+	std::pair<char, float> Deduction(float DistF, float DistL, float DistR);
 public:
 	//コンストラクタ
 	Computer(GameObject* parent);
