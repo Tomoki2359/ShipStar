@@ -117,6 +117,14 @@ void Airframe::JudgeSide()
 	Side_ = data.hit;
 }
 
+void Airframe::JudgeSide(RayCastData& data)
+{
+	Course* pCourse = (Course*)FindObject("Course");
+	int hCourseModel = pCourse->GetModelHandle();
+	data.dir = XMFLOAT3(NULL, -1.0, NULL);
+	Model::RayCast(hCourseModel, &data);
+}
+
 bool Airframe::JudgeSide(XMFLOAT3 pos)
 {
 	Course* pCourse = (Course*)FindObject("Course");

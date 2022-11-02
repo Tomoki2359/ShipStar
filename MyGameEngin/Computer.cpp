@@ -5,7 +5,7 @@
 #include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 20), PrCommand(), Future_()
+	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 10), PrCommand(), Future_()
 {
 }
 
@@ -23,6 +23,7 @@ void Computer::UpdateState()
 		
 		RayCasting();
 		TurnDirection();
+		LookFuture();
 
 		if (PrCommand.Move_Front > NULL && PrCommand.Move_Right > NULL && PrCommand.Move_Left > NULL)
 		{
@@ -76,7 +77,7 @@ void Computer::UpdateState()
 	
 	if (UpdateLimit >= UpdateDecider)
 	{
-		UpdateDecider = (rand() % 10) + 20;
+		UpdateDecider = (rand() % 10) + 10;
 		UpdateLimit = NULL;
 	}
 	else
@@ -338,12 +339,23 @@ void Computer::LookFuture()
 
 	//Œ»İ’n‚©‚ç‹@‘Ì‚ÌŒü‚«‚É‚æ‚Á‚Äi‚Ş
 	vMove_ = XMVector3TransformCoord(vMove_, mRotate);
-	vMove_ = vMove_ * 60;
+	vMove_ = vMove_ * 2;
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
 	vPos += vMove_;
 	XMStoreFloat3(&Future_, vPos);
 
-	bool FSide = JudgeSide(Future_);
+	RayCastData Data;
+	Data.start = transform_.position_;
+	JudgeSide(Data);
+
+	RayCastData fData;
+	fData.start = Future_;
+	JudgeSide(fData);
+
+	if (fData.dist < Data.dist)
+	{
+		PrCommand.Move_Front -= (Data.dist - fData.dist) * 5;
+	}
 }
 
 void Computer::PosRel(GameObject* pTarget)

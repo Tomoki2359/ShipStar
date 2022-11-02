@@ -79,6 +79,7 @@ class Airframe : public GameObject
 
 protected:
 	void JudgeSide();
+	void JudgeSide(RayCastData& data);
 	bool JudgeSide(XMFLOAT3 pos);
 
 	short tTurbo_;	//ターボ値を貯める
