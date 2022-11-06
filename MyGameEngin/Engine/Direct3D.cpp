@@ -10,8 +10,10 @@ namespace Direct3D
 	IDXGISwapChain* pSwapChain;					//スワップチェイン
 	ID3D11RenderTargetView* pRenderTargetView;	//レンダーターゲットビュー
 	ID3D11Texture2D* pDepthStencil;			//深度ステンシル
-	ID3D11BlendState* pBlendState;				//ブレンドステート(透明の表現方法のこと	)
+	ID3D11BlendState* pBlendState[BLEND_MAX];				//ブレンドステート(透明の表現方法のこと	)
 	ID3D11DepthStencilView* pDepthStencilView;		//深度ステンシルビュー
+
+	ID3D11DepthStencilState* pDepthStencilState[BLEND_MAX];
 
 	//スクリーンの色
 	float red_;
@@ -142,9 +144,14 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
 	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	pDevice->CreateBlendState(&BlendDesc, &pBlendState);
+	pDevice->CreateBlendState(&BlendDesc, &pBlendState[BLEND_DEFAULT]);
 	float blendFactor[4] = { D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO };
-	pContext->OMSetBlendState(pBlendState, blendFactor, 0xffffffff);
+	pContext->OMSetBlendState(pBlendState[BLEND_DEFAULT], blendFactor, 0xffffffff);
+
+	//加算合成（重なるほど光って見える効果）
+	BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	pDevice->CreateBlendState(&BlendDesc, &pBlendState[BLEND_ADD]);
 
 	//データを画面に描画するための一通りの設定（パイプライン）
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
@@ -175,6 +182,11 @@ HRESULT Direct3D::InitShader()
 	}
 
 	if (FAILED(InitShader2D()))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(InitShaderBillboard()))
 	{
 		return E_FAIL;
 	}
@@ -302,6 +314,42 @@ HRESULT Direct3D::InitShader2D()
 	return S_OK;
 }
 
+HRESULT Direct3D::InitShaderBillboard()
+{
+	// 頂点シェーダの作成（コンパイル）
+	ID3DBlob* pCompileVS = NULL;
+	D3DCompileFromFile(L"BillBoard.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &shaderBundle[SHADER_BILLBOARD].pVertexShader);
+
+
+	// ピクセルシェーダの作成（コンパイル）
+	ID3DBlob* pCompilePS = NULL;
+	D3DCompileFromFile(L"BillBoard.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &shaderBundle[SHADER_BILLBOARD].pPixelShader);
+
+
+	// 頂点レイアウトの作成（1頂点の情報が何のデータをどんな順番で持っているか）
+	D3D11_INPUT_ELEMENT_DESC layout[] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, sizeof(XMVECTOR), D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	pDevice->CreateInputLayout(layout, 2, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &shaderBundle[SHADER_BILLBOARD].pVertexLayout);
+
+
+	//シェーダーが無事作成できたので、コンパイルしたやつはいらない
+	pCompileVS->Release();
+	pCompilePS->Release();
+
+	//ラスタライザ作成
+	D3D11_RASTERIZER_DESC rdc = {};
+	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.FillMode = D3D11_FILL_SOLID;
+	rdc.FrontCounterClockwise = TRUE;
+	pDevice->CreateRasterizerState(&rdc, &shaderBundle[SHADER_BILLBOARD].pRasterizerState);
+
+	return S_OK;
+}
+
 void Direct3D::SetShader(SHADER_TYPE type)
 {
 	//それぞれをデバイスコンテキストにセット
@@ -423,4 +471,14 @@ bool  Direct3D::Intersect(XMFLOAT3& start, XMFLOAT3& direction, XMFLOAT3& v0, XM
 
 	*distance = t;
 	return true;
+}
+
+void Direct3D::SetBlendMode(BLEND_MODE blendMode)
+{
+	//加算合成
+	float blendFactor[4] = { D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO };
+	pContext->OMSetBlendState(pBlendState[blendMode], blendFactor, 0xffffffff);
+
+	//Zバッファへの書き込み
+	pContext->OMSetDepthStencilState(pDepthStencilState[blendMode], 0);
 }

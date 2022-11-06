@@ -10,16 +10,22 @@
 
 using namespace DirectX;
 
-
 enum SHADER_TYPE
 {
 	SHADER_2D,
 	SHADER_3D,
+	SHADER_BILLBOARD,
 	SHADER_MAX
 };
 
 namespace Direct3D
 {
+
+	enum BLEND_MODE
+	{
+		BLEND_DEFAULT, BLEND_ADD, BLEND_MAX
+	};
+
 	extern ID3D11Device* pDevice;				//デバイス
 	extern ID3D11DeviceContext* pContext;		//デバイスコンテキスト
 	extern int scrWidth, scrHeight;			//スクリーンの幅と高さ
@@ -31,6 +37,7 @@ namespace Direct3D
 	HRESULT InitShader();
 	HRESULT InitShader3D();
 	HRESULT InitShader2D();
+	HRESULT InitShaderBillboard();
 
 	void SetShader(SHADER_TYPE type);
 
@@ -51,4 +58,7 @@ namespace Direct3D
 
 	//三角形と線分の衝突判定
 	bool Intersect(XMFLOAT3& start, XMFLOAT3& direction, XMFLOAT3& v0, XMFLOAT3& v1, XMFLOAT3& v2, float* distance);
+
+	//ブレンドモードの変更
+	void SetBlendMode(BLEND_MODE blendMode);
 };

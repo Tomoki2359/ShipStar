@@ -26,7 +26,7 @@ HRESULT Texture::Load(LPCWSTR fileName)
 	hr = pFactory->CreateDecoderFromFilename(fileName, NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &pDecoder);
 	if (FAILED(hr))
 	{
-		MessageBox(NULL, L"デコーダーに失敗しました", L"エラー", MB_OK);
+		//MessageBox(NULL, L"デコーダーに失敗しました", L"エラー", MB_OK);
 		return hr;
 	}
 	pDecoder->GetFrame(0, &pFrame);

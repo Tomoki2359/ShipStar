@@ -3,6 +3,8 @@
 #include "Engine/SceneManager.h"
 #include "Engine/Image.h"
 
+#include "Engine/Particle.h"
+
 //■■シーンを管理するクラス
 class PlayScene : public GameObject
 {
@@ -15,6 +17,7 @@ class PlayScene : public GameObject
 	int hPict_3;    //画像番号
 	int timer;
 
+	Particle* pParticle_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

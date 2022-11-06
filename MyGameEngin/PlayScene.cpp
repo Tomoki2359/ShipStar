@@ -23,6 +23,32 @@ PlayScene::~PlayScene()
 //èâä˙âª
 void PlayScene::Initialize()
 {
+	{
+		pParticle_ = (Particle*)Instantiate<Particle>(this);
+
+		//âä
+		EmitterData data;
+
+		//âä
+		data.textureFileName = "Assets\\temporary\\Cloud.png";
+		data.position = XMFLOAT3(-4, 1.5, -4);
+		data.positionErr = XMFLOAT3(0.1, 0, 0.1);
+		data.delay = 5;
+		data.number = 1;
+		data.lifeTime = 60;
+		data.gravity = -0.002f;
+		data.dir = XMFLOAT3(0, 1, 0);
+		data.dirErr = XMFLOAT3(0, 0, 0);
+		data.speed = 0.01f;
+		data.speedErr = 0.0;
+		data.size = XMFLOAT2(1.5, 1.5);
+		data.sizeErr = XMFLOAT2(0.4, 0.4);
+		data.scale = XMFLOAT2(1.01, 1.01);
+		data.color = XMFLOAT4(1, 1, 0, 1);
+		data.deltaColor = XMFLOAT4(0, -0.03, 0, -0.02);
+		pParticle_->Start(data);
+	}
+
 	char PlayerNum = NULL;
 	PlayerList_.clear();
 	SetScreen(255, 255, 255);
@@ -38,6 +64,22 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
+
+
+	
+
+	////âŒÇÃï≤
+	//data.number = 3;
+	//data.positionErr = XMFLOAT3(0.8, 0, 0.8);
+	//data.dir = XMFLOAT3(0, 1, 0);
+	//data.dirErr = XMFLOAT3(10, 10, 10);
+	//data.size = XMFLOAT2(0.2, 0.2);
+	//data.scale = XMFLOAT2(0.95, 0.95);
+	//data.lifeTime = 120;
+	//data.speed = 0.1f;
+	//data.gravity = 0;
+	//pParticle_->Start(data);
+
 }
 
 //çXêV
@@ -67,7 +109,6 @@ void PlayScene::Update()
 		SCENE_CHANGE(SCENE_ID_RESULT);
 	}
 	//UdCobj_++;
-
 }
 
 //ï`âÊ
