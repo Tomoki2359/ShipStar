@@ -35,8 +35,8 @@ void Airframe::Initialize()
 
 	//モデルデータのロード
 	//パーツを呼び出せるようになったら消す
-	hModel_ = Model::Load(fileName_);
-	assert(hModel_ >= 0);
+	//hModel_ = Model::Load(fileName_);
+	//assert(hModel_ >= 0);
 
 	status_[MAX_SPEED] = (float)((int)status_[MAX_SPEED] * 10000000 / 216000) / 10000;	//最高速度
 	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//加速度
@@ -141,8 +141,8 @@ bool Airframe::JudgeSide(XMFLOAT3 pos)
 void Airframe::Draw()
 {
 	//パーツを呼び出せるようになったら消す
-	Model::SetTransform(hModel_, transform_);
-	Model::Draw(hModel_);
+	//Model::SetTransform(hModel_, transform_);
+	//Model::Draw(hModel_);
 }
 
 //開放
@@ -185,7 +185,11 @@ void Airframe::SetStatus()
 	//fileName_ = "";
 	//cCamera_ = false;
 
-	fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
+	//fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
+	Instantiate<EnginParts>(this);
+	Instantiate<BodyParts>(this);
+	Instantiate<CookpitParts>(this);
+	Instantiate<WingParts>(this);
 	if (this->objectName_ == "Computer")
 	{
 		cCamera_ = true;	//カメラON

@@ -2,26 +2,12 @@
 #include "Navigation.h"
 #include "CSVReader.h"
 #include "Engine/GameObject.h"
+#include "Parts/BodyParts.h"
+#include "Parts/CookpitParts.h"
+#include "Parts/EnginParts.h"
+#include "Parts/WingParts.h"
 
 const short Past = 120;
-
-struct PARTS_NUM
-{
-	short ENGINE;	//エンジン
-	short BODY;		//ボディ
-	short WING;		//翼
-	short COCKPIT;	//コックピット
-	short PATTERN;	//模様
-};
-
-enum PARTS
-{
-	PARTS_ENGINE,	//エンジン
-	PARTS_BODY,		//ボディ
-	PARTS_WING,		//翼
-	PARTS_COCKPIT,	//コックピット
-	PARTS_PATTERN	//模様
-};
 
 enum STATUS_ID
 {

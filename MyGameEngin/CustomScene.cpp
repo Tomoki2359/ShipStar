@@ -2,7 +2,8 @@
 
 //コンストラクタ
 CustomScene::CustomScene(GameObject* parent)
-	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true)
+	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true),
+	engineColor_(0), bodyColor_(0), wingColor_(0), cookpitColor_(0)
 {
 }
 
@@ -14,6 +15,11 @@ void CustomScene::Initialize()
 	Instantiate<BackButton>(this);
 	Instantiate<CurrentStatus>(this);
 	Instantiate<PartsList>(this);
+
+	Instantiate<EnginParts>(pParent_);
+	Instantiate<BodyParts>(pParent_);
+	Instantiate<WingParts>(pParent_);
+	Instantiate<CookpitParts>(pParent_);
 }
 
 //更新
@@ -30,26 +36,21 @@ void CustomScene::Update()
 		assert(pCurrent_ != nullptr);
 		pParts_ = (PartsList*)FindObject("PartsList");
 		assert(pParts_ != nullptr);
-	}
-	if (Input::IsKeyDown(DIK_S))
-	{
-		custom_++;
-		mouseMoob_ = false;
-		if (custom_ >= MAX_CUSTOM)
-		{
-			custom_ = CUSTOM_BACK;
-		}
-	}
-	if (Input::IsKeyDown(DIK_W))
-	{
-		custom_--;
-		mouseMoob_ = false;
-		if (custom_ < 0)
-		{
-			custom_ = CUSTOM_OK;
-		}
-	}
 
+		pEngin_ = (EnginParts*)FindObject("EnginParts");
+		assert(pEngin_ != nullptr);
+		engineNum_ = pEngin_->GetParts();
+		pBody_ = (BodyParts*)FindObject("BodyParts");
+		assert(pBody_ != nullptr);
+		bodyNum_ = pBody_->GetParts();
+		pWing_ = (WingParts*)FindObject("WingParts");
+		assert(pWing_ != nullptr);
+		wingNum_ = pWing_->GetParts();
+		pCookpit_ = (CookpitParts*)FindObject("CookpitParts");
+		assert(pCookpit_ != nullptr);
+		cookpitNum_ = pCookpit_->GetParts();
+	}
+	
 	//マウスが動いたかどうか
 	mousePos_ = mouseNext_;
 	mouseNext_ = Input::GetMousePosition();
@@ -82,6 +83,25 @@ void CustomScene::Release()
 
 void CustomScene::BeforeChange()
 {
+	if (Input::IsKeyDown(DIK_S))
+	{
+		custom_++;
+		mouseMoob_ = false;
+		if (custom_ >= BEFORE_MAX)
+		{
+			custom_ = BEFORE_BACK;
+		}
+	}
+	if (Input::IsKeyDown(DIK_W))
+	{
+		custom_--;
+		mouseMoob_ = false;
+		if (custom_ < 0)
+		{
+			custom_ = BEFORE_COOKPIT;
+		}
+	}
+
 	if (FindObject("BackButton") == nullptr)
 	{
 		SCENE_CHANGE(SCENE_ID_LOBBY);
@@ -100,19 +120,54 @@ void CustomScene::BeforeChange()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (custom_ == CUSTOM_BACK)
+		if (custom_ == BEFORE_BACK)
 		{
 			pBack_->IsButton();
 		}
-		if (custom_ == CUSTOM_OK)
+		if (custom_ == BEFORE_OK)
 		{
 			pOK_->IsButton();
+		}
+		if (custom_ == BEFORE_ENGIN)
+		{
+			PartsChange(pEngin_, engineNum_, engineColor_);
+		}
+		if (custom_ == BEFORE_BODY)
+		{
+			PartsChange(pBody_, bodyNum_, bodyColor_);
+		}
+		if (custom_ == BEFORE_WING)
+		{
+			PartsChange(pWing_, wingNum_, wingColor_);
+		}
+		if (custom_ == BEFORE_COOKPIT)
+		{
+			PartsChange(pCookpit_, cookpitNum_, cookpitColor_);
 		}
 	}
 }
 
 void CustomScene::AfterChange()
 {
+	if (Input::IsKeyDown(DIK_S))
+	{
+		custom_++;
+		mouseMoob_ = false;
+		if (custom_ >= AFTER_MAX)
+		{
+			custom_ = AFTER_BACK;
+		}
+	}
+	if (Input::IsKeyDown(DIK_W))
+	{
+		custom_--;
+		mouseMoob_ = false;
+		if (custom_ < 0)
+		{
+			custom_ = AFTER_OK;
+		}
+	}
+
 	if (FindObject("BackButton") == nullptr)
 	{
 		Instantiate<BackButton>(this);
@@ -129,13 +184,12 @@ void CustomScene::AfterChange()
 
 	if (FindObject("FixeButton") == nullptr)
 	{
-		Instantiate<OKButton>(this);
-		Instantiate<CurrentStatus>(this);
-		Instantiate<PartsList>(this);
-		pOriginal_->KillMe();
-		pChange_->KillMe();
-		first_ = true;
-		change_ = false;
+		PARTS_NUM parts_;
+		parts_.BODY = pBody_->GetPartsNum();
+		parts_.COCKPIT = pCookpit_->GetPartsNum();
+		parts_.ENGINE = pEngin_->GetPartsNum();
+		parts_.WING = pWing_->GetPartsNum();
+		Option::SetParts(parts_);
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 		return;
 	}
@@ -149,13 +203,45 @@ void CustomScene::AfterChange()
 	//キー操作
 	if (mouseMoob_ == false)
 	{
-		if (custom_ == CUSTOM_BACK)
+		if (custom_ == AFTER_BACK)
 		{
 			pBack_->IsButton();
 		}
-		if (custom_ == CUSTOM_OK)
+		if (custom_ == AFTER_OK)
 		{
 			pFixe_->IsButton();
 		}
 	}
+}
+
+void CustomScene::PartsChange(Parts* parts, int& partsNum, int& partsColor)
+{
+
+	if (Input::IsKeyDown(DIK_D))
+	{
+		partsNum++;
+	}
+	if (Input::IsKeyDown(DIK_A))
+	{
+		partsNum--;
+	}
+	if (Input::IsKeyDown(DIK_Z))
+	{
+		partsColor++;
+		if (partsColor >= 5)
+		{
+			partsColor = 0;
+		}
+	}
+	if (partsNum < PARTS_GINGA)
+	{
+		partsNum = PARTS_END - 1;
+	}
+	if (partsNum >= PARTS_END)
+	{
+		partsNum = PARTS_GINGA;
+	}
+	parts->SetColor(partsColor);
+	parts->SetParts(partsNum);
+	parts->Load();
 }

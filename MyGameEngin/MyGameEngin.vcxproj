@@ -205,6 +205,11 @@
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Option.cpp" />
     <ClCompile Include="OptionScene.cpp" />
+    <ClCompile Include="Parts\BodyParts.cpp" />
+    <ClCompile Include="Parts\CookpitParts.cpp" />
+    <ClCompile Include="Parts\EnginParts.cpp" />
+    <ClCompile Include="Parts\Parts.cpp" />
+    <ClCompile Include="Parts\WingParts.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="ResultScene.cpp" />
@@ -283,6 +288,11 @@
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Option.h" />
     <ClInclude Include="OptionScene.h" />
+    <ClInclude Include="Parts\BodyParts.h" />
+    <ClInclude Include="Parts\CookpitParts.h" />
+    <ClInclude Include="Parts\EnginParts.h" />
+    <ClInclude Include="Parts\Parts.h" />
+    <ClInclude Include="Parts\WingParts.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="ResultScene.h" />

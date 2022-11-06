@@ -8,6 +8,7 @@
 #include "Engine/Model.h"
 #include "Engine/Transform.h"
 #include "Engine/RootJob.h"
+#include "Option.h"
 
 #pragma comment(lib, "winmm.lib")
 
@@ -85,6 +86,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//DirectInput‚Ì‰Šú‰»
 	Input::Initialize(hWnd);
 	Camera::Initialize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	Option::Init();
 	pRoot = new RootJob(nullptr);
 	pRoot->Initialize();
 

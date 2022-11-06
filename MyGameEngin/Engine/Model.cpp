@@ -20,19 +20,25 @@ int Model::Load(std::string fileName)
 	MODEL* pLoadModel;
 	pLoadModel = new MODEL;
 	pLoadModel->FileModel = fileName;
-
-	for (auto itr = modelList_.begin(); itr < modelList_.end(); itr++)
+	pLoadModel->pFbx = nullptr;
+	for (int i = 0; i < modelList_.size(); i++)
 	{
-		if (fileName == (*itr)->FileModel)
+		if (modelList_[i]->FileModel == fileName)
 		{
-			pLoadModel->pFbx = (*itr)->pFbx;
-			return (int)modelList_.size() - 1;
+			pLoadModel->pFbx = modelList_[i]->pFbx;
+			break;
 		}
 	}
-	pLoadModel->pFbx = new Fbx;
-	pLoadModel->pFbx->Load(pLoadModel->FileModel);
+
+	if (pLoadModel->pFbx == nullptr)
+	{
+		pLoadModel->pFbx = new Fbx;
+		pLoadModel->pFbx->Load(fileName);
+	}
+
+
 	modelList_.push_back(pLoadModel);
-	return (int)modelList_.size() - 1;
+	return modelList_.size() - 1;
 }
 
 
