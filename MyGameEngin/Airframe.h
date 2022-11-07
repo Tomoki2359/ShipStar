@@ -44,7 +44,6 @@ class Airframe : public GameObject
 	short RespawnUpdate_;
 
 	short hModel_;   //モデル番号
-	float speed_;	//現在の速度
 	bool cAscent_;	//上昇状態かどうか
 	bool cDescent_;	//下降状態かどうか
 	bool lCurve_;	//左に曲がっている状態かどうか
@@ -78,6 +77,7 @@ class Airframe : public GameObject
 	void ChaseCamera();		//カメラを追わせる
 
 protected:
+	float speed_;	//現在の速度
 	void JudgeSide();
 	void JudgeSide(RayCastData& data);
 	bool JudgeSide(XMFLOAT3 pos);
