@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <math.h>
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(NULL), RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
 	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(NULL), Side_(true),
@@ -24,33 +24,33 @@ Airframe::~Airframe()
 {
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void Airframe::Initialize()
 {
 	csv.Load("Assets/PartsStatus.csv");
 
-	//‘S‚ÄƒfƒtƒHƒ‹ƒg’l‚Å‰Šú‰»
+	//å…¨ã¦ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã§åˆæœŸåŒ–
 	ZeroMemory(&PartsSet, sizeof(PartsSet));
-	//ƒXƒe[ƒ^ƒX‚Ìæ“¾
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®å–å¾—
 	SetStatus();
 
-	//ƒ‚ƒfƒ‹ƒf[ƒ^‚Ìƒ[ƒh
-	//ƒp[ƒc‚ğŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚È‚Á‚½‚çÁ‚·
+	//ãƒ¢ãƒ‡ãƒ«ãƒ‡ãƒ¼ã‚¿ã®ãƒ­ãƒ¼ãƒ‰
+	//ãƒ‘ãƒ¼ãƒ„ã‚’å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ãªã£ãŸã‚‰æ¶ˆã™
 	//hModel_ = Model::Load(fileName_);
 	//assert(hModel_ >= 0);
 
-	status_[MAX_SPEED] = (float)((int)status_[MAX_SPEED] * 10000000 / 216000) / 10000;	//Å‚‘¬“x
-	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//‰Á‘¬“x
-	status_[TURBO] = status_[TURBO] / 100 * 60;	//ƒ^[ƒ{’l
+	status_[MAX_SPEED] = (float)((int)status_[MAX_SPEED] * 10000000 / 216000) / 10000;	//æœ€é«˜é€Ÿåº¦
+	status_[ACCELE] = (float)((int)status_[ACCELE] * 10000000 / 216000 / 60 / 7) / 10000;	//åŠ é€Ÿåº¦
+	status_[TURBO] = status_[TURBO] / 100 * 60;	//ã‚¿ãƒ¼ãƒœå€¤
 
 	transform_.position_.z = 0.1f;
 	PrevPosition_ = transform_.position_;
 }
 
-//XV
+//æ›´æ–°
 void Airframe::Update()
 {
-	//3•bŒã‚ÉƒXƒ^[ƒg‚·‚é
+	//3ç§’å¾Œã«ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹
 	if (start_)
 	{
 		pNav_ = (Navigation*)FindObject("Navigation");
@@ -58,21 +58,21 @@ void Airframe::Update()
 		JudgeGoal();
 		PrevPosition_ = transform_.position_;
 
-		//Œp³æ‚ÅŒÄ‚Ño‚·
+		//ç¶™æ‰¿å…ˆã§å‘¼ã³å‡ºã™
 		UpdateState();
 
 		FixInclination();
 
-		//‘¬‚³‚âˆÊ’u‚ğˆê’è‚É‚·‚é
+		//é€Ÿã•ã‚„ä½ç½®ã‚’ä¸€å®šã«ã™ã‚‹
 		Limit();
 
 		TurboProcess();
 	}
 
-	//ƒJƒEƒ“ƒgƒ_ƒEƒ“
+	//ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³
 	else
 	{
-		//timeCount_‚ª0ˆÈ‰º‚É‚È‚Á‚½‚ç‘€ì‰Â”\‚É‚·‚é
+		//timeCount_ãŒ0ä»¥ä¸‹ã«ãªã£ãŸã‚‰æ“ä½œå¯èƒ½ã«ã™ã‚‹
 		timeCount_--;	
 		if (timeCount_ <= 0)
 		{
@@ -83,20 +83,20 @@ void Airframe::Update()
 	MoveProcess();
 	JudgeSide();
 
-	if (Side_)	//ƒR[ƒX“à‚É‚¢‚éê‡
+	if (Side_)	//ã‚³ãƒ¼ã‚¹å†…ã«ã„ã‚‹å ´åˆ
 	{
 		StayInside();
 		RespawnPos_[RespawnUpdate_] = PrevPosition_;
 		RespawnRot_[RespawnUpdate_] = transform_.rotate_;
 		RespawnUpdate_++;
-		if (RespawnUpdate_ >= Past)	//”z—ñ‚ÌÅ‘å”‚Í’´‚¦‚È‚¢‚æ‚¤‚É‚·‚é
+		if (RespawnUpdate_ >= Past)	//é…åˆ—ã®æœ€å¤§æ•°ã¯è¶…ãˆãªã„ã‚ˆã†ã«ã™ã‚‹
 		{
 			cTurbo_ = false;
 			tTurbo_ = NULL;
 			RespawnUpdate_ = NULL;
 		}
 	}
-	else		//ƒR[ƒXŠO‚É‚¢‚éê‡
+	else		//ã‚³ãƒ¼ã‚¹å¤–ã«ã„ã‚‹å ´åˆ
 	{
 
 		Respawn();
@@ -138,24 +138,24 @@ bool Airframe::JudgeSide(XMFLOAT3 pos)
 	return data.hit;
 }
 
-//•`‰æ
+//æç”»
 void Airframe::Draw()
 {
-	//ƒp[ƒc‚ğŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚È‚Á‚½‚çÁ‚·
+	//ãƒ‘ãƒ¼ãƒ„ã‚’å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ãªã£ãŸã‚‰æ¶ˆã™
 	//Model::SetTransform(hModel_, transform_);
 	//Model::Draw(hModel_);
 }
 
-//ŠJ•ú
+//é–‹æ”¾
 void Airframe::Release()
 {
 	SAFE_RELEASE(pNav_);
 }
 
-//‘¬‚³‚âˆÊ’u‚È‚Ç‚ÌŒÀŠE
+//é€Ÿã•ã‚„ä½ç½®ãªã©ã®é™ç•Œ
 void Airframe::Limit()
 {
-	//‘¬“x‚ªÅ‘å‘¬“x‚ğ’´‚¦‚½‚Æ‚«Å‘å‘¬“x‚É‚·‚é
+	//é€Ÿåº¦ãŒæœ€å¤§é€Ÿåº¦ã‚’è¶…ãˆãŸã¨ãæœ€å¤§é€Ÿåº¦ã«ã™ã‚‹
 	if (speed_ >= status_[MAX_SPEED])
 	{
 		speed_ = status_[MAX_SPEED];
@@ -173,43 +173,44 @@ void Airframe::SetPartsNum(char engine, char body, char wing, char cockpit, char
 	SetStatus();
 }
 
-//ƒXƒe[ƒ^ƒX‚Ìæ“¾
+//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã®å–å¾—
 void Airframe::SetStatus()
 {
-	//‚ ‚Æ‚Åfor•ª‚ÅCSV‚©‚ç“ü‚ê‚é
+	//ã‚ã¨ã§foråˆ†ã§CSVã‹ã‚‰å…¥ã‚Œã‚‹
 	status_[MAX_SPEED] = (float)csv.GetValue(PARTS_WING ,PartsSet.WING);
-	status_[ACCELE] = (float)csv.GetValue(PARTS_COCKPIT, PartsSet.COCKPIT);	//’l250‚Å‹ti‚ğŠm”F
+	status_[ACCELE] = (float)csv.GetValue(PARTS_COCKPIT, PartsSet.COCKPIT);	//å€¤250ã§é€†é€²ã‚’ç¢ºèª
 	status_[TURBO] = (float)csv.GetValue(PARTS_ENGINE, PartsSet.ENGINE);
 	status_[ENDURANCE] = (float)csv.GetValue(PARTS_BODY, PartsSet.BODY);
 
-	//ƒp[ƒc‚ğŒÄ‚Ño‚¹‚é‚æ‚¤‚É‚È‚Á‚½‚çC³
+	//ãƒ‘ãƒ¼ãƒ„ã‚’å‘¼ã³å‡ºã›ã‚‹ã‚ˆã†ã«ãªã£ãŸã‚‰ä¿®æ­£
 	//fileName_ = "";
 	//cCamera_ = false;
 
-	//fileName_ = "Assets\\Airframe.fbx";	//ƒtƒ@ƒCƒ‹‚Ì–¼‘O
+	//fileName_ = "Assets\\Airframe.fbx";	//ãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰
 	Instantiate<PartsUnion>(this);
+  
 	if (this->objectName_ == "Player")
 	{
-		cCamera_ = true;	//ƒJƒƒ‰ON
+		cCamera_ = true;	//ã‚«ãƒ¡ãƒ©ON
 	}
 	else
 	{
-		cCamera_ = false;	//ƒJƒƒ‰OFF
+		cCamera_ = false;	//ã‚«ãƒ¡ãƒ©OFF
 	}
 
 }
 
 void Airframe::Accelerate()
 {
-	//‰Á‘¬•ª‚Ì‘¬“x‚ğ‘‚â‚·
+	//åŠ é€Ÿåˆ†ã®é€Ÿåº¦ã‚’å¢—ã‚„ã™
 	speed_ = speed_ + status_[ACCELE];
 }
 
 void Airframe::Decelerate()
 {
-	//‰Á‘¬•ª‚Ì‘¬“x‚ğŒ¸‚ç‚·
+	//åŠ é€Ÿåˆ†ã®é€Ÿåº¦ã‚’æ¸›ã‚‰ã™
 	speed_ = speed_ - (status_[ACCELE] * 2);
-	//‘¬“x‚ªÅ‘å‘¬“x‚ğ’´‚¦‚½‚Æ‚«Å‘å‘¬“x‚É‚·‚é
+	//é€Ÿåº¦ãŒæœ€å¤§é€Ÿåº¦ã‚’è¶…ãˆãŸã¨ãæœ€å¤§é€Ÿåº¦ã«ã™ã‚‹
 	if (speed_ <= 0)
 	{
 		speed_ = 0;
@@ -224,7 +225,7 @@ void Airframe::TurnRight()
 	}
 	if (lCurve_ != true)
 	{
-		//‰E‚É‹È‚ª‚é‚Æ‚«‚ÌŒX‚«
+		//å³ã«æ›²ãŒã‚‹ã¨ãã®å‚¾ã
 		transform_.rotate_.z -= RotationRate_Z;
 		rCurve_ = true;
 		if (transform_.rotate_.z <= -RotationMax_Z)
@@ -242,7 +243,7 @@ void Airframe::TurnLeft()
 	}
 	if (rCurve_ != true)
 	{
-		//¶‚É‹È‚ª‚é‚Æ‚«‚ÌŒX‚«
+		//å·¦ã«æ›²ãŒã‚‹ã¨ãã®å‚¾ã
 		transform_.rotate_.z += RotationRate_Z;
 		lCurve_ = true;
 		if (transform_.rotate_.z >= RotationMax_Z)
@@ -299,7 +300,7 @@ void Airframe::ResetOverRotate(float* rotate)
 
 void Airframe::LapMeasure()
 {
-	//‹t‘–‚ÅƒS[ƒ‹ƒ‰ƒCƒ“‚ğ’Ê‰ß‚µ‚½ê‡
+	//é€†èµ°ã§ã‚´ãƒ¼ãƒ«ãƒ©ã‚¤ãƒ³ã‚’é€šéã—ãŸå ´åˆ
 	if (Math::SegmentToPlane(PrevPosition_, transform_.position_, pNav_->Upper_Goal, pNav_->Left_Goal, pNav_->Right_Goal) &&
 		PrevPosition_.z > transform_.position_.z)
 	{
@@ -313,19 +314,19 @@ void Airframe::LapMeasure()
 
 void Airframe::Respawn()
 {
-	transform_.position_ = RespawnPos_[RespawnUpdate_];			//Š’è‚ÌˆÊ’u‚É–ß‚·
-	transform_.rotate_.x = RespawnRot_[RespawnUpdate_].x;		//‰ñ“]‚à–ß‚·
+	transform_.position_ = RespawnPos_[RespawnUpdate_];			//æ‰€å®šã®ä½ç½®ã«æˆ»ã™
+	transform_.rotate_.x = RespawnRot_[RespawnUpdate_].x;		//å›è»¢ã‚‚æˆ»ã™
 	transform_.rotate_.y = RespawnRot_[RespawnUpdate_].y;
 	transform_.rotate_.z = NULL;
-	speed_ = NULL;						//ƒXƒs[ƒh‚ğ0‚É‚·‚é
+	speed_ = NULL;						//ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’0ã«ã™ã‚‹
 }
 
 void Airframe::FixInclination()
 {
-	//¶‚ÉŒX‚¢‚Ä‚¢‚éó‘Ô‚Ì‚Æ‚«
+	//å·¦ã«å‚¾ã„ã¦ã„ã‚‹çŠ¶æ…‹ã®ã¨ã
 	if (lCurve_)
 	{
-		//Šp“x‚ğ–ß‚·ˆ—
+		//è§’åº¦ã‚’æˆ»ã™å‡¦ç†
 		transform_.rotate_.z--;
 		if (transform_.rotate_.z <= NULL)
 		{
@@ -334,10 +335,10 @@ void Airframe::FixInclination()
 		}
 	}
 
-	//‰E‚ÉŒX‚¢‚Ä‚¢‚éó‘Ô‚Ì‚Æ‚«
+	//å³ã«å‚¾ã„ã¦ã„ã‚‹çŠ¶æ…‹ã®ã¨ã
 	if (rCurve_)
 	{
-		//Šp“x‚ğ–ß‚·ˆ—
+		//è§’åº¦ã‚’æˆ»ã™å‡¦ç†
 		transform_.rotate_.z++;
 		if (transform_.rotate_.z >= NULL)
 		{
@@ -349,12 +350,12 @@ void Airframe::FixInclination()
 
 void Airframe::TurboProcess()
 {
-	//ƒ^[ƒ{’†‚Ìˆ—
+	//ã‚¿ãƒ¼ãƒœä¸­ã®å‡¦ç†
 	if (cTurbo_)
 	{
-		//ƒXƒs[ƒh‚ğã‚°‚é
+		//ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’ä¸Šã’ã‚‹
 		speed_ = status_[MAX_SPEED] * 2.0f;
-		//ŠÔ‚ªŒo‚Á‚½‚çI‚í‚é
+		//æ™‚é–“ãŒçµŒã£ãŸã‚‰çµ‚ã‚ã‚‹
 		if (tTurbo_ >= status_[TURBO])
 		{
 			cTurbo_ = false;
@@ -362,20 +363,20 @@ void Airframe::TurboProcess()
 		}
 	}
 
-	//ƒ^[ƒ{’l‚ğ’™‚ß‚é
+	//ã‚¿ãƒ¼ãƒœå€¤ã‚’è²¯ã‚ã‚‹
 	tTurbo_++;
 }
 
 void Airframe::MoveProcess()
 {
-	//ˆÚ“®ˆ—
+	//ç§»å‹•å‡¦ç†
 	XMVECTOR vMove_ = XMVectorSet(NULL, NULL, speed_, NULL);
 
-	//‹@‘Ì‚ÌX²,Y²‚ÌŠp“x‚Ìæ“¾
+	//æ©Ÿä½“ã®Xè»¸,Yè»¸ã®è§’åº¦ã®å–å¾—
 	XMMATRIX mRotate = XMMatrixRotationX(XMConvertToRadians(transform_.rotate_.x));
 	mRotate = mRotate * XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));
 
-	//Œ»İ’n‚©‚ç‹@‘Ì‚ÌŒü‚«‚É‚æ‚Á‚Äi‚Ş
+	//ç¾åœ¨åœ°ã‹ã‚‰æ©Ÿä½“ã®å‘ãã«ã‚ˆã£ã¦é€²ã‚€
 	vMove_ = XMVector3TransformCoord(vMove_, mRotate);
 	XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
 	vPos += vMove_;
@@ -384,20 +385,20 @@ void Airframe::MoveProcess()
 
 void Airframe::ChaseCamera()
 {
-	//ƒJƒƒ‰‚ğg—p‚·‚é‚©‚Ç‚¤‚©
+	//ã‚«ãƒ¡ãƒ©ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹
 	if (cCamera_)
 	{
 		XMVECTOR vPos = XMLoadFloat3(&transform_.position_);
 
-		//ƒJƒƒ‰‚Ìİ’u
+		//ã‚«ãƒ¡ãƒ©ã®è¨­ç½®
 		XMFLOAT3 camPos;
-		XMVECTOR vCam = XMVectorSet(0.0f, 5.0f, -10.0f, 0.0f);	//ƒJƒƒ‰‚ÌˆÊ’u
-		XMMATRIX mRotate_ = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));	//Y²‰ñ“]
-		vCam = XMVector3TransformCoord(vCam, mRotate_);	//Šp“x‚ÅƒJƒƒ‰‚ÌˆÊ’u‚ğ•ÏX
-		XMStoreFloat3(&camPos, vPos + vCam);	//ƒJƒƒ‰‚ÌˆÊ’u‚Æ©•ª‚ÌˆÊ’u‚ğ‡‚í‚¹‚é
+		XMVECTOR vCam = XMVectorSet(0.0f, 5.0f, -10.0f, 0.0f);	//ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+		XMMATRIX mRotate_ = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));	//Yè»¸å›è»¢
+		vCam = XMVector3TransformCoord(vCam, mRotate_);	//è§’åº¦ã§ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚’å¤‰æ›´
+		XMStoreFloat3(&camPos, vPos + vCam);	//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã¨è‡ªåˆ†ã®ä½ç½®ã‚’åˆã‚ã›ã‚‹
 		Camera::SetPosition(XMVectorSet(camPos.x, camPos.y, camPos.z, 1.0));
 
-		//ƒJƒƒ‰‚Í©•ª‚ÌˆÊ’u‚ğŒ©‚Ä‚é
+		//ã‚«ãƒ¡ãƒ©ã¯è‡ªåˆ†ã®ä½ç½®ã‚’è¦‹ã¦ã‚‹
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
 	}

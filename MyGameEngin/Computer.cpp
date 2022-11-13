@@ -92,6 +92,14 @@ void Computer::UpdateState()
 	{
 		ChangeState();
 	}
+
+	if (GetisGoal())
+	{
+		speed_ = NULL;
+		transform_.rotate_.x += 13;
+		transform_.rotate_.y -= 31;
+		transform_.rotate_.z += 9;
+	}
 }
 
 void Computer::ChangeState()
