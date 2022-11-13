@@ -1,6 +1,8 @@
 #include "Math.h"
 #include <math.h>
 
+#include <algorithm>
+
 float Math::Det(XMFLOAT3 a, XMFLOAT3 b, XMFLOAT3 c)
 {
     return a.x * b.y * c.z +
@@ -155,4 +157,21 @@ void Math::ElasticCollision(XMFLOAT3 pos1, XMVECTOR* vMove1, XMFLOAT3 pos2, XMVE
     vAns = XMLoadFloat3(&Ans);
     *vMove1 += vAns * (length / 2);
     *vMove2 -= vAns * (length / 2);
+}
+
+bool Math::InsidePlane(XMFLOAT3 pos, XMFLOAT3 HLt, XMFLOAT3 LwR)
+{
+    if (HLt.x > LwR.x)
+    {
+        std::swap(HLt.x, LwR.x);
+    }
+    if (HLt.y < LwR.y)
+    {
+        std::swap(HLt.y, LwR.y);
+    }
+    if (pos.x > HLt.x && pos.x < LwR.x && pos.y < HLt.y && pos.y > LwR.y)
+    {
+        return true;
+    }
+    return false;
 }

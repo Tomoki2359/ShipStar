@@ -20,4 +20,6 @@ namespace Math
 	bool CircleToPlane(XMFLOAT3 center, float size, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2);
 	bool CircleToPlane(XMFLOAT3 center, float size, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2, float *dist);
 	void ElasticCollision(XMFLOAT3 pos1, XMVECTOR* vMove1, XMFLOAT3 pos2, XMVECTOR* vMove2);
+
+	bool InsidePlane(XMFLOAT3 pos, XMFLOAT3 HLt, XMFLOAT3 LwR);
 };
