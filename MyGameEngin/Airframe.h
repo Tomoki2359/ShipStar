@@ -1,11 +1,8 @@
 #pragma once
 #include "Navigation.h"
 #include "CSVReader.h"
+#include "Option.h"
 #include "Engine/GameObject.h"
-#include "Parts/BodyParts.h"
-#include "Parts/CookpitParts.h"
-#include "Parts/EnginParts.h"
-#include "Parts/WingParts.h"
 
 const short Past = 120;
 

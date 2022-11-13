@@ -239,6 +239,15 @@
     <ClCompile Include="Parts\WingParts.cpp">
       <Filter>ソース ファイル\parts</Filter>
     </ClCompile>
+    <ClCompile Include="Parts\PartsUnion.cpp">
+      <Filter>ソース ファイル\parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\LobbyBackground.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image\MatchingBackground.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Input.h">
@@ -429,6 +438,15 @@
     </ClInclude>
     <ClInclude Include="Parts\WingParts.h">
       <Filter>ヘッダー ファイル\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Parts\PartsUnion.h">
+      <Filter>ヘッダー ファイル\parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\LobbyBackground.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image\MatchingBackground.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

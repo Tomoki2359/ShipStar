@@ -183,9 +183,11 @@
     <ClCompile Include="Image\ChangeStatus.cpp" />
     <ClCompile Include="Image\CurrentStatus.cpp" />
     <ClCompile Include="Image\FixeButton.cpp" />
+    <ClCompile Include="Image\LobbyBackground.cpp" />
     <ClCompile Include="Image\LobbyCourse.cpp" />
     <ClCompile Include="Image\LobbyCustom.cpp" />
     <ClCompile Include="Image\LobbyPlay.cpp" />
+    <ClCompile Include="Image\MatchingBackground.cpp" />
     <ClCompile Include="Image\MatchingCourse.cpp" />
     <ClCompile Include="Image\MatchingStart.cpp" />
     <ClCompile Include="Image\OKButton.cpp" />
@@ -209,6 +211,7 @@
     <ClCompile Include="Parts\CookpitParts.cpp" />
     <ClCompile Include="Parts\EnginParts.cpp" />
     <ClCompile Include="Parts\Parts.cpp" />
+    <ClCompile Include="Parts\PartsUnion.cpp" />
     <ClCompile Include="Parts\WingParts.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -267,9 +270,11 @@
     <ClInclude Include="Image\ChangeStatus.h" />
     <ClInclude Include="Image\CurrentStatus.h" />
     <ClInclude Include="Image\FixeButton.h" />
+    <ClInclude Include="Image\LobbyBackground.h" />
     <ClInclude Include="Image\LobbyCourse.h" />
     <ClInclude Include="Image\LobbyCustom.h" />
     <ClInclude Include="Image\LobbyPlay.h" />
+    <ClInclude Include="Image\MatchingBackground.h" />
     <ClInclude Include="Image\MatchingCourse.h" />
     <ClInclude Include="Image\MatchingStart.h" />
     <ClInclude Include="Image\OKButton.h" />
@@ -292,6 +297,7 @@
     <ClInclude Include="Parts\CookpitParts.h" />
     <ClInclude Include="Parts\EnginParts.h" />
     <ClInclude Include="Parts\Parts.h" />
+    <ClInclude Include="Parts\PartsUnion.h" />
     <ClInclude Include="Parts\WingParts.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />

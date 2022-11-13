@@ -3,6 +3,7 @@
 #include "Engine/Math.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include "Parts/PartsUnion.h"
 #include <algorithm>
 #include <math.h>
 
@@ -186,11 +187,8 @@ void Airframe::SetStatus()
 	//cCamera_ = false;
 
 	//fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
-	Instantiate<EnginParts>(this);
-	Instantiate<BodyParts>(this);
-	Instantiate<CookpitParts>(this);
-	Instantiate<WingParts>(this);
-	if (this->objectName_ == "Computer")
+	Instantiate<PartsUnion>(this);
+	if (this->objectName_ == "Player")
 	{
 		cCamera_ = true;	//カメラON
 	}
@@ -199,8 +197,6 @@ void Airframe::SetStatus()
 		cCamera_ = false;	//カメラOFF
 	}
 
-	const float Scale = 0.25f;
-	transform_.scale_ = XMFLOAT3(Scale, Scale, Scale);
 }
 
 void Airframe::Accelerate()

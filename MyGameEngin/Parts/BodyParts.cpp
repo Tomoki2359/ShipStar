@@ -5,6 +5,7 @@ BodyParts::BodyParts(GameObject* parent)
 {
 	catagoryNum_ = PARTS_BODY;
 	SetParts(Option::GetParts(PARTS_BODY));
+	SetColor(Option::GetColor(PARTS_BODY));
 }
 
 //void BodyParts::SetPartsNum(int partsNum)

@@ -20,7 +20,7 @@ protected:
 	std::string partsName_;	//パーツ名
 	//short hModel_[CATEGORY_END];			//モデル番号
 	short hModel_;			//モデル番号
-
+	int colorNum_;
 	PARTS_NUM parts_;
 
 	void SetName();
@@ -51,5 +51,9 @@ public:
 
 	virtual void SetColor(int colorNum);
 
+	virtual int GetColor();
+
 	int GetParts();
+
+	void RotationParts();
 };

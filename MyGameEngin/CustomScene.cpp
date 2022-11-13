@@ -1,9 +1,10 @@
 #include "CustomScene.h"
+#include "Image/LobbyBackground.h"
 
 //コンストラクタ
 CustomScene::CustomScene(GameObject* parent)
-	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true),
-	engineColor_(0), bodyColor_(0), wingColor_(0), cookpitColor_(0)
+	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true)
+	
 {
 }
 
@@ -11,6 +12,7 @@ CustomScene::CustomScene(GameObject* parent)
 void CustomScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<LobbyBackground>(this);
 	Instantiate<OKButton>(this);
 	Instantiate<BackButton>(this);
 	Instantiate<CurrentStatus>(this);
@@ -40,15 +42,19 @@ void CustomScene::Update()
 		pEngin_ = (EnginParts*)FindObject("EnginParts");
 		assert(pEngin_ != nullptr);
 		engineNum_ = pEngin_->GetParts();
+		engineColor_ = pEngin_->GetColor();
 		pBody_ = (BodyParts*)FindObject("BodyParts");
 		assert(pBody_ != nullptr);
 		bodyNum_ = pBody_->GetParts();
+		bodyColor_ = pBody_->GetColor();
 		pWing_ = (WingParts*)FindObject("WingParts");
 		assert(pWing_ != nullptr);
 		wingNum_ = pWing_->GetParts();
+		wingColor_ = pWing_->GetColor();
 		pCookpit_ = (CookpitParts*)FindObject("CookpitParts");
 		assert(pCookpit_ != nullptr);
 		cookpitNum_ = pCookpit_->GetParts();
+		cookpitColor_ = pCookpit_->GetColor();
 	}
 	
 	//マウスが動いたかどうか
@@ -69,6 +75,11 @@ void CustomScene::Update()
 	{
 		AfterChange();
 	}
+
+	pEngin_->RotationParts();
+	pBody_->RotationParts();
+	pWing_->RotationParts();
+	pCookpit_->RotationParts();
 }
 
 //描画
@@ -190,6 +201,10 @@ void CustomScene::AfterChange()
 		parts_.ENGINE = pEngin_->GetPartsNum();
 		parts_.WING = pWing_->GetPartsNum();
 		Option::SetParts(parts_);
+		Option::SetColor(engineColor_, PARTS_ENGINE);
+		Option::SetColor(bodyColor_, PARTS_BODY);
+		Option::SetColor(wingColor_, PARTS_WING);
+		Option::SetColor(cookpitColor_, PARTS_COCKPIT);
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 		return;
 	}

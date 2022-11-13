@@ -1,5 +1,6 @@
 #include "MatchingScene.h"
 #include "Image/MatchingCourse.h"
+#include "Image/MatchingBackground.h"
 
 //コンストラクタ
 MatchingScene::MatchingScene(GameObject* parent)
@@ -11,6 +12,7 @@ MatchingScene::MatchingScene(GameObject* parent)
 void MatchingScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<MatchingBackground>(this);
 	Instantiate<BackButton>(this);
 	Instantiate<MatchingStart>(this);
 	Instantiate<MatchingCourse>(this);

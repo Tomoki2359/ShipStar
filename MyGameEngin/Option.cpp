@@ -3,6 +3,7 @@ namespace Option
 {
 	PARTS_NUM PartsList;
 	char Course;
+	int color_[PARTS_END];
 
 	void Init()
 	{
@@ -44,5 +45,14 @@ namespace Option
 	char GetCourse()
 	{
 		return Course;
+	}
+	void SetColor(int color, PARTS category)
+	{
+		color_[category] = color;
+	}
+
+	int GetColor(PARTS category)
+	{
+		return color_[category];
 	}
 }

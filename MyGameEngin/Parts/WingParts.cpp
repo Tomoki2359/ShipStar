@@ -5,6 +5,7 @@ WingParts::WingParts(GameObject* parent)
 {
 	catagoryNum_ = PARTS_WING;
 	SetParts(Option::GetParts(PARTS_WING));
+	SetColor(Option::GetColor(PARTS_WING));
 }
 
 //void WingParts::SetPartsNum(int partsNum)

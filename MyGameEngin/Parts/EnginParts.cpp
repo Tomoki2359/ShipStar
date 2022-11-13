@@ -5,6 +5,7 @@ EnginParts::EnginParts(GameObject* parent)
 {
 	catagoryNum_ = PARTS_ENGINE;
 	SetParts(Option::GetParts(PARTS_ENGINE));
+	SetColor(Option::GetColor(PARTS_ENGINE));
 }
 
 //void EnginParts::SetPartsNum(int partsNum)

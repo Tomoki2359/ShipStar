@@ -29,4 +29,7 @@ namespace Option
 
 	void SetCourse(char course);
 	char GetCourse();
+
+	void SetColor(int color,PARTS category);
+	int GetColor(PARTS category);
 };

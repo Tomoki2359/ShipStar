@@ -1,4 +1,5 @@
 #include "LobbyScene.h"
+#include "Image/LobbyBackground.h".h"
 
 //コンストラクタ
 LobbyScene::LobbyScene(GameObject* parent)
@@ -10,6 +11,7 @@ LobbyScene::LobbyScene(GameObject* parent)
 void LobbyScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<LobbyBackground>(this);
 	Instantiate<LobbyCourse>(this);
 	Instantiate<LobbyCustom>(this);
 	Instantiate<LobbyPlay>(this);

@@ -6,6 +6,7 @@ Parts::Parts(GameObject* parent, std::string name)
 	: GameObject(parent, name)
 {
 	partsNum_ = 0;	
+	colorNum_ = 0;
 }
 
 
@@ -14,6 +15,7 @@ Parts::Parts(GameObject* parent)
 	: Parts(parent, "Parts")
 {
 	partsNum_ = 0;	
+	colorNum_ = 0;
 }
 
 //‰Šú‰»
@@ -23,7 +25,9 @@ void Parts::Initialize()
 	//hModel_ = Model::Load("Assets\\Parts\\" + partsName_);
 	//hModel_ = Model::Load("Assets\\Parts\\ginga_engin.fbx");
 	//assert(hModel_ >= 0);
-
+	transform_.scale_.x = 0.5f;
+	transform_.scale_.y = 0.5f;
+	transform_.scale_.z = 0.5f;
 	Load();
 }
 
@@ -35,6 +39,26 @@ void Parts::Update()
 //•`‰æ
 void Parts::Draw()
 {
+	switch (colorNum_)
+	{
+	case 0:
+		Model::SetColor(hModel_, 255, 255, 255);
+		break;
+	case 1:
+		Model::SetColor(hModel_, 0, 0, 0);
+		break;
+	case 2:
+		Model::SetColor(hModel_, 255, 0, 0);
+		break;
+	case 3:
+		Model::SetColor(hModel_, 0, 255, 0);
+		break;
+	case 4:
+		Model::SetColor(hModel_, 0, 0, 255);
+		break;
+	default:
+		break;
+	}
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
 }
@@ -58,31 +82,22 @@ void Parts::SetParts(int partsNum)
 
 void Parts::SetColor(int colorNum)
 {
-	switch (colorNum)
-	{
-	case 0:
-		Model::SetColor(hModel_, 0, 0, 0);
-		break;
-	case 1:
-		Model::SetColor(hModel_, 255, 255, 255);
-		break;
-	case 2:
-		Model::SetColor(hModel_, 255, 0, 0);
-		break;
-	case 3:
-		Model::SetColor(hModel_, 0, 255, 0);
-		break;
-	case 4:
-		Model::SetColor(hModel_, 0, 0, 255);
-		break;
-	default:
-		break;
-	}
+	colorNum_ = colorNum;
+}
+
+int Parts::GetColor()
+{
+	return colorNum_;
 }
 
 int Parts::GetParts()
 {
 	return partsNum_;
+}
+
+void Parts::RotationParts()
+{
+	transform_.rotate_.y++;
 }
 
 void Parts::SetName()

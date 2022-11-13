@@ -135,24 +135,24 @@ bool Math::CircleToPlane(XMFLOAT3 center, float size, XMFLOAT3 v0, XMFLOAT3 v1, 
     return hit;
 }
 
-void Math::ElasticCollision(XMFLOAT3 pos1, XMVECTOR* vMove1, XMFLOAT3 pos2, XMVECTOR* vMove2)
-{
-    XMVECTOR vPos1to2 = XMLoadFloat3(&pos2) - XMLoadFloat3(&pos1);
-    vPos1to2 = XMVector3Normalize(vPos1to2);
-    XMFLOAT3 Pos1to2;
-    XMStoreFloat3(&Pos1to2, vPos1to2);
-    XMVECTOR vMove1to2 = *vMove2 - *vMove1;
-    XMVECTOR v = XMVector3Length(vMove1to2);
-    float length = XMVectorGetX(v);
-    vMove1to2 = XMVector3Normalize(vMove1to2);
-    XMVECTOR vAns;
-    vAns = vMove1to2 - vPos1to2;
-    XMFLOAT3 Ans;
-    XMStoreFloat3(&Ans, vAns);
-    Ans.x = Ans.x * Pos1to2.x;
-    Ans.y = Ans.y * Pos1to2.y;
-    Ans.z = Ans.z * Pos1to2.z;
-    vAns = XMLoadFloat3(&Ans);
-    *vMove1 += vAns * (length / 2);
-    *vMove2 -= vAns * (length / 2);
-}
+//void Math::ElasticCollision(XMFLOAT3 pos1, XMVECTOR* vMove1, XMFLOAT3 pos2, XMVECTOR* vMove2)
+//{
+//    XMVECTOR vPos1to2 = XMLoadFloat3(&pos2) - XMLoadFloat3(&pos1);
+//    vPos1to2 = XMVector3Normalize(vPos1to2);
+//    XMFLOAT3 Pos1to2;
+//    XMStoreFloat3(&Pos1to2, vPos1to2);
+//    XMVECTOR vMove1to2 = *vMove2 - *vMove1;
+//    XMVECTOR v = XMVector3Length(vMove1to2);
+//    float length = XMVectorGetX(v);
+//    vMove1to2 = XMVector3Normalize(vMove1to2);
+//    XMVECTOR vAns;
+//    vAns = vMove1to2 - vPos1to2;
+//    XMFLOAT3 Ans;
+//    XMStoreFloat3(&Ans, vAns);
+//    Ans.x = Ans.x * Pos1to2.x;
+//    Ans.y = Ans.y * Pos1to2.y;
+//    Ans.z = Ans.z * Pos1to2.z;
+//    vAns = XMLoadFloat3(&Ans);
+//    *vMove1 += vAns * (length / 2);
+//    *vMove2 -= vAns * (length / 2);
+//}
