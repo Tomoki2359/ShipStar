@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "Image/MatchingBackground.h"
 
 //コンストラクタ
 ResultScene::ResultScene(GameObject* parent)
@@ -10,6 +11,7 @@ ResultScene::ResultScene(GameObject* parent)
 void ResultScene::Initialize()
 {
 	SetScreen(0, 0, 0);
+	Instantiate<MatchingBackground>(this);
 	Instantiate<BackButton>(this);
 	Instantiate<RetryButton>(this);
 }

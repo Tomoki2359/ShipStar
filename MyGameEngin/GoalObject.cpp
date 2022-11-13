@@ -17,6 +17,7 @@ void GoalObject::Initialize()
 	assert(hModel_ >= 0);
 	transform_.scale_.y = 0.75;
 	transform_.scale_.x = 0.75;
+	transform_.rotate_.x = 90;
 }
 
 void GoalObject::Draw()

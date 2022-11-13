@@ -13,28 +13,28 @@ float Math::Det(XMFLOAT3 a, XMFLOAT3 b, XMFLOAT3 c)
            a.x * b.z * c.y;
 }
 
-//OŠpŒ`‚Ì“–‚½‚è”»’è
+//ä¸‰è§’å½¢ã®å½“ãŸã‚Šåˆ¤å®š
 bool Math::Intersect(XMFLOAT3 start, XMFLOAT3 dir, XMFLOAT3 v0, XMFLOAT3 v1, XMFLOAT3 v2)
 {
-    //1•Ó‚Ì’·‚³‚ğ‹‚ß‚é
+    //1è¾ºã®é•·ã•ã‚’æ±‚ã‚ã‚‹
     XMFLOAT3 e01 = XMFLOAT3{ v1.x - v0.x,v1.y - v0.y, v1.z - v0.z };
     XMFLOAT3 e02 = XMFLOAT3{ v2.x - v0.x,v2.y - v0.y, v2.z - v0.z };
     start.x = start.x - v0.x;
     start.y = start.y - v0.y;
     start.z = start.z - v0.z;
-    //u,v,l‚Ì“š‚¦‚ğ‹‚ß‚é
+    //u,v,lã®ç­”ãˆã‚’æ±‚ã‚ã‚‹
     XMFLOAT3 result = XMFLOAT3{Det(start,e02,dir)/Det(e01,e02,dir),Det(e01,start,dir) / Det(e01,e02,dir),-Det(e01,e02,start) / Det(e01,e02,dir) };
 
-    //u‚Ì“š‚¦‚ª0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢‚©
+    //uã®ç­”ãˆãŒ0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„ã‹
     if (0 <= result.x  && result.x <= 1)
     {
-        //v‚Ì“š‚¦‚ª0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢‚©
+        //vã®ç­”ãˆãŒ0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„ã‹
         if (0 <= result.y && result.y <= 1)
         {
-            //u+v‚Ì“š‚¦‚ª0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢‚©
+            //u+vã®ç­”ãˆãŒ0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„ã‹
             if (result.x + result.y <= 1)
             {
-                //l‚Í0‚æ‚è‘å‚«‚¢‚©
+                //lã¯0ã‚ˆã‚Šå¤§ãã„ã‹
                 if (0 <= result.z)
                 {
                     return true;
