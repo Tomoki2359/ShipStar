@@ -29,8 +29,8 @@ void PlayScene::Initialize()
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
 	Instantiate<GoalObject>(this);
-	Instantiate<Observer>(this);
 	Instantiate<Building>(this);
+	Instantiate<Observer>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)

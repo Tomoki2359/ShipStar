@@ -1,8 +1,10 @@
 #include "Observer.h"
 
+#include <math.h>
+
 //コンストラクタ
 Observer::Observer(GameObject* parent)
-    :GameObject(parent, "Observer"), PlaySceneStart_(false), Start_(false), hPict_1(-1), hPict_2(-1), hPict_3(-1), timer(0)
+    :GameObject(parent, "Observer"), Start_(false), timer(-180), hPict_()
 {
 }
 
@@ -14,67 +16,72 @@ Observer::~Observer()
 //初期化
 void Observer::Initialize()
 {
+    std::string texS = "Assets\\Count";
+    std::string texF = ".png";
     //画像データのロード
-    hPict_1 = Image::Load(L"Assets\\Count1.png");
-    assert(hPict_1 >= 0);
-    //画像データのロード
-    hPict_2 = Image::Load(L"Assets\\Count2.png");
-    assert(hPict_2 >= 0);
-    //画像データのロード
-    hPict_3 = Image::Load(L"Assets\\Count3.png");
-    assert(hPict_3 >= 0);
-    //画像データのロード
-    hPict_4 = Image::Load(L"");
-    assert(hPict_4 >= 0);
-
-    pPlayScene = (PlayScene*)FindObject("PlayScene");
+    for (int i = 0; i < 3; i++)
+    {
+        std::string data = texS + std::to_string(i + 1) + texF;
+        hPict_[i] = Image::Load(data);
+        assert(hPict_[i] > NULL);
+    }
 }
 
 //更新
 void Observer::Update()
 {
-    //PlaySceneStart_ = pPlayScene->GetStart();
     //カウントダウン
-    if (PlaySceneStart_ != TRUE)
+    if (Start_ != TRUE)
     {
 
-        if (timer >= 240)
+        if (timer >= NULL)
         {
-            //終わったらPlaySceneのStart_をTRUEにする
-            //pPlayScene->SetStart(TRUE);
-            timer = 0;
-            PlaySceneStart_ = TRUE;
+            Start_ = TRUE;
         }
-        timer++;
+        
 
     }
-    //Start_ = pPlayScene->GetStart();
-    if (PlaySceneStart_ == TRUE)
+    if (Start_ == TRUE)
     {
-        transform_.position_.y += 1000;
+        transform_.position_.x = -0.9f;
+        transform_.position_.y = 0.8f;
     }
+    timer++;
 }
 
 //描画
 void Observer::Draw()
 {//カウントダウンの処理
         //あとでもっとスマートに
-    if (timer > 0 && timer <= 60)
+    if (timer > -180 && timer <= -120)
     {
-        Image::SetTransform(hPict_3, transform_);
-        Image::Draw(hPict_3);
+        Image::SetTransform(hPict_[2], transform_);
+        Image::Draw(hPict_[2]);
     }
-    if (timer > 60  && timer <= 120)
+    if (timer > -120  && timer <= -60)
     {
-        Image::SetTransform(hPict_2, transform_);
-        Image::Draw(hPict_2);
+        Image::SetTransform(hPict_[1], transform_);
+        Image::Draw(hPict_[1]);
     }
-    if (timer > 120 && timer <= 180)
+    if (timer > -60 && timer <= NULL)
     {
-        Image::SetTransform(hPict_1, transform_);
-        Image::Draw(hPict_1);
+        Image::SetTransform(hPict_[0], transform_);
+        Image::Draw(hPict_[0]);
     }
     
+    if (timer > NULL)
+    {
+        int time = timer / 60;
+        int Digit = log10(time);
+        Transform tr = transform_;
+        for (int i = 1; i <= (Digit + 1); i++)
+        {
+            tr.position_.x = transform_.position_.x + (i / 10);
+            Image::SetTransform(hPict_[(int)time - 1], transform_);
+            Image::Draw(hPict_[(int)time - 1]);
+        }
+        
+    }
 }
 
 //開放

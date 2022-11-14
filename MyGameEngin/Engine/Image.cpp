@@ -6,6 +6,14 @@ namespace Image
 	std::vector<Image*> ImageList_;
 }
 
+int Image::Load(std::string fileName)
+{
+	wchar_t file[CHAR_MAX];
+	size_t ret;
+	mbstowcs_s(&ret, file, fileName.c_str(), fileName.length());
+	return Load(file);
+}
+
 int Image::Load(LPCWSTR fileName)
 {
 	Image* pLoadImage;
