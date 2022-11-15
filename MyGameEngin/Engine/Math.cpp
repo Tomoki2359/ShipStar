@@ -175,3 +175,17 @@ bool Math::InsidePlane(XMFLOAT3 pos, XMFLOAT3 HLt, XMFLOAT3 LwR)
     }
     return false;
 }
+
+int Math::GetDigits(int value, int m, int n) {
+    int val = n + 1;
+    int result;
+
+    //n桁目以下の桁を取得
+    val = value % (int)pow(10, val);
+
+    //m桁目以上の桁を取得
+    result = val / pow(10, m);
+
+    return result;
+
+}

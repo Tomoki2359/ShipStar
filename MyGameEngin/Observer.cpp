@@ -1,5 +1,5 @@
 #include "Observer.h"
-
+#include "Engine/Math.h"
 #include <math.h>
 
 //コンストラクタ
@@ -19,9 +19,9 @@ void Observer::Initialize()
     std::string texS = "Assets\\Count";
     std::string texF = ".png";
     //画像データのロード
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 10; i++)
     {
-        std::string data = texS + std::to_string(i + 1) + texF;
+        std::string data = texS + std::to_string(i) + texF;
         hPict_[i] = Image::Load(data);
         assert(hPict_[i] > NULL);
     }
@@ -55,30 +55,31 @@ void Observer::Draw()
         //あとでもっとスマートに
     if (timer > -180 && timer <= -120)
     {
-        Image::SetTransform(hPict_[2], transform_);
-        Image::Draw(hPict_[2]);
+        Image::SetTransform(hPict_[3], transform_);
+        Image::Draw(hPict_[3]);
     }
     if (timer > -120  && timer <= -60)
     {
-        Image::SetTransform(hPict_[1], transform_);
-        Image::Draw(hPict_[1]);
+        Image::SetTransform(hPict_[2], transform_);
+        Image::Draw(hPict_[2]);
     }
     if (timer > -60 && timer <= NULL)
     {
-        Image::SetTransform(hPict_[0], transform_);
-        Image::Draw(hPict_[0]);
+        Image::SetTransform(hPict_[1], transform_);
+        Image::Draw(hPict_[1]);
     }
     
     if (timer > NULL)
     {
         int time = timer / 60;
-        int Digit = log10(time);
+        int Digit = (int)log10(time);
         Transform tr = transform_;
-        for (int i = 1; i <= (Digit + 1); i++)
+        for (int i = 0; i <= Digit; i++)
         {
-            tr.position_.x = transform_.position_.x + (i / 10);
-            Image::SetTransform(hPict_[(int)time - 1], transform_);
-            Image::Draw(hPict_[(int)time - 1]);
+            int Pic = Math::GetDigits(time, (Digit - i), (Digit - i));
+            tr.position_.x = transform_.position_.x + (i / 10.0f);
+            Image::SetTransform(hPict_[Pic], tr);
+            Image::Draw(hPict_[Pic]);
         }
         
     }
