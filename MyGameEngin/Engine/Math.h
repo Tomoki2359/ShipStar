@@ -23,5 +23,15 @@ namespace Math
 
 	bool InsidePlane(XMFLOAT3 pos, XMFLOAT3 HLt, XMFLOAT3 LwR);
 
+	//整数を取得する関数
+	//第一引数 : 対象の値 第二引数 : 求める最小の桁 第三引数 : 求める最大の桁
 	int GetDigits(int value, int m, int n);
+
+	//小数点以下の値を取得する関数
+	//第一引数 : 対象の値 第二/三引数 小数第m～n位
+	float GetFraction(float value, int m, int n);
+
+	//特定の桁の数値を切り抜く関数
+	//第一引数 : 対象の値 第二引数 : 小数第m位 第三引数 : 整数部分の最大の桁
+	float GetNum(float value, int m, int n);
 };

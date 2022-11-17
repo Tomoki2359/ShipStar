@@ -1,6 +1,8 @@
 #include "Observer.h"
 #include "Engine/Math.h"
+#include "Engine/Time.h"
 #include <math.h>
+
 
 //コンストラクタ
 Observer::Observer(GameObject* parent)
@@ -25,6 +27,8 @@ void Observer::Initialize()
         hPict_[i] = Image::Load(data);
         assert(hPict_[i] > NULL);
     }
+    Time::Initialize();
+    Time::SetDisplayMode(true);
 }
 
 //更新
@@ -72,16 +76,7 @@ void Observer::Draw()
     if (timer > NULL)
     {
         int time = timer / 60;
-        int Digit = (int)log10(time);
-        Transform tr = transform_;
-        for (int i = 0; i <= Digit; i++)
-        {
-            int Pic = Math::GetDigits(time, (Digit - i), (Digit - i));
-            tr.position_.x = transform_.position_.x + (i / 10.0f);
-            Image::SetTransform(hPict_[Pic], tr);
-            Image::Draw(hPict_[Pic]);
-        }
-        
+        Time::Draw(time, transform_);
     }
 }
 

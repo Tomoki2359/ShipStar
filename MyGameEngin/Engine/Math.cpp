@@ -189,3 +189,25 @@ int Math::GetDigits(int value, int m, int n) {
     return result;
 
 }
+
+float Math::GetFraction(float value, int m, int n)
+{
+    if (m > n)
+    {
+        std::swap(m, n);
+    }
+    int val;
+    float result;
+    val = value * pow(10, n);
+    val = GetDigits(val, n, m);
+    result = val * pow(10, -n);
+    return result;
+}
+
+float Math::GetNum(float value, int m, int n)
+{
+    int val = GetDigits(value, 1, n);
+    float result = GetFraction(value, 1, m);
+    result += val;
+    return result;
+}
