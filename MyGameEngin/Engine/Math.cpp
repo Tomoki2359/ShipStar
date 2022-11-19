@@ -199,7 +199,7 @@ float Math::GetFraction(float value, int m, int n)
     int val;
     float result;
     val = value * pow(10, n);
-    val = GetDigits(val, n, m);
+    val = GetDigits(val, n - 1, m - 1);
     result = val * pow(10, -n);
     return result;
 }

@@ -27,7 +27,6 @@ void Observer::Initialize()
         hPict_[i] = Image::Load(data);
         assert(hPict_[i] > NULL);
     }
-    Time::Initialize();
     Time::SetDisplayMode(true);
 }
 
@@ -47,6 +46,7 @@ void Observer::Update()
     }
     if (Start_ == TRUE)
     {
+        Time::UnLock();
         transform_.position_.x = -0.9f;
         transform_.position_.y = 0.8f;
     }
@@ -76,7 +76,7 @@ void Observer::Draw()
     if (timer > NULL)
     {
         int time = timer / 60;
-        Time::Draw(time, transform_);
+        Time::Draw(transform_, 1);
     }
 }
 

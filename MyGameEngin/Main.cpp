@@ -1,4 +1,5 @@
 //インクルード
+#include <algorithm>
 #include <stdlib.h>
 #include <Windows.h>
 #include "Engine/Camera.h"
@@ -7,6 +8,7 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 #include "Engine/Transform.h"
+#include "Engine/Time.h"
 #include "Engine/RootJob.h"
 #include "Option.h"
 
@@ -90,6 +92,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	pRoot = new RootJob(nullptr);
 	pRoot->Initialize();
 
+	Time::Initialize();
+
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));//配列など中身を全て０にする
@@ -107,28 +111,41 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		{
 			timeBeginPeriod(1);
 
-			static DWORD countFps = 0;
+			static const char MAX_FPS = 60;
+
+			static int i = 0;
+			static DWORD countFps[MAX_FPS];
 			static DWORD startTime = timeGetTime();
 			DWORD nowTime = timeGetTime();
 			static DWORD lastUpdateTime = nowTime;
 
-			if (nowTime - startTime >= 1000)
-			{
+			//if (nowTime - startTime >= 1000)
+			//{
 				//WCHAR str[16];
 				//wsprintf(str, L"%u", countFps);
 				//SetWindowText(hWnd, str);
 
-				countFps = 0;
-				startTime = nowTime;
-			}
+			startTime = nowTime;
+			//}
 
-			if ((nowTime - lastUpdateTime) * 60 <= 1000.0f)
+			if ((nowTime - lastUpdateTime) * MAX_FPS <= 1000.0f)
 			{
 				continue;
 			}
+			//FPSの更新
+			Time::Update((short)*std::max_element(countFps, countFps + MAX_FPS));
+			countFps[i] = 0;
 			lastUpdateTime = nowTime;
 
-			countFps++;
+			for (int j = NULL; j < MAX_FPS; j++)
+			{
+				countFps[j]++;
+			}
+			i++;
+			if (i >= MAX_FPS)
+			{
+				i = NULL;
+			}
 
 			Input::Update();
 			pRoot->UpdateSub();

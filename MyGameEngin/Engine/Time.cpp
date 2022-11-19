@@ -10,8 +10,9 @@ namespace Time
 	int hPict_[10];
 	char Hours;
 	short Minuts;
-	float Seconds;
-	bool OnlySec;
+	double Seconds;
+	bool OnlySec;	//秒のみの表記にするか
+	bool Lock_;		//現在の状態で固定するか
 
 	void Initialize()
 	{
@@ -28,25 +29,57 @@ namespace Time
 		Minuts = NULL;
 		Seconds = NULL;
 		OnlySec = false;
+		Lock_ = true;
 	}
+
+	void Update(short FPS)
+	{
+		short fps = FPS - 1;
+		if (Lock_) { return; }	//Lockされていたら更新しない
+		Seconds += 1.0 / fps;
+	}
+
+	void Reset()
+	{
+
+	}
+
+	void Lock()
+	{
+		Lock_ = true;
+	}
+
+	void UnLock()
+	{
+		Lock_ = false;
+	}
+
 	void SetDisplayMode(bool Mode)
 	{
 		OnlySec = Mode;
 	}
 
-	void Draw(int value, Transform tr)
+	void Draw(Transform tr, int digit)
 	{
-		int Digit = (int)log10(value);
+		int Digit = (int)log10(Seconds);
 		Transform Tr = tr;
+
+		//整数部分の表示
 		for (int i = 0; i <= Digit; i++)
 		{
-			int Pic = Math::GetDigits(value, (Digit - i), (Digit - i));
+			int Pic = Math::GetDigits(Seconds, (Digit - i), (Digit - i));
 			Tr.position_.x = tr.position_.x + (i / 10.0f);
 			Image::SetTransform(hPict_[Pic], Tr);
 			Image::Draw(hPict_[Pic]);
 		}
-	}
-	void Draw(float value, Transform tr)
-	{
+
+		//小数部分の表示
+		for (int i = 1; i <= digit; i++)
+		{
+			int Pic = (int)(Math::GetFraction((float)Seconds, i, i) * pow((double)10, (double)i));
+			Tr.position_.x += (i / 10.0f);
+			Image::SetTransform(hPict_[Pic], Tr);
+			Image::Draw(hPict_[Pic]);
+		}
 	}
 }
