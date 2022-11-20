@@ -27,7 +27,7 @@ void Observer::Initialize()
         hPict_[i] = Image::Load(data);
         assert(hPict_[i] > NULL);
     }
-    Time::SetDisplayMode(true);
+    Time::SetDisplayMode(false);
 }
 
 //XV
@@ -47,7 +47,7 @@ void Observer::Update()
     if (Start_ == TRUE)
     {
         Time::UnLock();
-        transform_.position_.x = -0.9f;
+        transform_.position_.x = -1.0f;
         transform_.position_.y = 0.8f;
     }
     timer++;
@@ -76,7 +76,7 @@ void Observer::Draw()
     if (timer > NULL)
     {
         int time = timer / 60;
-        Time::Draw(transform_, 1);
+        Time::Draw(transform_, 2);
     }
 }
 

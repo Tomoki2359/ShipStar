@@ -29,7 +29,9 @@ namespace Math
 
 	//小数点以下の値を取得する関数
 	//第一引数 : 対象の値 第二/三引数 小数第m～n位
-	float GetFraction(float value, int m, int n);
+	float GetFraction(float value, int m, int n);	//情報落ちして一部の値が取得できない
+	//小数点以下の指定した桁を整数値で取得する関数
+	int GetFraction(float value, int m);
 
 	//特定の桁の数値を切り抜く関数
 	//第一引数 : 対象の値 第二引数 : 小数第m位 第三引数 : 整数部分の最大の桁
