@@ -48,7 +48,7 @@ class Airframe : public GameObject
 
 	void JudgeGoal();	//ƒS[ƒ‹‚Ì”»’è
 
-
+	void ComCorrection();
 
 	void ResetOverRotate(float* rotate);	//0~360‹‚É—¯‚ß‚Ä‚¨‚­ˆ×‚Ì‚à‚Ì
 

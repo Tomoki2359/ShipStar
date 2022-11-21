@@ -45,6 +45,11 @@ void Airframe::Initialize()
 
 	transform_.position_.z = 0.1f;
 	PrevPosition_ = transform_.position_;
+
+	if (objectName_ == "Computer")
+	{
+		ComCorrection();
+	}
 }
 
 //更新
@@ -189,7 +194,7 @@ void Airframe::SetStatus()
 	//fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
 	Instantiate<PartsUnion>(this);
   
-	if (this->objectName_ == "Player")
+	if (this->objectName_ == "Computer")
 	{
 		cCamera_ = true;	//カメラON
 	}
@@ -281,6 +286,11 @@ void Airframe::JudgeGoal()
 	{
 		IsGoal_ = true;
 	}
+}
+
+void Airframe::ComCorrection()
+{
+	status_[MAX_SPEED] *= 1.1f;
 }
 
 void Airframe::ResetOverRotate(float* rotate)

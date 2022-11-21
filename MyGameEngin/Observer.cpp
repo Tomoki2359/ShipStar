@@ -34,18 +34,18 @@ void Observer::Initialize()
 void Observer::Update()
 {
     //カウントダウン
-    if (Start_ != TRUE)
+    if (!Start_)
     {
-
         if (timer >= NULL)
         {
             Start_ = TRUE;
         }
-        
-
+        float CdSize = 1 + (-timer % 60) / 30.0f;
+        transform_.scale_ = XMFLOAT3(CdSize, CdSize, CdSize);
     }
-    if (Start_ == TRUE)
+    if (Start_)
     {
+        transform_.scale_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
         Time::UnLock();
         transform_.position_.x = -1.0f;
         transform_.position_.y = 0.8f;
@@ -67,15 +67,14 @@ void Observer::Draw()
         Image::SetTransform(hPict_[2], transform_);
         Image::Draw(hPict_[2]);
     }
-    if (timer > -60 && timer <= NULL)
+    if (timer > -60 && timer <= 0)
     {
         Image::SetTransform(hPict_[1], transform_);
         Image::Draw(hPict_[1]);
     }
     
-    if (timer > NULL)
+    if (timer > 0)
     {
-        int time = timer / 60;
         Time::Draw(transform_, 2);
     }
 }
