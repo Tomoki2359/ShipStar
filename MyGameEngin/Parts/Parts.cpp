@@ -9,8 +9,6 @@ Parts::Parts(GameObject* parent, std::string name)
 	colorNum_ = 0;
 }
 
-
-
 Parts::Parts(GameObject* parent)
 	: Parts(parent, "Parts")
 {
@@ -28,7 +26,6 @@ void Parts::Initialize()
 	transform_.scale_.x = 0.5f;
 	transform_.scale_.y = 0.5f;
 	transform_.scale_.z = 0.5f;
-	Load();
 }
 
 //更新
@@ -95,11 +92,6 @@ int Parts::GetParts()
 	return partsNum_;
 }
 
-void Parts::RotationParts()
-{
-	transform_.rotate_.y++;
-}
-
 void Parts::SetName()
 {
 	//モデルデータのロード
@@ -137,6 +129,28 @@ void Parts::SetName()
 		break;
 	case PARTS_COCKPIT:
 		partsName_ = partsName_ + "_cockpit.fbx";
+		break;
+	default:
+		break;
+	}
+}
+
+void Parts::Union(PARTS_NAME engineName, int partsNum)
+{
+	//ボディの種類
+	switch (engineName)
+	{
+	case PARTS_GINGA:
+		GingaUnion(partsNum);
+		break;
+	case PARTS_MASTANG:
+		MastangUnion(partsNum);
+		break;
+	case PARTS_SINDEN:
+		SindenUnion(partsNum);
+		break;
+	case PARTS_ZERO:
+		ZeroUnion(partsNum);
 		break;
 	default:
 		break;

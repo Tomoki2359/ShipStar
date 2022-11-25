@@ -43,17 +43,44 @@ public:
 	//開放
 	void Release() override;
 
-	virtual void Load();
-
-	virtual void SetParts(int partsNum);
-
-	virtual int GetPartsNum() = 0;
-
-	virtual void SetColor(int colorNum);
-
-	virtual int GetColor();
-
 	int GetParts();
 
-	void RotationParts();
+	//パーツに位置を合わせる
+	void Union(PARTS_NAME engineName, int partsNum);
+
+	//継承関係
+	//パーツを呼ぶ
+	void Load();
+
+	//パーツをセットする	
+	//引数： 第一引数　パーツ番号
+	void SetParts(int partsNum);
+
+	//パーツ番号の取得
+	//戻り値: パーツ番号
+	virtual int GetPartsNum() = 0;
+
+	//カラー番号をセットする
+	//引数: 第一引数　カラー番号
+	void SetColor(int colorNum);
+
+	//カラー番号の取得
+	//戻り値： カラー番号
+	int GetColor();
+
+	//銀河ボディのときの位置調整
+	//引数: 第一引数　パーツ番号
+	virtual void GingaUnion(int partsNum) = 0;
+
+	//マスタングボディのときの位置調整
+	//引数: 第一引数　パーツ番号
+	virtual void MastangUnion(int partsNum) = 0;
+
+	//シンデンボディのときの位置調整
+	//引数: 第一引数　パーツ番号
+	virtual void SindenUnion(int partsNum) = 0;
+
+	//ゼロボディのときの位置調整
+	//引数: 第一引数　パーツ番号
+	virtual void ZeroUnion(int partsNum) = 0;
 };

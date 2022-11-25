@@ -182,6 +182,7 @@
     <ClCompile Include="Image\Button.cpp" />
     <ClCompile Include="Image\ButtonArrangement.cpp" />
     <ClCompile Include="Image\ChangeStatus.cpp" />
+    <ClCompile Include="Image\CouseMap.cpp" />
     <ClCompile Include="Image\CurrentStatus.cpp" />
     <ClCompile Include="Image\FixeButton.cpp" />
     <ClCompile Include="Image\LobbyBackground.cpp" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Image\Button.h" />
     <ClInclude Include="Image\ButtonArrangement.h" />
     <ClInclude Include="Image\ChangeStatus.h" />
+    <ClInclude Include="Image\CouseMap.h" />
     <ClInclude Include="Image\CurrentStatus.h" />
     <ClInclude Include="Image\FixeButton.h" />
     <ClInclude Include="Image\LobbyBackground.h" />

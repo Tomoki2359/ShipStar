@@ -2,6 +2,7 @@
 #include "Building.h"
 #include "Computer.h"
 #include "Course.h"
+#include "Image/CouseMap.h"
 #include "GoalObject.h"
 #include "Navigation.h"
 #include "Player.h"
@@ -31,6 +32,7 @@ void PlayScene::Initialize()
 	Instantiate<GoalObject>(this);
 	Instantiate<Building>(this);
 	Instantiate<Observer>(this);
+	Instantiate<CouseMap>(this);
 	PlayerList_.push_back(Instantiate<Player>(this));
 	PlayerNum += (char)PlayerList_.size();
 	while (PlayerNum < 2)
