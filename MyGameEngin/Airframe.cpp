@@ -3,6 +3,7 @@
 #include "Engine/Math.h"
 #include "Engine/Model.h"
 #include "Engine/Camera.h"
+#include "Option.h"
 #include "Parts/PartsUnion.h"
 #include <algorithm>
 #include <math.h>
@@ -10,8 +11,8 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(NULL), RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(NULL), Side_(true),
-	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false)
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(NULL), Side_(true), VirtualState_(NULL),
+	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false), NextState_(NULL)
 {
 }
 
@@ -50,6 +51,14 @@ void Airframe::Initialize()
 	{
 		ComCorrection();
 	}
+
+	/*if (Option::GetMode() == MODE_REPLAY)
+	{
+		if (objectName_ == "Player")
+		{
+			Model::SetAlpha(hModel_, 0.1);
+		}
+	}*/
 }
 
 //更新
@@ -194,13 +203,23 @@ void Airframe::SetStatus()
 	//fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
 	Instantiate<PartsUnion>(this);
   
-	if (this->objectName_ == "Computer")
+	if (Option::GetMode() != MODE_REPLAY)
 	{
-		cCamera_ = true;	//カメラON
+		if (this->objectName_ == "Player")
+		{
+			cCamera_ = true;	//カメラON
+		}
+		else
+		{
+			cCamera_ = false;	//カメラOFF
+		}
 	}
 	else
 	{
-		cCamera_ = false;	//カメラOFF
+		if (this->objectName_ == "Ghost")
+		{
+			cCamera_ = true;	//カメラON
+		}
 	}
 
 }

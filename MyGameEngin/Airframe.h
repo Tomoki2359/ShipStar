@@ -6,6 +6,13 @@
 
 const short Past = 120;
 
+//各状態の定義
+const char M_TURBO = 0x20;
+const char M_TURNL = 0x04;
+const char M_TURNR = 0x02;
+const char M_ACCEL = 0x01;
+const char M_BREAK = 0x08;
+
 enum STATUS_ID
 {
 	MAX_SPEED,	//最高速度
@@ -60,6 +67,11 @@ class Airframe : public GameObject
 	void ChaseCamera();		//カメラを追わせる
 
 protected:
+	//8ビット、上位ビットから順に(未定、未定、ターボ、上昇、下降、左カーブ、右カーブ、アクセルブレーキ)
+	//有無の判定、アクセルブレーキは1がtrue、0がfalseとする。
+	char VirtualState_;	//仮想の思考を司る部分(仮)
+	char NextState_;	//次のフレームの状態
+
 	float speed_;	//現在の速度
 	void JudgeSide();
 	void JudgeSide(RayCastData& data);

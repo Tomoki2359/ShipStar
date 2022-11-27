@@ -81,7 +81,7 @@ namespace Time
 			//®”•”•ª‚Ì•\¦
 			for (int i = NULL; i <= Digit; i++)
 			{
-				int Pic = Math::GetDigits(Seconds, (Digit - i), (Digit - i));
+				int Pic = Math::GetDigits((int)Seconds, (Digit - i), (Digit - i));
 				Tr.position_.x += Interval;
 				Image::SetTransform(hPict_[Pic], Tr);
 				Image::Draw(hPict_[Pic]);
@@ -163,5 +163,10 @@ namespace Time
 			Image::SetTransform(hPict_[Pic], Tr);
 			Image::Draw(hPict_[Pic]);
 		}
+	}
+
+	float GetTime()
+	{
+		return Seconds;
 	}
 }

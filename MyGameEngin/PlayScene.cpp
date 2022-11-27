@@ -7,6 +7,9 @@
 #include "Player.h"
 #include "Image/PlayBackground.h"
 #include "Observer.h"
+#include "Option.h"
+#include "Engine/Time.h"
+#include "Ghost.h"
 
 
 //コンストラクタ
@@ -23,51 +26,69 @@ PlayScene::~PlayScene()
 //初期化
 void PlayScene::Initialize()
 {
-	char PlayerNum = NULL;
-	PlayerList_.clear();
 	SetScreen(255, 255, 255);
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
 	Instantiate<GoalObject>(this);
 	Instantiate<Building>(this);
 	Instantiate<Observer>(this);
-	PlayerList_.push_back(Instantiate<Player>(this));
-	PlayerNum += (char)PlayerList_.size();
-	while (PlayerNum < 2)
+	switch (Option::GetMode())
 	{
-		PlayerList_.push_back(Instantiate<Computer>(this));
-		PlayerNum++;
+	case MODE_VSCOM:
+		Instantiate<Player>(this);
+		Instantiate<Computer>(this);
+		break;
+	case MODE_SOLO:
+		Instantiate<Player>(this);
+		break;
+	case MODE_REPLAY:
+		Instantiate<Player>(this);
+		Instantiate<Ghost>(this);
+		break;
+	default:
+		break;
 	}
+	Time::Reset();
 }
 
 //更新
 void PlayScene::Update()
 {
+
 	if (CallNav_ == 2 && !Initcomprete_)	//開始フレームは後ほど調整
 	{
 		Instantiate<Navigation>(this);
 		Initcomprete_ = true;
 	}
-	else if(!Initcomprete_ && CallNav_ < 5)
+	else if (!Initcomprete_ && CallNav_ < 5)
 	{
 		CallNav_++;
 	}
 
-	Player* pPlayer = (Player*)FindObject("Player");
+	if (Option::GetMode() != MODE_REPLAY)
+	{
+		Player* pPlayer = (Player*)FindObject("Player");
 
-	/*if (pPlayer->GetStart() && UdCobj_ > 300)
-	{
-		Navigation* pNav = (Navigation*)FindObject("Navigation");
-		CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
-		pCobj->SetPosition(pNav->GetLeft());
-		UdCobj_ = NULL;
-	}*/
-	if (pPlayer->GetisGoal())
-	{
-		SCENE_CHANGE(SCENE_ID_RESULT);
+		/*if (pPlayer->GetStart() && UdCobj_ > 300)
+		{
+			Navigation* pNav = (Navigation*)FindObject("Navigation");
+			CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
+			pCobj->SetPosition(pNav->GetLeft());
+			UdCobj_ = NULL;
+		}*/
+		if (pPlayer->GetisGoal())
+		{
+			Time::Lock();
+			if (pPlayer != nullptr)
+			{
+				pPlayer->ThrowData();
+			}
+			SCENE_CHANGE(SCENE_ID_RESULT);
+		}
+		SAFE_RELEASE(pPlayer);
+		//UdCobj_++;
+
 	}
-	//UdCobj_++;
-
 }
 
 //描画

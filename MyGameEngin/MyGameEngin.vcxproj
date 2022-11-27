@@ -176,6 +176,7 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Time.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="GoalObject.cpp" />
     <ClCompile Include="Image\BackButton.cpp" />
     <ClCompile Include="Image\Background.cpp" />
@@ -218,6 +219,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SplashScene.cpp" />
+    <ClCompile Include="Storage.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VolumeScene.cpp" />
   </ItemGroup>
@@ -264,6 +266,7 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="GoalObject.h" />
     <ClInclude Include="Image\BackButton.h" />
     <ClInclude Include="Image\Background.h" />
@@ -305,6 +308,7 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SplashScene.h" />
+    <ClInclude Include="Storage.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VolumeScene.h" />
   </ItemGroup>

@@ -23,5 +23,8 @@ namespace Time
 
 	//第一引数 : 表示するTransform 第二引数 : 小数点以下何桁を表示するか
 	void Draw(Transform tr, int digit);
+
+	//呼び出し時点の時間を取得
+	float GetTime();
 };
 

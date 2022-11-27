@@ -1,5 +1,7 @@
 #include "ResultScene.h"
 #include "Image/MatchingBackground.h"
+#include "Engine/Time.h"
+#include "Option.h"
 
 //コンストラクタ
 ResultScene::ResultScene(GameObject* parent)
@@ -14,6 +16,9 @@ void ResultScene::Initialize()
 	Instantiate<MatchingBackground>(this);
 	Instantiate<BackButton>(this);
 	Instantiate<RetryButton>(this);
+	transform_.position_ = XMFLOAT3(0, 0, 0);
+	transform_.rotate_ = XMFLOAT3(0, 0, 0);
+	transform_.scale_ = XMFLOAT3(1, 1, 1);
 }
 
 //更新
@@ -23,9 +28,9 @@ void ResultScene::Update()
 	{
 		first_ = false;
 		pBack_ = (BackButton*)FindObject("BackButton");
-		assert(pBack_ != nullptr);
+		//assert(pBack_ != nullptr);
 		pOK_ = (RetryButton*)FindObject("RetryButton");
-		assert(pOK_ != nullptr);
+		//assert(pOK_ != nullptr);
 	}
 	if (Input::IsKeyDown(DIK_S))
 	{
@@ -61,6 +66,7 @@ void ResultScene::Update()
 
 	if (FindObject("RetryButton") == nullptr)
 	{
+		Option::SetMode(MODE_REPLAY);
 		SCENE_CHANGE(SCENE_ID_PLAY);
 	}
 
@@ -81,6 +87,7 @@ void ResultScene::Update()
 //描画
 void ResultScene::Draw()
 {
+	Time::GetTime();
 }
 
 //開放

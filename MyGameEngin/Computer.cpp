@@ -5,7 +5,7 @@
 #include "PlayScene.h"
 
 Computer::Computer(GameObject* parent)
-	: Airframe(parent, "Computer"), VirtualState_(NULL), NextState_(NULL), UpdateDecider((rand() % 10) + 10), PrCommand(), Future_()
+	: Airframe(parent, "Computer"), UpdateDecider((rand() % 10) + 10), PrCommand(), Future_()
 {
 }
 
@@ -30,10 +30,12 @@ void Computer::UpdateState()
 			if (PrCommand.Move_Front < 3)
 			{
 				ResetNextState(M_ACCEL);
+				SetNextState(M_BREAK);
 			}
 			else
 			{
 				SetNextState(M_ACCEL);
+				ResetNextState(M_BREAK);
 			}
 
 			PrCommand.Move_Front -= 3;	//試験的に影響度を下げてみる
@@ -219,7 +221,7 @@ void Computer::Reflect()
 		Accelerate();
 	}
 	//ブレーキする
-	if (VirtualState_ & NULL)
+	if (VirtualState_ & M_BREAK)
 	{
 		Decelerate();
 	}

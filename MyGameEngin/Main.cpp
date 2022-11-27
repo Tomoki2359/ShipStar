@@ -137,29 +137,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			countFps[i] = 0;
 			lastUpdateTime = nowTime;
 
-			for (int j = NULL; j < MAX_FPS; j++)
+			for (int j = 0; j < MAX_FPS; j++)
 			{
 				countFps[j]++;
 			}
 			i++;
 			if (i >= MAX_FPS)
 			{
-				i = NULL;
+				i = 0;
 			}
 
 			Input::Update();
 			pRoot->UpdateSub();
-
-			if (Input::IsKeyUp(DIK_ESCAPE))
-			{
-				static int cnt = 0;
-				cnt++;
-				if (cnt >= 3)
-				{
-					PostQuitMessage(0);
-				}
-			}
-
 
 			//ƒQ[ƒ€‚Ìˆ—
 			Direct3D::BeginDraw();
@@ -169,16 +158,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//•`‰æˆ—
 			pRoot->DrawSub();
 
-
-
 			Direct3D::EndDraw();
 
 			timeEndPeriod(1);
 		}
 	}
 
-	Model::Release();
-	Image::Release();
+	Model::AllRelease();
+	Image::AllRelease();
 	pRoot->ReleaseSub();
 	SAFE_RELEASE(pRoot);
 
