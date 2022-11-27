@@ -177,6 +177,9 @@
     <ClCompile Include="Engine\Time.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="GoalObject.cpp" />
+    <ClCompile Include="Icon\AirframeIcon.cpp" />
+    <ClCompile Include="Icon\ComputerIcon.cpp" />
+    <ClCompile Include="Icon\PlayerIcon.cpp" />
     <ClCompile Include="Image\BackButton.cpp" />
     <ClCompile Include="Image\Background.cpp" />
     <ClCompile Include="Image\Button.cpp" />
@@ -266,6 +269,9 @@
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Engine\Transform.h" />
     <ClInclude Include="GoalObject.h" />
+    <ClInclude Include="Icon\AirframeIcon.h" />
+    <ClInclude Include="Icon\ComputerIcon.h" />
+    <ClInclude Include="Icon\PlayerIcon.h" />
     <ClInclude Include="Image\BackButton.h" />
     <ClInclude Include="Image\Background.h" />
     <ClInclude Include="Image\Button.h" />

@@ -3,6 +3,8 @@
 #include "Computer.h"
 #include "Course.h"
 #include "Image/CouseMap.h"
+#include "Icon/PlayerIcon.h"
+#include "Icon/ComputerIcon.h"
 #include "GoalObject.h"
 #include "Navigation.h"
 #include "Player.h"
@@ -40,6 +42,8 @@ void PlayScene::Initialize()
 		PlayerList_.push_back(Instantiate<Computer>(this));
 		PlayerNum++;
 	}
+	Instantiate<PlayerIcon>(this);
+	Instantiate<ComputerIcon>(this);
 }
 
 //çXêV
