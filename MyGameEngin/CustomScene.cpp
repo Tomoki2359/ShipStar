@@ -18,10 +18,7 @@ void CustomScene::Initialize()
 	Instantiate<CurrentStatus>(this);
 	Instantiate<PartsList>(this);
 
-	Instantiate<EnginParts>(pParent_);
-	Instantiate<BodyParts>(pParent_);
-	Instantiate<WingParts>(pParent_);
-	Instantiate<CookpitParts>(pParent_);
+	Instantiate<PartsUnion>(this);
 }
 
 //更新
@@ -55,6 +52,9 @@ void CustomScene::Update()
 		assert(pCookpit_ != nullptr);
 		cookpitNum_ = pCookpit_->GetParts();
 		cookpitColor_ = pCookpit_->GetColor();
+
+		pUnion_ = (PartsUnion*)FindObject("PartsUnion");
+		assert(pUnion_ != nullptr);
 	}
 	
 	//マウスが動いたかどうか
@@ -76,10 +76,7 @@ void CustomScene::Update()
 		AfterChange();
 	}
 
-	pEngin_->RotationParts();
-	pBody_->RotationParts();
-	pWing_->RotationParts();
-	pCookpit_->RotationParts();
+	pUnion_->RotationParts();
 }
 
 //描画
@@ -156,6 +153,10 @@ void CustomScene::BeforeChange()
 			PartsChange(pCookpit_, cookpitNum_, cookpitColor_);
 		}
 	}
+
+	pEngin_->Union((PARTS_NAME)bodyNum_, engineNum_);
+	pWing_->Union((PARTS_NAME)bodyNum_, wingNum_);
+	pCookpit_->Union((PARTS_NAME)bodyNum_, cookpitNum_);
 }
 
 void CustomScene::AfterChange()
@@ -259,4 +260,5 @@ void CustomScene::PartsChange(Parts* parts, int& partsNum, int& partsColor)
 	parts->SetColor(partsColor);
 	parts->SetParts(partsNum);
 	parts->Load();
+	parts->Union((PARTS_NAME)bodyNum_, partsNum);
 }

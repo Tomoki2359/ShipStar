@@ -31,6 +31,12 @@
     <Filter Include="ヘッダー ファイル\parts">
       <UniqueIdentifier>{db596cb9-82b2-4bdb-9b75-805bd86fc3a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Icon">
+      <UniqueIdentifier>{ec4f1739-f008-414d-8d51-b77d1e798fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Icon">
+      <UniqueIdentifier>{fa456117-99cf-4dd6-a7fc-fa20f04d7201}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl">
@@ -256,6 +262,17 @@
     </ClCompile>
     <ClCompile Include="Ghost.cpp">
       <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Image\CouseMap.cpp">
+      <Filter>ソース ファイル\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon\AirframeIcon.cpp">
+      <Filter>ソース ファイル\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon\PlayerIcon.cpp">
+      <Filter>ソース ファイル\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon\ComputerIcon.cpp">
+      <Filter>ソース ファイル\Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -465,6 +482,17 @@
     </ClInclude>
     <ClInclude Include="Ghost.h">
       <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Image\CouseMap.h">
+      <Filter>ヘッダー ファイル\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon\AirframeIcon.h">
+      <Filter>ヘッダー ファイル\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon\PlayerIcon.h">
+      <Filter>ヘッダー ファイル\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="Icon\ComputerIcon.h">
+      <Filter>ヘッダー ファイル\Icon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

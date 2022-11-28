@@ -9,7 +9,13 @@ public:
 	//引数：parent  親オブジェクト（SceneManager）
 	BodyParts(GameObject* parent);
 
-	//void SetPartsNum(int partsNum) override;
-
 	int GetPartsNum() override;
+
+	void GingaUnion(int partsNum) override;
+
+	void MastangUnion(int partsNum) override;
+
+	void SindenUnion(int partsNum) override;
+
+	void ZeroUnion(int partsNum) override;
 };

@@ -2,6 +2,9 @@
 #include "Building.h"
 #include "Computer.h"
 #include "Course.h"
+#include "Image/CouseMap.h"
+#include "Icon/PlayerIcon.h"
+#include "Icon/ComputerIcon.h"
 #include "GoalObject.h"
 #include "Navigation.h"
 #include "Player.h"
@@ -12,7 +15,7 @@
 #include "Ghost.h"
 
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 PlayScene::PlayScene(GameObject* parent)
 	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL), UdCobj_(NULL),hPict_1(-1), hPict_2(-1), hPict_3(-1), timer(0),Start_(false)
 {
@@ -23,7 +26,7 @@ PlayScene::~PlayScene()
 	PlayerList_.clear();
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void PlayScene::Initialize()
 {
 	SetScreen(255, 255, 255);
@@ -32,6 +35,7 @@ void PlayScene::Initialize()
 	Instantiate<GoalObject>(this);
 	Instantiate<Building>(this);
 	Instantiate<Observer>(this);
+	Instantiate<CouseMap>(this);
 	switch (Option::GetMode())
 	{
 	case MODE_VSCOM:
@@ -49,13 +53,15 @@ void PlayScene::Initialize()
 		break;
 	}
 	Time::Reset();
+Instantiate<PlayerIcon>(this);
+	Instantiate<ComputerIcon>(this);
 }
 
-//XV
+//æ›´æ–°
 void PlayScene::Update()
 {
 
-	if (CallNav_ == 2 && !Initcomprete_)	//ŠJnƒtƒŒ[ƒ€‚ÍŒã‚Ù‚Ç’²®
+	if (CallNav_ == 2 && !Initcomprete_)	//é–‹å§‹ãƒ•ãƒ¬ãƒ¼ãƒ ã¯å¾Œã»ã©èª¿æ•´
 	{
 		Instantiate<Navigation>(this);
 		Initcomprete_ = true;
@@ -91,13 +97,13 @@ void PlayScene::Update()
 	}
 }
 
-//•`‰æ
+//æç”»
 void PlayScene::Draw()
 {
 	
 }
 
-//ŠJ•ú
+//é–‹æ”¾
 void PlayScene::Release()
 {
 }

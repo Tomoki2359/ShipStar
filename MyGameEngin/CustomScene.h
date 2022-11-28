@@ -8,10 +8,7 @@
 #include "Image/PartsList.h"
 #include "Image/OriginalStatus.h"
 #include "Image/ChangeStatus.h"
-#include "Parts/EnginParts.h"
-#include "Parts/BodyParts.h"
-#include "Parts/WingParts.h"
-#include "Parts/CookpitParts.h"
+#include "Parts/PartsUnion.h"
 
 enum BEFORE_CUSTOM
 {
@@ -69,6 +66,7 @@ class CustomScene : public GameObject
 	BodyParts* pBody_;
 	WingParts* pWing_;
 	CookpitParts* pCookpit_;
+	PartsUnion* pUnion_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

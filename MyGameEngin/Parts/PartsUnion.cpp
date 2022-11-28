@@ -1,9 +1,5 @@
 #include "PartsUnion.h"
 #include "../Engine/Model.h"
-#include "BodyParts.h"
-#include "CookpitParts.h"
-#include "EnginParts.h"
-#include "WingParts.h"
 
 PartsUnion::PartsUnion(GameObject* parent)
 	: GameObject(parent, "PartsUnion"), hModel_(-1)
@@ -27,4 +23,9 @@ void PartsUnion::Initialize()
 
 void PartsUnion::Draw()
 {
+}
+
+void PartsUnion::RotationParts()
+{
+	transform_.rotate_.y++;
 }
