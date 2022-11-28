@@ -109,6 +109,29 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			//ヒープ破壊が起きた時の検出用
+#if _DEBUG
+			int  heapstatus;
+			heapstatus = _heapchk();
+			wchar_t buffer[256] = {};
+			switch (heapstatus)
+			{
+			case _HEAPOK:
+				swprintf_s(buffer, L" OK - heap is fine\n");
+				break;
+			case _HEAPEMPTY:
+				swprintf_s(buffer, L" OK - heap is empty\n");
+				break;
+			case _HEAPBADBEGIN:
+				swprintf_s(buffer, L"ERROR - bad start of heap\n");
+				break;
+			case _HEAPBADNODE:
+				swprintf_s(buffer, L"ERROR - bad node in heap\n");
+				break;
+			}
+			OutputDebugString(buffer);
+#endif
+
 			timeBeginPeriod(1);
 
 			static const char MAX_FPS = 60;

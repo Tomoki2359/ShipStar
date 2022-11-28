@@ -1,6 +1,8 @@
 #include "PlayBackground.h"
 #include "../Engine/Image.h"
 #include "../Player.h"
+#include "../Ghost.h"
+#include "../Option.h"
 
 //コンストラクタ
 PlayBackground::PlayBackground(GameObject* parent)
@@ -24,8 +26,18 @@ void PlayBackground::Initialize()
 //更新
 void PlayBackground::Update()
 {
-	Player* pPlayer = (Player*)FindObject("Player");
-	transform_.position_.x = -pPlayer->GetRotate().y / 800;
+	if (Option::GetMode() != MODE_REPLAY)
+	{
+		Player* pPlayer = (Player*)FindObject("Player");
+		transform_.position_.x = -pPlayer->GetRotate().y / 800;
+		SAFE_RELEASE(pPlayer);
+	}
+	else
+	{
+		Ghost* pGhost = (Ghost*)FindObject("Ghost");
+		transform_.position_.x = -pGhost->GetRotate().y / 800;
+		SAFE_RELEASE(pGhost);
+	}
 }
 
 //描画

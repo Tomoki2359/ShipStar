@@ -42,7 +42,7 @@ void PlayScene::Initialize()
 		Instantiate<Player>(this);
 		break;
 	case MODE_REPLAY:
-		Instantiate<Player>(this);
+		//Instantiate<Player>(this);
 		Instantiate<Ghost>(this);
 		break;
 	default:

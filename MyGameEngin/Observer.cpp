@@ -1,6 +1,7 @@
 #include "Observer.h"
 #include "Engine/Math.h"
 #include "Engine/Time.h"
+#include "Option.h"
 #include <math.h>
 
 
@@ -73,9 +74,13 @@ void Observer::Draw()
         Image::Draw(hPict_[1]);
     }
     
-    if (timer > 0)
+    if (Option::GetMode() != MODE_REPLAY)
     {
-        Time::Draw(transform_, 2);
+        if (timer > 0)
+        {
+            Time::Draw(transform_, 2);
+        }
+
     }
 }
 

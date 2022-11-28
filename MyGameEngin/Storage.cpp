@@ -3,13 +3,16 @@
 
 namespace Storage
 {
-	std::list<char> Data_Command;
-	std::list<int> Data_Frame;
+	std::vector<char> Data_Command;
+	std::vector<int> Data_Frame;
 
 	void ThrowData(std::vector<char> command, std::vector<int> frame)
 	{
 		Data_Command.clear();
 		Data_Frame.clear();
+		
+		Data_Command.reserve(command.size());
+		Data_Frame.reserve(command.size());
 
 		size_t size = 0;
 		
@@ -27,7 +30,15 @@ namespace Storage
 	{
 		command.clear();
 		frame.clear();
-		memcpy_s(&command, std::size(Data_Command), &Data_Command, std::size(Data_Command));
-		memcpy_s(&frame, std::size(Data_Frame), &Data_Frame, std::size(Data_Frame));
+
+		size_t size = 0;
+		while (size < Data_Command.size())
+		{
+			char datacom = Data_Command.at(size);
+			command.push_back(datacom);
+			int datafrm = Data_Frame.at(size);
+			frame.push_back(datafrm);
+			size++;
+		}
 	}
 }
