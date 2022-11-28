@@ -14,4 +14,6 @@ public:
 	void Load() override;
 
 	void AirframePos() override;
+
+	void Release() override;
 };

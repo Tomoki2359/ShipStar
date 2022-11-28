@@ -2,7 +2,7 @@
 #include "../Engine/Image.h"
 
 PlayerIcon::PlayerIcon(GameObject* parent)
-	:AirframeIcon(parent, "PlayerIcon")
+	:AirframeIcon(parent, "PlayerIcon"), pPlayer_(nullptr)
 {
 }
 
@@ -19,4 +19,9 @@ void PlayerIcon::AirframePos()
 	pPlayer_ = (Player*)FindObject("Player");
 	assert(pPlayer_ != nullptr);
 	AirframePos_ = pPlayer_->GetPosition();
+}
+
+void PlayerIcon::Release()
+{
+	SAFE_RELEASE(pPlayer_);
 }

@@ -36,25 +36,25 @@ void PlayScene::Initialize()
 	Instantiate<Building>(this);
 	Instantiate<Observer>(this);
 	Instantiate<CouseMap>(this);
-	switch (Option::GetMode())
+	switch (Option::GetMode())				//モードによって呼び出すものを変更
 	{
-	case MODE_VSCOM:
+	case MODE_VSCOM:						//Computerと戦うモード
 		Instantiate<Player>(this);
 		Instantiate<Computer>(this);
+		Instantiate<PlayerIcon>(this);
+		Instantiate<ComputerIcon>(this);
 		break;
-	case MODE_SOLO:
+	case MODE_SOLO:							//一人プレイ
 		Instantiate<Player>(this);
+		Instantiate<PlayerIcon>(this);
 		break;
-	case MODE_REPLAY:
-		//Instantiate<Player>(this);
+	case MODE_REPLAY:						//リプレイ
 		Instantiate<Ghost>(this);
 		break;
 	default:
 		break;
 	}
 	Time::Reset();
-Instantiate<PlayerIcon>(this);
-	Instantiate<ComputerIcon>(this);
 }
 
 //更新
