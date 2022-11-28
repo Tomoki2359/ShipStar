@@ -109,6 +109,29 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			//ヒープ破壊が起きた時の検出用
+#if _DEBUG
+			int  heapstatus;
+			heapstatus = _heapchk();
+			wchar_t buffer[256] = {};
+			switch (heapstatus)
+			{
+			case _HEAPOK:
+				swprintf_s(buffer, L" OK - heap is fine\n");
+				break;
+			case _HEAPEMPTY:
+				swprintf_s(buffer, L" OK - heap is empty\n");
+				break;
+			case _HEAPBADBEGIN:
+				swprintf_s(buffer, L"ERROR - bad start of heap\n");
+				break;
+			case _HEAPBADNODE:
+				swprintf_s(buffer, L"ERROR - bad node in heap\n");
+				break;
+			}
+			OutputDebugString(buffer);
+#endif
+
 			timeBeginPeriod(1);
 
 			static const char MAX_FPS = 60;
@@ -137,29 +160,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			countFps[i] = 0;
 			lastUpdateTime = nowTime;
 
-			for (int j = NULL; j < MAX_FPS; j++)
+			for (int j = 0; j < MAX_FPS; j++)
 			{
 				countFps[j]++;
 			}
 			i++;
 			if (i >= MAX_FPS)
 			{
-				i = NULL;
+				i = 0;
 			}
 
 			Input::Update();
 			pRoot->UpdateSub();
-
-			if (Input::IsKeyUp(DIK_ESCAPE))
-			{
-				static int cnt = 0;
-				cnt++;
-				if (cnt >= 3)
-				{
-					PostQuitMessage(0);
-				}
-			}
-
 
 			//ゲームの処理
 			Direct3D::BeginDraw();
@@ -169,16 +181,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//描画処理
 			pRoot->DrawSub();
 
-
-
 			Direct3D::EndDraw();
 
 			timeEndPeriod(1);
 		}
 	}
 
-	Model::Release();
-	Image::Release();
+	Model::AllRelease();
+	Image::AllRelease();
 	pRoot->ReleaseSub();
 	SAFE_RELEASE(pRoot);
 

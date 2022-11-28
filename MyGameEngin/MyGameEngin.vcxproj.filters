@@ -257,6 +257,11 @@
     <ClCompile Include="Engine\Time.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Storage.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>ソース ファイル</Filter>
     <ClCompile Include="Image\CouseMap.cpp">
       <Filter>ソース ファイル\Image</Filter>
     </ClCompile>
@@ -472,6 +477,11 @@
     <ClInclude Include="Engine\Time.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Storage.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>ヘッダー ファイル</Filter>
     <ClInclude Include="Image\CouseMap.h">
       <Filter>ヘッダー ファイル\Image</Filter>
     </ClInclude>

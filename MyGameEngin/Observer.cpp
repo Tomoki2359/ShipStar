@@ -1,6 +1,7 @@
 #include "Observer.h"
 #include "Engine/Math.h"
 #include "Engine/Time.h"
+#include "Option.h"
 #include <math.h>
 
 
@@ -39,6 +40,7 @@ void Observer::Update()
         if (timer >= NULL)
         {
             Start_ = TRUE;
+            Time::UnLock();
         }
         float CdSize = 1 + (-timer % 60) / 30.0f;
         transform_.scale_ = XMFLOAT3(CdSize, CdSize, CdSize);
@@ -46,7 +48,6 @@ void Observer::Update()
     if (Start_)
     {
         transform_.scale_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
-        Time::UnLock();
         transform_.position_.x = -1.0f;
         transform_.position_.y = 0.8f;
     }
@@ -73,9 +74,13 @@ void Observer::Draw()
         Image::Draw(hPict_[1]);
     }
     
-    if (timer > 0)
+    if (Option::GetMode() != MODE_REPLAY)
     {
-        Time::Draw(transform_, 2);
+        if (timer > 0)
+        {
+            Time::Draw(transform_, 2);
+        }
+
     }
 }
 

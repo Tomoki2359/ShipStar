@@ -10,9 +10,12 @@
 #include "Player.h"
 #include "Image/PlayBackground.h"
 #include "Observer.h"
+#include "Option.h"
+#include "Engine/Time.h"
+#include "Ghost.h"
 
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 PlayScene::PlayScene(GameObject* parent)
 	: GameObject(parent, "PlayScene"), PlayerList_(), CallNav_(NULL), UdCobj_(NULL),hPict_1(-1), hPict_2(-1), hPict_3(-1), timer(0),Start_(false)
 {
@@ -23,11 +26,9 @@ PlayScene::~PlayScene()
 	PlayerList_.clear();
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void PlayScene::Initialize()
 {
-	char PlayerNum = NULL;
-	PlayerList_.clear();
 	SetScreen(255, 255, 255);
 	Instantiate<PlayBackground>(this);
 	Instantiate<Course>(this);
@@ -35,54 +36,74 @@ void PlayScene::Initialize()
 	Instantiate<Building>(this);
 	Instantiate<Observer>(this);
 	Instantiate<CouseMap>(this);
-	PlayerList_.push_back(Instantiate<Player>(this));
-	PlayerNum += (char)PlayerList_.size();
-	while (PlayerNum < 2)
+	switch (Option::GetMode())
 	{
-		PlayerList_.push_back(Instantiate<Computer>(this));
-		PlayerNum++;
+	case MODE_VSCOM:
+		Instantiate<Player>(this);
+		Instantiate<Computer>(this);
+		break;
+	case MODE_SOLO:
+		Instantiate<Player>(this);
+		break;
+	case MODE_REPLAY:
+		//Instantiate<Player>(this);
+		Instantiate<Ghost>(this);
+		break;
+	default:
+		break;
 	}
-	Instantiate<PlayerIcon>(this);
+	Time::Reset();
+Instantiate<PlayerIcon>(this);
 	Instantiate<ComputerIcon>(this);
 }
 
-//XV
+//æ›´æ–°
 void PlayScene::Update()
 {
-	if (CallNav_ == 2 && !Initcomprete_)	//ŠJnƒtƒŒ[ƒ€‚ÍŒã‚Ù‚Ç’²®
+
+	if (CallNav_ == 2 && !Initcomprete_)	//é–‹å§‹ãƒ•ãƒ¬ãƒ¼ãƒ ã¯å¾Œã»ã©èª¿æ•´
 	{
 		Instantiate<Navigation>(this);
 		Initcomprete_ = true;
 	}
-	else if(!Initcomprete_ && CallNav_ < 5)
+	else if (!Initcomprete_ && CallNav_ < 5)
 	{
 		CallNav_++;
 	}
 
-	Player* pPlayer = (Player*)FindObject("Player");
+	if (Option::GetMode() != MODE_REPLAY)
+	{
+		Player* pPlayer = (Player*)FindObject("Player");
 
-	/*if (pPlayer->GetStart() && UdCobj_ > 300)
-	{
-		Navigation* pNav = (Navigation*)FindObject("Navigation");
-		CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
-		pCobj->SetPosition(pNav->GetLeft());
-		UdCobj_ = NULL;
-	}*/
-	if (pPlayer->GetisGoal())
-	{
-		SCENE_CHANGE(SCENE_ID_RESULT);
+		/*if (pPlayer->GetStart() && UdCobj_ > 300)
+		{
+			Navigation* pNav = (Navigation*)FindObject("Navigation");
+			CourseOutObject* pCobj = (CourseOutObject*)FindObject("CourseOutObject");
+			pCobj->SetPosition(pNav->GetLeft());
+			UdCobj_ = NULL;
+		}*/
+		if (pPlayer->GetisGoal())
+		{
+			Time::Lock();
+			if (pPlayer != nullptr)
+			{
+				pPlayer->ThrowData();
+			}
+			SCENE_CHANGE(SCENE_ID_RESULT);
+		}
+		SAFE_RELEASE(pPlayer);
+		//UdCobj_++;
+
 	}
-	//UdCobj_++;
-
 }
 
-//•`‰æ
+//æç”»
 void PlayScene::Draw()
 {
 	
 }
 
-//ŠJ•ú
+//é–‹æ”¾
 void PlayScene::Release()
 {
 }

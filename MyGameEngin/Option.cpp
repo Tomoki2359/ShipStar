@@ -4,11 +4,13 @@ namespace Option
 	PARTS_NUM PartsList;
 	char Course;
 	int color_[PARTS_END];
+	char PlayMode;	//PlaySceneÇÇ«ÇÃÉÇÅ[ÉhÇ≈é¿çsÇ∑ÇÈÇ©
 
 	void Init()
 	{
 		ZeroMemory(&PartsList, sizeof(PartsList));
 		Course = NULL;
+		PlayMode = MODE_VSCOM;
 	}
 
 	void SetParts(PARTS_NUM Parts)
@@ -54,5 +56,13 @@ namespace Option
 	int GetColor(PARTS category)
 	{
 		return color_[category];
+	}
+	void SetMode(char mode)
+	{
+		PlayMode = mode;
+	}
+	char GetMode()
+	{
+		return PlayMode;
 	}
 }

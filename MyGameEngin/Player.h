@@ -5,6 +5,11 @@
 class Player : public Airframe
 {
 	void StayInside() override;
+
+	const char Initial_ = 0;
+	std::vector<char> GhostData_Command_;	//ゴーストとして格納されるデータ
+	std::vector<int> GhostData_Frame_;
+	short ProgFrame_;							//経過フレーム
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -15,5 +20,6 @@ public:
 
 	void UpdateState() override;
 
-	//void SetStatus() override;
+	//ゴールしたらStorageにデータを渡す
+	void ThrowData();
 };

@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Engine/Input.h"
-#include "Course.h"
 #include "Engine/Model.h"
+#include "Storage.h"
 
 void Player::StayInside()
 {
@@ -9,12 +9,16 @@ void Player::StayInside()
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-	: Airframe(parent, "Player")
+	: Airframe(parent, "Player"), ProgFrame_(NULL)
 {
+	GhostData_Command_.clear();
+	GhostData_Frame_.clear();
 }
 
 Player::~Player()
 {
+	GhostData_Command_.clear();
+	GhostData_Frame_.clear();
 }
 
 void Player::UpdateState()
@@ -23,21 +27,25 @@ void Player::UpdateState()
 	if (Input::IsKey(DIK_W) && !Input::IsKey(DIK_S))
 	{
 		Accelerate();
+		NextState_ += M_ACCEL;
 	}
 	//ブレーキする
 	if (Input::IsKey(DIK_S) && !Input::IsKey(DIK_W))
 	{
 		Decelerate();
+		NextState_ += M_BREAK;
 	}
 	//左にカーブする
 	if (Input::IsKey(DIK_A) && !Input::IsKey(DIK_D))
 	{
 		TurnLeft();
+		NextState_ += M_TURNL;
 	}
 	//右にカーブする
 	if (Input::IsKey(DIK_D) && !Input::IsKey(DIK_A))
 	{
 		TurnRight();
+		NextState_ += M_TURNR;
 	}
 
 	//ターボ
@@ -46,23 +54,23 @@ void Player::UpdateState()
 	{
 		tTurbo_ = 0;
 		Turbo();
+		NextState_ = M_TURBO;
 	}
-	Course* pCourse = (Course*)FindObject("Course");    //ステージオブジェクトを探す
-	int hGroundModel = pCourse->GetModelHandle();    //モデル番号を取得
+	
+	if (NextState_ != VirtualState_)
+	{
+		//変化が起きたらGhostDataに格納
+		GhostData_Command_.push_back(NextState_);
+		GhostData_Frame_.push_back(ProgFrame_);
+		//経過フレームを0にする
+		ProgFrame_ = 0;
+		VirtualState_ = NextState_;
+	}
+	NextState_ = Initial_;
+	ProgFrame_++;
 }
 
-//void Player::SetStatus()
-//{
-//	//あとでfor分でCSVから入れる
-//	status_[MAX_SPEED] = 150;
-//	status_[ACCELE] = 200;
-//	status_[TURBO] = 150;
-//	status_[ENDURANCE] = 100;
-//
-//	//パーツを呼び出せるようになったら修正
-//	fileName_ = "Assets\\oden.fbx.";	//ファイルの名前
-//	cCamera_ = true;	//カメラON
-//	transform_.scale_.x = 0.25;
-//	transform_.scale_.y = 0.25;
-//	transform_.scale_.z = 0.25;
-//}
+void Player::ThrowData()
+{
+	Storage::ThrowData(GhostData_Command_, GhostData_Frame_);
+}

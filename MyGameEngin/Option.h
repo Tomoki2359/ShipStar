@@ -20,6 +20,16 @@ enum PARTS
 	PARTS_END
 };
 
+//プレイモード
+enum Mode
+{
+	MODE_VSCOM,
+	MODE_SOLO,
+	MODE_REPLAY,
+	MODE_VSGHOST,
+	MODE_ONLYGHOST
+};
+
 namespace Option
 {
 	void Init();
@@ -32,4 +42,7 @@ namespace Option
 
 	void SetColor(int color,PARTS category);
 	int GetColor(PARTS category);
+
+	void SetMode(char mode);
+	char GetMode();
 };

@@ -187,7 +187,6 @@ int Math::GetDigits(int value, int m, int n) {
     result = val / pow(10, m);
 
     return result;
-
 }
 
 float Math::GetFraction(float value, int m, int n)
@@ -214,7 +213,7 @@ int Math::GetFraction(float value, int m)
 
 float Math::GetNum(float value, int m, int n)
 {
-    int val = GetDigits(value, 1, n);
+    int val = GetDigits((int)value, 1, n);
     float result = GetFraction(value, 1, m);
     result += val;
     return result;

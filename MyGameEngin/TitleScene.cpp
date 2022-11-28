@@ -5,7 +5,7 @@
 
 //コンストラクタ
 TitleScene::TitleScene(GameObject* parent)
-	: GameObject(parent, "TitleScene"), mouseMoob_(true), title_(-1), first_(true)
+	: GameObject(parent, "TitleScene"), mouseMoob_(true), title_(-1), first_(true), mouseNext_(), mousePos_(), pStart_(nullptr), pOption_(nullptr)
 {
 }
 
@@ -91,4 +91,6 @@ void TitleScene::Draw()
 //開放
 void TitleScene::Release()
 {
+	SAFE_RELEASE(pStart_);
+	SAFE_RELEASE(pOption_);
 }
