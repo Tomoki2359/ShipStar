@@ -23,6 +23,7 @@ Airframe::Airframe(GameObject* parent)
 
 Airframe::~Airframe()
 {
+	Release();
 }
 
 //初期化
@@ -125,6 +126,8 @@ void Airframe::JudgeSide()
 	Course* pCourse = (Course*)FindObject("Course");
 	int hCourseModel = pCourse->GetModelHandle();
 
+	SAFE_RELEASE(pCourse);
+
 	RayCastData data;
 	data.start = transform_.position_;
 	data.dir = XMFLOAT3(NULL, -1.0, NULL);
@@ -136,6 +139,7 @@ void Airframe::JudgeSide(RayCastData& data)
 {
 	Course* pCourse = (Course*)FindObject("Course");
 	int hCourseModel = pCourse->GetModelHandle();
+	SAFE_RELEASE(pCourse);
 	data.dir = XMFLOAT3(NULL, -1.0, NULL);
 	Model::RayCast(hCourseModel, &data);
 }
@@ -144,6 +148,7 @@ bool Airframe::JudgeSide(XMFLOAT3 pos)
 {
 	Course* pCourse = (Course*)FindObject("Course");
 	int hCourseModel = pCourse->GetModelHandle();
+	SAFE_RELEASE(pCourse);
 
 	RayCastData data;
 	data.start = pos;

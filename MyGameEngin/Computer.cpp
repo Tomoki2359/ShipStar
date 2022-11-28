@@ -43,6 +43,8 @@ void Computer::UpdateState()
 			GameObject* pPlayer = FindObject("Player");
 			PosRel(pPlayer);
 
+			SAFE_RELEASE(pPlayer);
+
 			switch (GetHighestPriority())
 			{
 			case PR_Front:

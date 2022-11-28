@@ -5,7 +5,8 @@
 
 //コンストラクタ
 ResultScene::ResultScene(GameObject* parent)
-	: GameObject(parent, "ResultScene"),mouseMoob_(true),result_(-1), first_(true)
+	: GameObject(parent, "ResultScene"), mouseMoob_(true), result_(-1), first_(true),
+	pBack_(nullptr), pOK_(nullptr), mouseNext_(), mousePos_()
 {
 }
 
@@ -93,4 +94,6 @@ void ResultScene::Draw()
 //開放
 void ResultScene::Release()
 {
+	SAFE_RELEASE(pBack_);
+	SAFE_RELEASE(pOK_);
 }

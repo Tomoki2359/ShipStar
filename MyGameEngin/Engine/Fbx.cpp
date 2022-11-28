@@ -316,14 +316,26 @@ void Fbx::Draw(Transform& transform, float alpha, XMFLOAT3 color, bool zBuffer)
 
 void Fbx::Release()
 {
-	SAFE_RELEASE(pConstantBuffer_);
+	/*SAFE_RELEASE(pConstantBuffer_);
 
 	for (int i = 0; i < materialCount_; i++)
 	{
-		SAFE_RELEASE(pIndexBuffer_[i]);
+		SAFE_DELETE(pIndexBuffer_[i]);
 	}
 	SAFE_DELETE_ARRAY(pIndexBuffer_);
 
+	SAFE_RELEASE(pVertexBuffer_);*/
+	for (int i = 0; i < materialCount_; i++)
+	{
+		SAFE_DELETE_ARRAY(ppIndexData_[i]);
+	}
+	SAFE_DELETE_ARRAY(ppIndexData_);
+	SAFE_DELETE_ARRAY(vertices);
+	SAFE_RELEASE(pConstantBuffer_);
+	for (int i = 0; i < materialCount_; i++) {
+		SAFE_DELETE_ARRAY(pIndexBuffer_);
+	}
+	SAFE_DELETE_ARRAY(pIndexBuffer_);
 	SAFE_RELEASE(pVertexBuffer_);
 }
 
