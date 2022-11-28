@@ -25,7 +25,9 @@ enum Mode
 {
 	MODE_VSCOM,
 	MODE_SOLO,
-	MODE_REPLAY
+	MODE_REPLAY,
+	MODE_VSGHOST,
+	MODE_ONLYGHOST
 };
 
 namespace Option

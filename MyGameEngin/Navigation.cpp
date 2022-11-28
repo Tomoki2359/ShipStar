@@ -2,6 +2,7 @@
 #include "Course.h"
 #include "Engine/Math.h"
 #include "Player.h"
+#include "Option.h"
 
 XMFLOAT3 Navigation::XMFLOAT3PRUSXMFLOAT3(XMFLOAT3 fl3a, XMFLOAT3 fl3b)
 {
@@ -93,14 +94,18 @@ void Navigation::Initialize()
 
 void Navigation::Update()
 {
-	if (Limit_ > UpdateLimit)
+	if (Option::GetMode() != MODE_REPLAY)
 	{
-		UpdateCourseout();
-		Limit_ = NULL;
-	}
-	else
-	{
-		Limit_++;
+		if (Limit_ > UpdateLimit)
+		{
+			UpdateCourseout();
+			Limit_ = NULL;
+		}
+		else
+		{
+			Limit_++;
+		}
+
 	}
 }
 
