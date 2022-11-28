@@ -1,5 +1,6 @@
 #pragma once
 #include<Windows.h>
+#include<string>
 
 struct PARTS_NUM
 {
@@ -39,6 +40,7 @@ namespace Option
 
 	void SetCourse(char course);
 	char GetCourse();
+	std::string GetCourseName();
 
 	void SetColor(int color,PARTS category);
 	int GetColor(PARTS category);

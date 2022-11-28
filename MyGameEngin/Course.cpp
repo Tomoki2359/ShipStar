@@ -1,5 +1,7 @@
 #include "Course.h"
 #include "Engine/Model.h"
+#include "Option.h"
+
 //コンストラクタ
 Course::Course(GameObject* parent)
 	: GameObject(parent, "Course"), hModel_(-1)
@@ -13,8 +15,9 @@ Course::~Course()
 //初期化
 void Course::Initialize()
 {
+	std::string name = "Assets\\" + Option::GetCourseName() + ".fbx";
 	//モデルデータのロード
-	hModel_ = Model::Load("Assets\\DemoCourse3.fbx");
+	hModel_ = Model::Load(name);
 	assert(hModel_ >= 0);
 	transform_.scale_.x = Size_;
 	transform_.scale_.y = 25;

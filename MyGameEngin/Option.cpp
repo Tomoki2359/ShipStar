@@ -3,6 +3,7 @@ namespace Option
 {
 	PARTS_NUM PartsList;
 	char Course;
+	std::string CourseName[] = { "DemoCourse3" };
 	int color_[PARTS_END];
 	char PlayMode;	//PlayScene‚ğ‚Ç‚Ìƒ‚[ƒh‚ÅÀs‚·‚é‚©
 
@@ -47,6 +48,10 @@ namespace Option
 	char GetCourse()
 	{
 		return Course;
+	}
+	std::string GetCourseName()
+	{
+		return CourseName[Course];
 	}
 	void SetColor(int color, PARTS category)
 	{
