@@ -10,7 +10,7 @@ CouseMap::CouseMap(GameObject* parent)
 void CouseMap::Initialize()
 {
 	//モデルデータのロード
-	hPict_ = Image::Load(L"Assets\\CouseMap1.png");
+	hPict_ = Image::Load(L"Assets\\CouseMap.png");
 	assert(hPict_ >= 0);
 	transform_.scale_.x = 0.125f;
 	transform_.scale_.y = 0.125f;

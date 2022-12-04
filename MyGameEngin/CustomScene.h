@@ -48,6 +48,10 @@ class CustomScene : public GameObject
 	int wingColor_;
 	int cookpitColor_;
 
+	//明度関連
+	float partsBrightness_;
+	bool isBrightness_;
+
 	//マウス操作
 	XMFLOAT3 mousePos_;		//前のマウスの位置
 	XMFLOAT3 mouseNext_;	//今のマウスの位置

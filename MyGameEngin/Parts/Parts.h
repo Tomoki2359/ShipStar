@@ -68,6 +68,10 @@ public:
 	//戻り値： カラー番号
 	int GetColor();
 
+	//明度
+	//引数：第一引数　明度
+	void SetBrightness(float brightness);
+
 	//銀河ボディのときの位置調整
 	//引数: 第一引数　パーツ番号
 	virtual void GingaUnion(int partsNum) = 0;

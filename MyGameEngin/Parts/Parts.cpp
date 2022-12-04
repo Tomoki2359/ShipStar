@@ -58,6 +58,7 @@ void Parts::Draw()
 	}
 	Model::SetTransform(hModel_, transform_);
 	Model::Draw(hModel_);
+	Model::SetBrightness(hModel_, 0.5f);
 }
 
 //開放
@@ -85,6 +86,11 @@ void Parts::SetColor(int colorNum)
 int Parts::GetColor()
 {
 	return colorNum_;
+}
+
+void Parts::SetBrightness(float brightness)
+{
+	Model::SetBrightness(hModel_, brightness);
 }
 
 int Parts::GetParts()
@@ -135,10 +141,10 @@ void Parts::SetName()
 	}
 }
 
-void Parts::Union(PARTS_NAME engineName, int partsNum)
+void Parts::Union(PARTS_NAME bodyName, int partsNum)
 {
 	//ボディの種類
-	switch (engineName)
+	switch (bodyName)
 	{
 	case PARTS_GINGA:
 		GingaUnion(partsNum);

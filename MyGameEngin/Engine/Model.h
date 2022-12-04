@@ -13,8 +13,15 @@ namespace Model
 	void Draw(int hModel_);
 	void Release();
 
-	void SetAlpha(int hModel_, int alpha);	//透明度の取得
-	void SetColor(int hModel_, int red, int green, int blue);	//RGB
+	//明度
+	//引数：第一引数　モデル番号；第二引数　明度
+	void SetBrightness(int hModel_, float brightness);
+	//透明度
+	//引数：第一引数　モデル番号：第二引数　透明度(0～255)
+	void SetAlpha(int hModel_, int alpha);	
+	//RGB
+	//引数：第一引数　モデル番号 :第二引数　色(0～255)
+	void SetColor(int hModel_, int red, int green, int blue);	
 	void AllRelease();
 
 	//ZバッファのON/OFF

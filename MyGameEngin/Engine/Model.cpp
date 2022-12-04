@@ -7,9 +7,10 @@ namespace Model
 	{
 		Fbx* pFbx = nullptr;
 		Transform TransformModel;
+		XMFLOAT3 color_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
 		std::string FileModel;
 		float alpha_ = 1.0f;
-		XMFLOAT3 color_ = XMFLOAT3(1.0f, 1.0f, 1.0f);
+		float brightness_ = 0.5f;
 		bool zBuffer_ = true;
 	};
 	std::vector<MODEL*> modelList_;
@@ -44,7 +45,7 @@ int Model::Load(std::string fileName)
 
 void Model::Draw(int hModel_)
 {
-	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel, modelList_[hModel_]->alpha_, modelList_[hModel_]->color_,modelList_[hModel_]->zBuffer_);
+	modelList_[hModel_]->pFbx->Draw(modelList_[hModel_]->TransformModel, modelList_[hModel_]->alpha_, modelList_[hModel_]->color_,modelList_[hModel_]->zBuffer_, modelList_[hModel_]->brightness_);
 }
 
 void Model::Release()
@@ -78,6 +79,11 @@ void Model::SetAlpha(int hModel_, int alpha)
 void Model::SetColor(int hModel_, int red, int green, int blue)
 {
 	modelList_[hModel_]->color_ = XMFLOAT3((float)red / 255, (float)green / 255, (float)blue / 255);
+}
+
+void Model::SetBrightness(int hModel_, float brightness)
+{
+	modelList_[hModel_]->brightness_ = brightness;
 }
 
 void Model::AllRelease()

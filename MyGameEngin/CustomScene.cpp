@@ -3,7 +3,7 @@
 
 //コンストラクタ
 CustomScene::CustomScene(GameObject* parent)
-	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true)
+	: GameObject(parent, "CustomScene"),mouseMoob_(true),custom_(-1),change_(false), first_(true), partsBrightness_(0.5f), isBrightness_(false)
 	
 {
 }
@@ -93,6 +93,8 @@ void CustomScene::BeforeChange()
 {
 	if (Input::IsKeyDown(DIK_S))
 	{
+		partsBrightness_ = 0.5f;
+		isBrightness_ = false;
 		custom_++;
 		mouseMoob_ = false;
 		if (custom_ >= BEFORE_MAX)
@@ -102,6 +104,8 @@ void CustomScene::BeforeChange()
 	}
 	if (Input::IsKeyDown(DIK_W))
 	{
+		partsBrightness_ = 0.5f;
+		isBrightness_ = false;
 		custom_--;
 		mouseMoob_ = false;
 		if (custom_ < 0)
@@ -139,18 +143,22 @@ void CustomScene::BeforeChange()
 		if (custom_ == BEFORE_ENGIN)
 		{
 			PartsChange(pEngin_, engineNum_, engineColor_);
+			pEngin_->SetBrightness(partsBrightness_);
 		}
 		if (custom_ == BEFORE_BODY)
 		{
 			PartsChange(pBody_, bodyNum_, bodyColor_);
+			pBody_->SetBrightness(partsBrightness_);
 		}
 		if (custom_ == BEFORE_WING)
 		{
 			PartsChange(pWing_, wingNum_, wingColor_);
+			pWing_->SetBrightness(partsBrightness_);
 		}
 		if (custom_ == BEFORE_COOKPIT)
 		{
 			PartsChange(pCookpit_, cookpitNum_, cookpitColor_);
+			pCookpit_->SetBrightness(partsBrightness_);
 		}
 	}
 
@@ -232,7 +240,22 @@ void CustomScene::AfterChange()
 
 void CustomScene::PartsChange(Parts* parts, int& partsNum, int& partsColor)
 {
-
+	if (isBrightness_)
+	{
+		partsBrightness_ = partsBrightness_ - 0.01f;
+		if (partsBrightness_ <= 0.5f)
+		{
+			isBrightness_ = false;
+		}
+	}
+	else
+	{
+		partsBrightness_ = partsBrightness_ + 0.01f;
+		if (partsBrightness_ >= 1.0f)
+		{
+			isBrightness_ = true;
+		}
+	}
 	if (Input::IsKeyDown(DIK_D))
 	{
 		partsNum++;

@@ -13,11 +13,12 @@ cbuffer global
 	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
 	float4x4	matNormal;		//法線変形用の行列
 	float4		diffuseColor;		// ディフューズカラー（マテリアルの色）
-	bool		isTexture;		// テクスチャ貼ってあるかどうか
 	float		red;			//赤色
 	float		green;			//緑色
 	float		blue;			//青色
 	float		alpha;			//透明度
+	float		brightness;		//明度
+	bool		isTexture;		// テクスチャ貼ってあるかどうか
 };
 
 //───────────────────────────────────────
@@ -62,12 +63,12 @@ float4 PS(VS_OUT inData) : SV_Target
 	if (isTexture == true)
 	{
 		diffuse = float4(red, green, blue, alpha) * g_texture.Sample(g_sampler, inData.uv) * inData.color;
-		ambient = g_texture.Sample(g_sampler, inData.uv) * float4(0.5, 0.5, 0.5, 1.0);
+		ambient = g_texture.Sample(g_sampler, inData.uv) * float4(brightness, brightness, brightness, 1.0);
 	}
 	else
 	{
 		diffuse = float4(red, green, blue, alpha) * diffuseColor * inData.color;
-		ambient = diffuseColor * float4(0.5, 0.5, 0.5, 1.0);
+		ambient = diffuseColor * float4(brightness, brightness, brightness, 1.0);
 	}
 	return (diffuse + ambient) * float4(1.0f , 1.0f, 1.0f, alpha);
 }

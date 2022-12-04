@@ -50,9 +50,9 @@ void EnginParts::GingaUnion(int partsNum)
 		transform_.position_.z = 0;
 		break;
 	case PARTS_ZERO:
-		transform_.scale_.x = 0.4;
-		transform_.scale_.y = 0.4;
-		transform_.scale_.z = 0.4;
+		transform_.scale_.x = 0.4f;
+		transform_.scale_.y = 0.4f;
+		transform_.scale_.z = 0.4f;
 		transform_.position_.x = 0;
 		transform_.position_.y = 0.15f;
 		transform_.position_.z = 0.6f;
@@ -79,7 +79,7 @@ void EnginParts::MastangUnion(int partsNum)
 		transform_.scale_.y = 0.5f;
 		transform_.scale_.z = 0.5f;
 		transform_.position_.x = 0;
-		transform_.position_.y = 0.125;
+		transform_.position_.y = 0.125f;
 		transform_.position_.z = 0;
 		break;
 	case PARTS_SINDEN:
@@ -91,8 +91,8 @@ void EnginParts::MastangUnion(int partsNum)
 		transform_.position_.z = -0.2f;
 		break;
 	case PARTS_ZERO:
-		transform_.scale_.x = 0.45;
-		transform_.scale_.y = 0.45;
+		transform_.scale_.x = 0.45f;
+		transform_.scale_.y = 0.45f;
 		transform_.scale_.z = 0.4f;
 		transform_.position_.x = 0;
 		transform_.position_.y = 0.225f;
@@ -116,20 +116,20 @@ void EnginParts::SindenUnion(int partsNum)
 		transform_.position_.z = 0;
 		break;
 	case PARTS_MASTANG:
-		transform_.scale_.x = 1.0f;
-		transform_.scale_.y = 1.0f;
-		transform_.scale_.z = 1.0f;
+		transform_.scale_.x = 0.5f;
+		transform_.scale_.y = 0.5f;
+		transform_.scale_.z = 0.5f;
 		transform_.position_.x = 0;
-		transform_.position_.y = -0.3f;
-		transform_.position_.z = -2.1f;
+		transform_.position_.y = 0.1f;
+		transform_.position_.z = -0.1f;
 		break;
 	case PARTS_SINDEN:
 		transform_.scale_.x = 0.5f;
 		transform_.scale_.y = 0.5f;
 		transform_.scale_.z = 0.5f;
 		transform_.position_.x = 0;
-		transform_.position_.y = 0.25;
-		transform_.position_.z = -0.25;
+		transform_.position_.y = 0.25f;
+		transform_.position_.z = -0.25f;
 		break;
 	case PARTS_ZERO:
 		transform_.scale_.x = 0.55f;
@@ -157,20 +157,20 @@ void EnginParts::ZeroUnion(int partsNum)
 		transform_.position_.z = 0;
 		break;
 	case PARTS_MASTANG:
-		transform_.scale_.x = 1.1f;
-		transform_.scale_.y = 1.1f;
-		transform_.scale_.z = 1.0f;
+		transform_.scale_.x = 0.5f;
+		transform_.scale_.y = 0.5f;
+		transform_.scale_.z = 0.5f;
 		transform_.position_.x = 0;
-		transform_.position_.y = -0.38f;
-		transform_.position_.z = -2.35f;
+		transform_.position_.y = 0.1f;
+		transform_.position_.z = -0.25f;
 		break;
 	case PARTS_SINDEN:
-		transform_.scale_.x = 1.0f;
-		transform_.scale_.y = 1.0f;
-		transform_.scale_.z = 1.0f;
+		transform_.scale_.x = 0.5f;
+		transform_.scale_.y = 0.5f;
+		transform_.scale_.z = 0.5f;
 		transform_.position_.x = 0;
-		transform_.position_.y = -0.05f;
-		transform_.position_.z = -2.6f;
+		transform_.position_.y = 0.225f;
+		transform_.position_.z = -0.4f;
 		break;
 	case PARTS_ZERO:
 		transform_.scale_.x = 0.5f;

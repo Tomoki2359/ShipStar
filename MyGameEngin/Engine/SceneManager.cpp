@@ -9,6 +9,7 @@
 #include "../OptionScene.h"
 #include "../VolumeScene.h"
 #include "../ButtonScene.h"
+#include "Camera.h"
 #include "Image.h"
 #include "Model.h"
 
@@ -45,6 +46,9 @@ void SceneManager::Update()
         //ロードしたデータを全削除
         Model::AllRelease();
         Image::AllRelease();
+
+        //カメラを元の位置に戻す
+        Camera::InitCamera();
 
         //次のシーンを作成
         switch (nextSceneID_)
