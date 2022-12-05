@@ -1,9 +1,10 @@
 #include "Ghost.h"
 #include "Storage.h"
+#include "Engine/Input.h"
 #include "Engine/SceneManager.h"
 
 Ghost::Ghost(GameObject* parent)
-	: Airframe(parent, "Ghost"), ProgFrame_(0)
+	: Airframe(parent, "Ghost"), ProgFrame_(0), Endcount_(0)
 {
 	GhostData_Command_.clear();
 	GhostData_Frame_.clear();
@@ -51,9 +52,20 @@ void Ghost::UpdateState()
 		Turbo();
 	}
 
+	//Spaceキーを2回押したらリプレイ終了
+	if (Input::IsKeyDown(DIK_SPACE))
+	{
+		Endcount_++;
+	}
+
 	if (GetisGoal())
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
+	}
+
+	if (Endcount_ >= ReplayEnd_)
+	{
+		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
 }
 

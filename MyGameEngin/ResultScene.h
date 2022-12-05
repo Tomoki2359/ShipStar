@@ -14,6 +14,7 @@ enum RESULT
 //■■シーンを管理するクラス
 class ResultScene : public GameObject
 {
+	int hPict_[10];
 	short result_;
 	bool mouseMoob_;	//マウスが動いているかどうか
 	bool first_;		//画像のポインタを指定したかどうか

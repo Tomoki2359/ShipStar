@@ -19,7 +19,7 @@ Observer::~Observer()
 //初期化
 void Observer::Initialize()
 {
-    std::string texS = "Assets\\Count";
+    std::string texS = "Assets\\Numbers\\Num";
     std::string texF = ".png";
     //画像データのロード
     for (int i = 0; i < 10; i++)

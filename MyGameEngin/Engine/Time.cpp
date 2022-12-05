@@ -25,7 +25,7 @@ namespace Time
 
 	void Initialize()
 	{
-		std::string texS = "Assets\\Count";
+		std::string texS = "Assets\\Numbers\\Num";
 		std::string texF = ".png";
 		//画像データのロード
 		for (int i = 0; i < 10; i++)
@@ -105,6 +105,7 @@ namespace Time
 				Image::SetTransform(hPict_[Pic], Tr);
 				Image::Draw(hPict_[Pic]);
 
+				Tr.position_.x += Interval / 2;
 				for (int i = 1; i <= Dig; i++)
 				{
 					int Pic = Math::GetDigits(Minuts, (Dig - i), (Dig - i));
@@ -113,6 +114,7 @@ namespace Time
 					Image::Draw(hPict_[Pic]);
 				}
 
+				Tr.position_.x += Interval / 2;
 				for (int i = 1; i <= Dig; i++)
 				{
 					int Pic = Math::GetDigits(sec, (Dig - i), (Dig - i));
@@ -132,6 +134,7 @@ namespace Time
 					Image::Draw(hPict_[Pic]);
 				}
 
+				Tr.position_.x += Interval / 2;
 				for (int i = 1; i <= Dig; i++)
 				{
 					int Pic = Math::GetDigits(sec, (Dig - i), (Dig - i));
@@ -156,6 +159,9 @@ namespace Time
 		}
 
 		//小数部分の表示
+		const float Dec = 0.8f;		//小数点以下の表示は縮小する
+		Tr.scale_ = { Dec, Dec, Dec };
+		Tr.position_.y -= 0.02f;		//縮小した分下に下げる
 		for (int i = 1; i <= digit; i++)
 		{
 			int Pic = Math::GetFraction((float)Seconds, i);
