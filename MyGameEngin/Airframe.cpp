@@ -207,26 +207,8 @@ void Airframe::SetStatus()
 
 	//fileName_ = "Assets\\Airframe.fbx";	//ファイルの名前
 	Instantiate<PartsUnion>(this);
-  
-	if (Option::GetMode() != MODE_REPLAY)
-	{
-		if (this->objectName_ == "Player")
-		{
-			cCamera_ = true;	//カメラON
-		}
-		else
-		{
-			cCamera_ = false;	//カメラOFF
-		}
-	}
-	else
-	{
-		if (this->objectName_ == "Ghost")
-		{
-			cCamera_ = true;	//カメラON
-		}
-	}
 
+	DesideTarget();
 }
 
 void Airframe::Accelerate()
@@ -435,5 +417,33 @@ void Airframe::ChaseCamera()
 		//カメラは自分の位置を見てる
 		XMVECTOR Pos_ = XMLoadFloat3(&transform_.position_);
 		Camera::SetTarget(Pos_);
+	}
+}
+
+void Airframe::DesideTarget()
+{
+	//カメラの追跡対象
+	switch (Option::GetMode())
+	{
+	case MODE_VSCOM:						//Computerと戦うモード
+	case MODE_SOLO:							//一人プレイ
+	case MODE_VSGHOST:						//ゴーストバトル
+		if (this->objectName_ == "Player")	//Playerを追う
+		{
+			cCamera_ = true;	//カメラON
+		}
+		else
+		{
+			cCamera_ = false;	//カメラOFF
+		}
+		break;
+	case MODE_ONLYGHOST:					//ゴーストのみ
+	case MODE_REPLAY:						//リプレイ
+		if (this->objectName_ == "Ghost")	//Ghostを追う
+		{
+			cCamera_ = true;	//カメラON
+		}
+	default:
+		break;
 	}
 }

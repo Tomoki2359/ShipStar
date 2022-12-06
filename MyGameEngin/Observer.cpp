@@ -74,7 +74,8 @@ void Observer::Draw()
         Image::Draw(hPict_[1]);
     }
     
-    if (Option::GetMode() != MODE_REPLAY)
+    if (Option::GetMode() != MODE_REPLAY &&
+        Option::GetMode() != MODE_ONLYGHOST)
     {
         if (timer > 0)
         {

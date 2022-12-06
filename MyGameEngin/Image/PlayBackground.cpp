@@ -26,7 +26,8 @@ void PlayBackground::Initialize()
 //XV
 void PlayBackground::Update()
 {
-	if (Option::GetMode() != MODE_REPLAY)
+	if (Option::GetMode() != MODE_REPLAY &&
+		Option::GetMode() != MODE_ONLYGHOST)
 	{
 		Player* pPlayer = (Player*)FindObject("Player");
 		transform_.position_.x = -pPlayer->GetRotate().y / 800;

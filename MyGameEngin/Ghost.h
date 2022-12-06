@@ -8,6 +8,8 @@ class Ghost : public Airframe
 	short ProgFrame_;							//経過フレーム
 	const char ReplayEnd_ = 2;		//リプレイを終了させる
 	char Endcount_;					//ReplayEnd以上になったらリプレイを強制終了させる
+
+	void CallOnly();				//現在のモードがリプレイまたはゴーストのみならば呼び出される
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

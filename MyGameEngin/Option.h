@@ -22,13 +22,14 @@ enum PARTS
 };
 
 //プレイモード
+//リプレイのみリザルト画面からの呼び出し限定とする
 enum Mode
 {
-	MODE_VSCOM,
-	MODE_SOLO,
-	MODE_REPLAY,
-	MODE_VSGHOST,
-	MODE_ONLYGHOST
+	MODE_VSCOM,		//コンピュータとの対戦
+	MODE_SOLO,		//自身のみ
+	MODE_REPLAY,	//リプレイ
+	MODE_VSGHOST,	//ゴーストとの対戦
+	MODE_ONLYGHOST	//ゴーストのみの再生
 };
 
 namespace Option

@@ -94,7 +94,8 @@ void Navigation::Initialize()
 
 void Navigation::Update()
 {
-	if (Option::GetMode() != MODE_REPLAY)
+	if (Option::GetMode() != MODE_REPLAY &&
+		Option::GetMode() != MODE_ONLYGHOST)
 	{
 		if (Limit_ > UpdateLimit)
 		{

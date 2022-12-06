@@ -39,16 +39,19 @@ namespace Storage
 			size++;
 		}
 
-		if (Load())	//Loadに成功した場合
+		if (ClearTime < 180)
 		{
-			if (ClearTime < LoadTime)	//Loadで読み取った時間よりClearの方が早かった場合
+			if (Load())	//Loadに成功した場合
+			{
+				if (ClearTime < LoadTime)	//Loadで読み取った時間よりClearの方が早かった場合
+				{
+					Save();
+				}
+			}
+			else //データが存在しなかった場合
 			{
 				Save();
 			}
-		}
-		else //データが存在しなかった場合
-		{
-			Save();
 		}
 	}
 
@@ -87,6 +90,33 @@ namespace Storage
 		}
 	}
 
+	bool ExistData()
+	{
+		std::string strName = "SaveData\\" + Option::GetCourseName() + ".data";
+		wchar_t fileName[MAX_PATH];
+		size_t ret;
+		mbstowcs_s(&ret, fileName, strName.c_str(), strName.length());
+
+		HANDLE hFile = CreateFile
+		(
+			fileName,		//ファイル名
+			GENERIC_READ,			//アクセスモード
+			NULL,
+			NULL,
+			OPEN_EXISTING,			//作成方法
+			FILE_ATTRIBUTE_NORMAL,
+			NULL
+		);
+
+		if (hFile == INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(hFile);
+			return false;
+		}
+		CloseHandle(hFile);
+		return true;
+	}
+
 	void Save()
 	{
 		std::string strName = "SaveData\\" + Option::GetCourseName() + ".data";
@@ -110,6 +140,8 @@ namespace Storage
 		{
 			data += std::to_string(Data_Command.at(x)) + "," + std::to_string(Data_Frame.at(x)) + "\n";
 		}
+
+		data += "\0";
 
 		wchar_t wtext[0x0fff];
 		mbstowcs_s(&ret, wtext, data.c_str(), data.length());
@@ -186,13 +218,12 @@ namespace Storage
 		LoadTime = wcstof(time, NULL);
 		i++;
 
-		while (data[i] != EOF)
+		const char adjust = 10;
+		while (i < wcslen(data))
 		{
-			const char adjust = 10;
-
 			int j = 0;
 			//command部分の取得
-			while (data[i] != L',')
+			/*while (data[i] != L',')
 			{
 				j = j * adjust + _wtoi(&data[i]);
 				i++;
@@ -200,28 +231,33 @@ namespace Storage
 			if (j >= adjust)
 			{
 				j = j / adjust;
+			}*/
+			j = _wtoi(&data[i]);
+			int digit = (int)log10(j);
+			if (digit <= 0)
+			{
+				digit = 0;
 			}
+			i += digit + 1;
 			Load_Command.push_back(j);
 
 			i++;
 
 			j = 0;
 			//frame部分の取得
-			j = j * adjust + _wtoi(&data[i]);	//備忘録 : wtoiは数値として認識できる部分まで一度に回収できる
-			int digit = (int)log10(j);
-			if (digit < 0)
+			j = _wtoi(&data[i]);	//備忘録 : wtoiは数値として認識できる部分まで一度に回収できる
+			digit = (int)log10(j);
+			if (digit <= 0)
 			{
 				digit = 0;
 			}
-			i += digit;
+			i += digit + 1;
 			Load_Frame.push_back(j);
-
-			i++;
-
-			if (data[i] == L'\0')
+			if (Load_Frame.size() > 10 && Load_Frame.back() == 0)
 			{
 				break;
 			}
+			i++;
 		}
 
 		CloseHandle(hFile);

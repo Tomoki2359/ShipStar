@@ -13,6 +13,7 @@
 #include "Option.h"
 #include "Engine/Time.h"
 #include "Ghost.h"
+#include "Storage.h"
 
 
 //コンストラクタ
@@ -48,9 +49,32 @@ void PlayScene::Initialize()
 		Instantiate<Player>(this);
 		Instantiate<PlayerIcon>(this);
 		break;
+	case MODE_ONLYGHOST:					//ゴーストのみ
+		if (Storage::ExistData())			//ゴーストデータが存在すれば再生
+		{
+			Instantiate<Ghost>(this);
+		}
+		else								//存在しなければソロモードと同じようにする
+		{
+			Option::SetMode(MODE_SOLO);
+			Instantiate<Player>(this);
+			Instantiate<PlayerIcon>(this);
+		}
+		break;
+	case MODE_VSGHOST:						//ゴーストバトル
+		if (Storage::ExistData())			//ゴーストデータが存在すれば再生
+		{
+			Instantiate<Ghost>(this);
+		}
+		else
+		{
+			Option::SetMode(MODE_SOLO);
+		}
+		Instantiate<Player>(this);
+		Instantiate<PlayerIcon>(this);
+		break;
 	case MODE_REPLAY:						//リプレイ
 		Instantiate<Ghost>(this);
-		break;
 	default:
 		break;
 	}
@@ -71,7 +95,8 @@ void PlayScene::Update()
 		CallNav_++;
 	}
 
-	if (Option::GetMode() != MODE_REPLAY)
+	if (Option::GetMode() != MODE_REPLAY &&
+		Option::GetMode() != MODE_ONLYGHOST)
 	{
 		Player* pPlayer = (Player*)FindObject("Player");
 

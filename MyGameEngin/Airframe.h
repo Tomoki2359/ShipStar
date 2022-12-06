@@ -65,6 +65,7 @@ class Airframe : public GameObject
 	void TurboProcess();	//ターボ処理
 	void MoveProcess();		//移動処理
 	void ChaseCamera();		//カメラを追わせる
+	void DesideTarget();	//カメラの追跡対象を決定する
 
 protected:
 	//8ビット、上位ビットから順に(未定、未定、ターボ、上昇、下降、左カーブ、右カーブ、アクセルブレーキ)

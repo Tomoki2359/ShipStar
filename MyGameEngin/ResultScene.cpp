@@ -14,6 +14,7 @@ ResultScene::ResultScene(GameObject* parent)
 //èâä˙âª
 void ResultScene::Initialize()
 {
+	Time::Lock();
 	SetScreen(0, 0, 0);
 	//Instantiate<MatchingBackground>(this);
 	Instantiate<BackButton>(this);
@@ -78,7 +79,6 @@ void ResultScene::Update()
 
 	if (FindObject("RetryButton") == nullptr)
 	{
-		Option::SetMode(MODE_REPLAY);
 		SCENE_CHANGE(SCENE_ID_PLAY);
 	}
 
@@ -100,9 +100,18 @@ void ResultScene::Update()
 void ResultScene::Draw()
 {
 	Transform tr = transform_;
-	tr.position_.x = -0.3f;
-	Time::Draw(tr, 2);
-	Time::GetTime();
+	switch (Option::GetMode())
+	{
+	case MODE_SOLO:
+	case MODE_VSCOM:
+	case MODE_VSGHOST:
+		tr.position_.x = -0.3f;
+		Time::Draw(tr, 2);
+		Time::GetTime();
+		break;
+	default:
+		break;
+	}
 }
 
 //äJï˙

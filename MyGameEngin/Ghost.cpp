@@ -2,13 +2,27 @@
 #include "Storage.h"
 #include "Engine/Input.h"
 #include "Engine/SceneManager.h"
+#include "Option.h"
 
 Ghost::Ghost(GameObject* parent)
 	: Airframe(parent, "Ghost"), ProgFrame_(0), Endcount_(0)
 {
 	GhostData_Command_.clear();
 	GhostData_Frame_.clear();
-	Storage::CopyData(GhostData_Command_, GhostData_Frame_);
+
+	//モードによって呼び出し元を変更
+	switch (Option::GetMode())
+	{
+	case MODE_REPLAY:	//リプレイモードならば直前のデータを呼び出す
+		Storage::CopyData(GhostData_Command_, GhostData_Frame_);
+		break;
+	case MODE_ONLYGHOST://ゴーストとの対戦、またはゴーストのみ再生ならばゴーストのデータを呼び出す
+	case MODE_VSGHOST:
+		Storage::LoadData(GhostData_Command_, GhostData_Frame_);
+		break;
+	default:
+		break;
+	}
 }
 
 Ghost::~Ghost()
@@ -52,6 +66,20 @@ void Ghost::UpdateState()
 		Turbo();
 	}
 
+	//現在のモードがリプレイまたはゴーストのみならば
+	char mode = Option::GetMode();
+	if (mode == MODE_REPLAY || mode == MODE_ONLYGHOST)
+	{
+		CallOnly();
+	}
+}
+
+void Ghost::StayInside()
+{
+}
+
+void Ghost::CallOnly()
+{
 	//Spaceキーを2回押したらリプレイ終了
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
@@ -61,14 +89,12 @@ void Ghost::UpdateState()
 	if (GetisGoal())
 	{
 		SCENE_CHANGE(SCENE_ID_RESULT);
+		return;
 	}
 
 	if (Endcount_ >= ReplayEnd_)
 	{
 		SCENE_CHANGE(SCENE_ID_LOBBY);
+		return;
 	}
-}
-
-void Ghost::StayInside()
-{
 }
