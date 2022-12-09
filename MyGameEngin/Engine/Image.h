@@ -31,6 +31,8 @@ namespace Image
 	void Draw(int hImage_);
 	void Release();
 	void AllRelease();
+	void AllSetAlpha(int alpha);	//全ての画像の透明度をalphaにする
+	void AllTransPosition(XMFLOAT3 position);	//全ての画像をposition分動かす
 	void SetAlpha(int hPict, int alpha);	//透明度の取得
 	void SetColor(int hPict, int red, int blue, int green); //RBGの取得
 	void SetTransform(int hPict, Transform transform_);

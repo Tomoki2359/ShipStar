@@ -1,498 +1,157 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="ソース ファイル\Engine">
-      <UniqueIdentifier>{9651433e-3b2b-4f40-85df-44476c3db37d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Engine">
-      <UniqueIdentifier>{608708b0-f292-4785-bf63-11a833f9cf25}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Image">
-      <UniqueIdentifier>{78887cc7-c80d-4034-9d94-948a9cf52b0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Image">
-      <UniqueIdentifier>{94ee2d36-32cd-47dd-9774-8c207713f8fa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\parts">
-      <UniqueIdentifier>{7da850ce-c137-4de5-97cb-640b188fd777}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\parts">
-      <UniqueIdentifier>{db596cb9-82b2-4bdb-9b75-805bd86fc3a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Icon">
-      <UniqueIdentifier>{ec4f1739-f008-414d-8d51-b77d1e798fd1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Icon">
-      <UniqueIdentifier>{fa456117-99cf-4dd6-a7fc-fa20f04d7201}</UniqueIdentifier>
-    </Filter>
+    <FxCompile Include="Simple2D.hlsl" />
+    <FxCompile Include="Simple3D.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Simple3D.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Simple2D.hlsl">
-      <Filter>リソース ファイル</Filter>
-    </FxCompile>
+    <ClCompile Include="Airframe.cpp" />
+    <ClCompile Include="Building.cpp" />
+    <ClCompile Include="ButtonScene.cpp" />
+    <ClCompile Include="Computer.cpp" />
+    <ClCompile Include="Course.cpp" />
+    <ClCompile Include="CSVReader.cpp" />
+    <ClCompile Include="CustomScene.cpp" />
+    <ClCompile Include="Engine\Audio.cpp" />
+    <ClCompile Include="Engine\Camera.cpp" />
+    <ClCompile Include="Engine\Direct3D.cpp" />
+    <ClCompile Include="Engine\Fbx.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\Image.cpp" />
+    <ClCompile Include="Engine\Input.cpp" />
+    <ClCompile Include="Engine\Math.cpp" />
+    <ClCompile Include="Engine\Model.cpp" />
+    <ClCompile Include="Engine\RootJob.cpp" />
+    <ClCompile Include="Engine\SceneManager.cpp" />
+    <ClCompile Include="Engine\SphereCollider.cpp" />
+    <ClCompile Include="Engine\Sprite.cpp" />
+    <ClCompile Include="Engine\Texture.cpp" />
+    <ClCompile Include="Engine\Time.cpp" />
+    <ClCompile Include="Engine\Transform.cpp" />
+    <ClCompile Include="Ghost.cpp" />
+    <ClCompile Include="GoalObject.cpp" />
+    <ClCompile Include="Icon\AirframeIcon.cpp" />
+    <ClCompile Include="Icon\ComputerIcon.cpp" />
+    <ClCompile Include="Icon\PlayerIcon.cpp" />
+    <ClCompile Include="Image\BackButton.cpp" />
+    <ClCompile Include="Image\Background.cpp" />
+    <ClCompile Include="Image\Button.cpp" />
+    <ClCompile Include="Image\ButtonArrangement.cpp" />
+    <ClCompile Include="Image\ChangeStatus.cpp" />
+    <ClCompile Include="Image\CouseMap.cpp" />
+    <ClCompile Include="Image\CurrentStatus.cpp" />
+    <ClCompile Include="Image\FixeButton.cpp" />
+    <ClCompile Include="Image\LobbyBackground.cpp" />
+    <ClCompile Include="Image\LobbyCourse.cpp" />
+    <ClCompile Include="Image\LobbyCustom.cpp" />
+    <ClCompile Include="Image\LobbyPlay.cpp" />
+    <ClCompile Include="Image\MatchingBackground.cpp" />
+    <ClCompile Include="Image\MatchingCourse.cpp" />
+    <ClCompile Include="Image\MatchingStart.cpp" />
+    <ClCompile Include="Image\OKButton.cpp" />
+    <ClCompile Include="Image\OptionButton.cpp" />
+    <ClCompile Include="Image\OptionVolume.cpp" />
+    <ClCompile Include="Image\OriginalStatus.cpp" />
+    <ClCompile Include="Image\PartsList.cpp" />
+    <ClCompile Include="Image\PlayBackground.cpp" />
+    <ClCompile Include="Image\RetryButton.cpp" />
+    <ClCompile Include="Image\TitleName.cpp" />
+    <ClCompile Include="Image\TitleOption.cpp" />
+    <ClCompile Include="Image\TitleStart.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MatchingScene.cpp" />
+    <ClCompile Include="Navigation.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Option.cpp" />
+    <ClCompile Include="OptionScene.cpp" />
+    <ClCompile Include="Parts\BodyParts.cpp" />
+    <ClCompile Include="Parts\CookpitParts.cpp" />
+    <ClCompile Include="Parts\EnginParts.cpp" />
+    <ClCompile Include="Parts\Parts.cpp" />
+    <ClCompile Include="Parts\PartsUnion.cpp" />
+    <ClCompile Include="Parts\WingParts.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
+    <ClCompile Include="SplashScene.cpp" />
+    <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="VolumeScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Camera.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Input.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Direct3D.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Texture.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Transform.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\RootJob.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="SplashScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Fbx.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SceneManager.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Image.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Model.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SceneManager.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Image.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Sprite.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SphereCollider.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="CSVReader.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Airframe.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Course.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Computer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="LobbyScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ResultScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="MatchingScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\TitleStart.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\TitleOption.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\LobbyCourse.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\LobbyPlay.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\LobbyCustom.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\BackButton.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\OKButton.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\MatchingStart.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="OptionScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="VolumeScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\OptionButton.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\OptionVolume.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\TitleName.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\Button.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Math.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Navigation.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\Background.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\RetryButton.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\PlayBackground.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="GoalObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Audio.cpp">
-      <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\ButtonArrangement.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\ChangeStatus.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\CurrentStatus.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\FixeButton.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\MatchingCourse.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\OriginalStatus.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\PartsList.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Building.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Option.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\BodyParts.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\CookpitParts.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\EnginParts.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\Parts.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\WingParts.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Parts\PartsUnion.cpp">
-      <Filter>ソース ファイル\parts</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\LobbyBackground.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Image\MatchingBackground.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Time.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Storage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Ghost.cpp">
-      <Filter>ソース ファイル</Filter>
-    <ClCompile Include="Image\CouseMap.cpp">
-      <Filter>ソース ファイル\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="Icon\AirframeIcon.cpp">
-      <Filter>ソース ファイル\Icon</Filter>
-    </ClCompile>
-    <ClCompile Include="Icon\PlayerIcon.cpp">
-      <Filter>ソース ファイル\Icon</Filter>
-    </ClCompile>
-    <ClCompile Include="Icon\ComputerIcon.cpp">
-      <Filter>ソース ファイル\Icon</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Engine\Input.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Transform.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Texture.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Direct3D.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Camera.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameObject.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\RootJob.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="SplashScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Fbx.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Model.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SceneManager.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Image.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Sprite.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Define.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SphereCollider.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="CSVReader.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Airframe.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Course.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Computer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="LobbyScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ResultScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="MatchingScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\TitleStart.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\TitleOption.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\LobbyCourse.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\LobbyPlay.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\LobbyCustom.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\BackButton.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\OKButton.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\MatchingStart.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="VolumeScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\OptionButton.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\OptionVolume.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\TitleName.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\Button.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Math.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Navigation.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\Background.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\RetryButton.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\PlayBackground.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="GoalObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Audio.h">
-      <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\ButtonArrangement.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\ChangeStatus.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\CurrentStatus.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\FixeButton.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\MatchingCourse.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\OriginalStatus.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\PartsList.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Building.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Option.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\BodyParts.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\CookpitParts.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\EnginParts.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\Parts.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\WingParts.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Parts\PartsUnion.h">
-      <Filter>ヘッダー ファイル\parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\LobbyBackground.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Image\MatchingBackground.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Time.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Storage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Ghost.h">
-      <Filter>ヘッダー ファイル</Filter>
-    <ClInclude Include="Image\CouseMap.h">
-      <Filter>ヘッダー ファイル\Image</Filter>
-    </ClInclude>
-    <ClInclude Include="Icon\AirframeIcon.h">
-      <Filter>ヘッダー ファイル\Icon</Filter>
-    </ClInclude>
-    <ClInclude Include="Icon\PlayerIcon.h">
-      <Filter>ヘッダー ファイル\Icon</Filter>
-    </ClInclude>
-    <ClInclude Include="Icon\ComputerIcon.h">
-      <Filter>ヘッダー ファイル\Icon</Filter>
-    </ClInclude>
+    <ClInclude Include="Airframe.h" />
+    <ClInclude Include="Building.h" />
+    <ClInclude Include="ButtonScene.h" />
+    <ClInclude Include="Computer.h" />
+    <ClInclude Include="Course.h" />
+    <ClInclude Include="CSVReader.h" />
+    <ClInclude Include="CustomScene.h" />
+    <ClInclude Include="Engine\Audio.h" />
+    <ClInclude Include="Engine\Camera.h" />
+    <ClInclude Include="Engine\Define.h" />
+    <ClInclude Include="Engine\Direct3D.h" />
+    <ClInclude Include="Engine\Fbx.h" />
+    <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\Image.h" />
+    <ClInclude Include="Engine\Input.h" />
+    <ClInclude Include="Engine\Math.h" />
+    <ClInclude Include="Engine\Model.h" />
+    <ClInclude Include="Engine\RootJob.h" />
+    <ClInclude Include="Engine\SceneManager.h" />
+    <ClInclude Include="Engine\SphereCollider.h" />
+    <ClInclude Include="Engine\Sprite.h" />
+    <ClInclude Include="Engine\Texture.h" />
+    <ClInclude Include="Engine\Time.h" />
+    <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="Ghost.h" />
+    <ClInclude Include="GoalObject.h" />
+    <ClInclude Include="Icon\AirframeIcon.h" />
+    <ClInclude Include="Icon\ComputerIcon.h" />
+    <ClInclude Include="Icon\PlayerIcon.h" />
+    <ClInclude Include="Image\BackButton.h" />
+    <ClInclude Include="Image\Background.h" />
+    <ClInclude Include="Image\Button.h" />
+    <ClInclude Include="Image\ButtonArrangement.h" />
+    <ClInclude Include="Image\ChangeStatus.h" />
+    <ClInclude Include="Image\CouseMap.h" />
+    <ClInclude Include="Image\CurrentStatus.h" />
+    <ClInclude Include="Image\FixeButton.h" />
+    <ClInclude Include="Image\LobbyBackground.h" />
+    <ClInclude Include="Image\LobbyCourse.h" />
+    <ClInclude Include="Image\LobbyCustom.h" />
+    <ClInclude Include="Image\LobbyPlay.h" />
+    <ClInclude Include="Image\MatchingBackground.h" />
+    <ClInclude Include="Image\MatchingCourse.h" />
+    <ClInclude Include="Image\MatchingStart.h" />
+    <ClInclude Include="Image\OKButton.h" />
+    <ClInclude Include="Image\OptionButton.h" />
+    <ClInclude Include="Image\OptionVolume.h" />
+    <ClInclude Include="Image\OriginalStatus.h" />
+    <ClInclude Include="Image\PartsList.h" />
+    <ClInclude Include="Image\PlayBackground.h" />
+    <ClInclude Include="Image\RetryButton.h" />
+    <ClInclude Include="Image\TitleName.h" />
+    <ClInclude Include="Image\TitleOption.h" />
+    <ClInclude Include="Image\TitleStart.h" />
+    <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="MatchingScene.h" />
+    <ClInclude Include="Navigation.h" />
+    <ClInclude Include="Observer.h" />
+    <ClInclude Include="Option.h" />
+    <ClInclude Include="OptionScene.h" />
+    <ClInclude Include="Parts\BodyParts.h" />
+    <ClInclude Include="Parts\CookpitParts.h" />
+    <ClInclude Include="Parts\EnginParts.h" />
+    <ClInclude Include="Parts\Parts.h" />
+    <ClInclude Include="Parts\PartsUnion.h" />
+    <ClInclude Include="Parts\WingParts.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="ResultScene.h" />
+    <ClInclude Include="SplashScene.h" />
+    <ClInclude Include="Storage.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="VolumeScene.h" />
   </ItemGroup>
 </Project>

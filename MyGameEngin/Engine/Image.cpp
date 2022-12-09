@@ -76,6 +76,24 @@ void Image::AllRelease()
 	ImageList_.clear();
 }
 
+void Image::AllSetAlpha(int alpha)
+{
+	for (int i = 0; i < ImageList_.size(); i++)
+	{
+		ImageList_[i]->alpha_ = (float)alpha / UINT8_MAX;
+	}
+}
+
+void Image::AllTransPosition(XMFLOAT3 position)
+{
+	for (int i = 0; i < ImageList_.size(); i++)
+	{
+		ImageList_[i]->TransformImage.position_.x += position.x;
+		ImageList_[i]->TransformImage.position_.y += position.y;
+		ImageList_[i]->TransformImage.position_.z += position.z;
+	}
+}
+
 //“§–¾“x‚ÌŽæ“¾
 void Image::SetAlpha(int hPict, int alpha)
 {

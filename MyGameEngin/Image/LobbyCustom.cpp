@@ -12,16 +12,7 @@ void LobbyCustom::InitialPoint()
 	transform_.position_.y = -0.7f;
 }
 
-//bool LobbyCustom::IsImage()
-//{
-//	if (MousePos_.x >= 1250 && MousePos_.x <= 1520 && MousePos_.y >= 650 && MousePos_.y <= 1080)
-//	{
-//		return true;
-//	}
-//	return false;
-//}
-
-LPCWSTR LobbyCustom::SetFile()
+void LobbyCustom::SetFile()
 {
-	return L"Assets\\LobbyCustom.png";
+	fileName[0] = L"Assets\\LobbyCustom.png";
 }

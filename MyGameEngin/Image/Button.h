@@ -4,10 +4,14 @@
 //■■シーンを管理するクラス
 class Button : public GameObject
 {
-	short hPict_;    //モデル番号
 	bool change_;	//選択されているかどうか
 protected:
 	XMFLOAT3 MousePos_;	//マウスの位置
+	LPCWSTR* fileName;	//ファイルの名前
+	int alpha_;			//透明度
+	short SIZE;			//画像数
+	short* hPict_;    //モデル番号
+	bool isPut;		//押されたかどうか
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -36,6 +40,14 @@ public:
 	//画像の位置の判定
 	bool IsImage();
 
+	//画像を押した時の動き
+	//動きが違うやつはオーバライド
+	virtual void PutButton();
+
+	//ボタンに触れているときの処理
+	//動きが違うやつはオーバーライド
+	virtual void TucheButton();
+
 	//画像ファイルの名前を取得
-	virtual LPCWSTR SetFile() = 0;
+	virtual void SetFile() = 0;
 };
