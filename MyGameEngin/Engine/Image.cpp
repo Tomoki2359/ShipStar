@@ -4,6 +4,7 @@
 namespace Image
 {
 	std::vector<Image*> ImageList_;
+	XMFLOAT3 difference = XMFLOAT3{ 0,0,0 };;
 }
 
 int Image::Load(std::string fileName)
@@ -37,7 +38,9 @@ int Image::Load(LPCWSTR fileName)
 void Image::Draw(int hPict)
 {
 	ImageList_[hPict]->color_ = { ImageList_[hPict]->red_, ImageList_[hPict]->green_, ImageList_[hPict]->blue_, ImageList_[hPict]->alpha_ };
-	ImageList_[hPict]->pSprite->Draw(ImageList_[hPict]->TransformImage, ImageList_[hPict]->color_);
+	Transform trans = ImageList_[hPict]->TransformImage;
+	trans.position_ = XMFLOAT3{ trans.position_.x + difference.x,trans.position_.y + difference.y,0 };
+	ImageList_[hPict]->pSprite->Draw(trans, ImageList_[hPict]->color_);
 }
 
 
@@ -73,6 +76,7 @@ void Image::AllRelease()
 			Release();
 		}
 	}
+	difference = XMFLOAT3{ 0,0,0 };
 	ImageList_.clear();
 }
 
@@ -88,9 +92,9 @@ void Image::AllTransPosition(XMFLOAT3 position)
 {
 	for (int i = 0; i < ImageList_.size(); i++)
 	{
-		ImageList_[i]->TransformImage.position_.x += position.x;
-		ImageList_[i]->TransformImage.position_.y += position.y;
-		ImageList_[i]->TransformImage.position_.z += position.z;
+		difference.x += position.x;
+		difference.y += position.y;
+		difference.z += position.z;
 	}
 }
 
@@ -130,4 +134,9 @@ void Image::RayCast(int hPict, RayCastData* data)
 	XMStoreFloat3(&data->dir, vecDir);
 
 	ImageList_[hPict]->pSprite->RayCast(data);
+}
+
+XMFLOAT3 Image::GetDifference()
+{
+	return difference;
 }

@@ -19,6 +19,7 @@ void LobbyBackground::Initialize()
 //XV
 void LobbyBackground::Update()
 {
+	transform_.position_ = { -pParent_->GetPosition().x,0,0 };
 }
 
 //•`‰æ

@@ -37,5 +37,6 @@ namespace Image
 	void SetColor(int hPict, int red, int blue, int green); //RBG‚ÌŽæ“¾
 	void SetTransform(int hPict, Transform transform_);
 	void RayCast(int hImage, RayCastData* data);
+	XMFLOAT3 GetDifference();	//‘S‚Ä‚Ì‰æ‘œ‚ðposition•ª“®‚©‚·
 };
 

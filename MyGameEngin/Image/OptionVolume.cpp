@@ -8,7 +8,7 @@ OptionVolume::OptionVolume(GameObject* parent)
 
 void OptionVolume::InitialPoint()
 {
-	transform_.position_.y = -0.25f;
+	trans_[0].position_.y = -0.25f;
 }
 
 void OptionVolume::SetFile()

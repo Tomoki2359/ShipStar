@@ -25,4 +25,6 @@ public:
 
 	//‹@‘Ì‚ð‰ñ‚·
 	void RotationParts();
+
+	void TransPos();
 };

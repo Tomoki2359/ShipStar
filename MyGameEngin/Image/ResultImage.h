@@ -2,16 +2,19 @@
 #include "Button.h"
 
 //■■シーンを管理するクラス
-class TitleOption : public Button
+class ResultImage : public Button
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	TitleOption(GameObject* parent);
+	ResultImage(GameObject* parent);
 
 	//初期地点
 	void InitialPoint() override;
 
 	//画像ファイルの名前を取得
 	void SetFile() override;
+
+	//押した時の処理
+	void PutButton() override;
 };

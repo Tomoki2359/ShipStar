@@ -2,16 +2,21 @@
 #include "Button.h"
 
 //■■シーンを管理するクラス
-class LobbyCourse : public Button
+class ModeSelection : public Button
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	LobbyCourse(GameObject* parent);
+	ModeSelection(GameObject* parent);
 
 	//初期地点
 	void InitialPoint() override;
 
 	//画像ファイルの名前を取得
 	void SetFile() override;
+
+	//押した時の処理
+	void PutButton() override;
+
+	void TucheButton(int number) override;
 };
