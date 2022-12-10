@@ -16,6 +16,8 @@
 //■■シーンを管理するクラス
 class LobbyScene : public GameObject
 {
+	int alpha;
+	bool start_;
 	//short lobby_;
 	//bool mouseMoob_;	//マウスが動いているかどうか
 	//bool first_;		//画像のポインタを指定したかどうか

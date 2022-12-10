@@ -1,10 +1,11 @@
 #include "LobbyScene.h"
+#include "Engine/Image.h"
 #include "Image/LobbyBackground.h"
 #include "Image/LobbyImage.h"
 
 //コンストラクタ
 LobbyScene::LobbyScene(GameObject* parent)
-	: GameObject(parent, "LobbyScene")//,mouseMoob_(true),lobby_(-1), first_(true)
+	: GameObject(parent, "LobbyScene"),alpha(0),start_(true)//,mouseMoob_(true),lobby_(-1), first_(true)
 {
 }
 
@@ -17,11 +18,21 @@ void LobbyScene::Initialize()
 	/*Instantiate<LobbyCourse>(this);
 	Instantiate<LobbyCustom>(this);
 	Instantiate<LobbyPlay>(this);*/
+	Image::AllSetAlpha(0);
 }
 
 //更新
 void LobbyScene::Update()
 {
+	if (start_)
+	{
+		if (alpha == UINT8_MAX)
+		{
+			start_ = false;
+		}
+		Image::AllSetAlpha(alpha);
+		alpha += 2;
+	}
 	//if (first_)
 	//{
 	//	first_ = false;

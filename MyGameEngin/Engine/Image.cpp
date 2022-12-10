@@ -140,3 +140,13 @@ XMFLOAT3 Image::GetDifference()
 {
 	return difference;
 }
+
+int Image::GetAlpha(int hPict)
+{
+	float alpha = ImageList_[hPict]->alpha_ * (float)UINT8_MAX;
+	if (alpha >= UINT8_MAX)
+	{
+		alpha = UINT8_MAX;
+	}
+	return (int)alpha;
+}

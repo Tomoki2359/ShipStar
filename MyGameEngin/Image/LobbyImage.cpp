@@ -36,20 +36,24 @@ void LobbyImage::PutButton()
 		trans_[0].scale_.y = 1.0f;
 		Instantiate<ModeSelection>(this);
 		isPut = false;
+		return;
 	}
-	else if (tucheNumber_ == 1)
+	Image::AllSetAlpha(alpha);
+	if (tucheNumber_ == 1 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_MATCHING);
 	}
-	else if (tucheNumber_ == 2)
+	else if (tucheNumber_ == 2 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_CUSTOM);
 	}
+	alpha -= 2;
 }
 
 bool LobbyImage::IsAddCondition()
 {
-	if (FindObject("ModeSelection") == nullptr)
+	alpha = Image::GetAlpha(hPict_[0]);
+	if (FindObject("ModeSelection") == nullptr && alpha == UINT8_MAX)
 	{
 		return true;
 	}

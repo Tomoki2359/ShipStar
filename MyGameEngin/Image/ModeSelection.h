@@ -18,5 +18,9 @@ public:
 	//‰Ÿ‚µ‚½‚Ìˆ—
 	void PutButton() override;
 
+	bool IsAddCondition() override;
+
 	void TucheButton(int number) override;
+
+	void NoTucheButton(int number) override;
 };

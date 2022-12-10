@@ -5,7 +5,7 @@
 
 //コンストラクタ
 TitleImage::TitleImage(GameObject* parent)
-	: Button(parent, "TitleImage")
+	: Button(parent, "TitleImage"),alpha(255)
 {
 	SIZE = 2;
 }
@@ -24,12 +24,14 @@ void TitleImage::SetFile()
 
 void TitleImage::PutButton()
 {
-	if (tucheNumber_ == 0)
+	Image::AllSetAlpha(alpha);
+	if (tucheNumber_ == 0 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
-	else if (tucheNumber_ == 1)
+	else if (tucheNumber_ == 1 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_OPTION);
 	}
+	alpha -= 2;
 }

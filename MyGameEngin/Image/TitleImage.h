@@ -4,6 +4,7 @@
 //■■シーンを管理するクラス
 class TitleImage : public Button
 {
+	int alpha;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
