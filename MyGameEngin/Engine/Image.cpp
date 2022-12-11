@@ -4,6 +4,7 @@
 namespace Image
 {
 	std::vector<Image*> ImageList_;
+	XMFLOAT3 difference = XMFLOAT3{ 0,0,0 };
 }
 
 int Image::Load(std::string fileName)
@@ -37,7 +38,12 @@ int Image::Load(LPCWSTR fileName)
 void Image::Draw(int hPict)
 {
 	ImageList_[hPict]->color_ = { ImageList_[hPict]->red_, ImageList_[hPict]->green_, ImageList_[hPict]->blue_, ImageList_[hPict]->alpha_ };
-	ImageList_[hPict]->pSprite->Draw(ImageList_[hPict]->TransformImage, ImageList_[hPict]->color_);
+	Transform trans = ImageList_[hPict]->TransformImage;
+	if (ImageList_[hPict]->isDifference_)
+	{
+		trans.position_ = XMFLOAT3{ trans.position_.x + difference.x,trans.position_.y + difference.y,0 };
+	}
+	ImageList_[hPict]->pSprite->Draw(trans, ImageList_[hPict]->color_);
 }
 
 
@@ -73,6 +79,7 @@ void Image::AllRelease()
 			Release();
 		}
 	}
+	difference = XMFLOAT3{ 0,0,0 };
 	ImageList_.clear();
 }
 
@@ -86,12 +93,7 @@ void Image::AllSetAlpha(int alpha)
 
 void Image::AllTransPosition(XMFLOAT3 position)
 {
-	for (int i = 0; i < ImageList_.size(); i++)
-	{
-		ImageList_[i]->TransformImage.position_.x += position.x;
-		ImageList_[i]->TransformImage.position_.y += position.y;
-		ImageList_[i]->TransformImage.position_.z += position.z;
-	}
+	difference = position;
 }
 
 //“§–¾“x‚ÌŽæ“¾
@@ -106,6 +108,11 @@ void Image::SetColor(int hPict, int red, int blue, int green)
 	ImageList_[hPict]->red_ = (float)red / UINT8_MAX;
 	ImageList_[hPict]->green_ = (float)green / UINT8_MAX;
 	ImageList_[hPict]->blue_ = (float)blue / UINT8_MAX;
+}
+
+void Image::IsDifference(int hPict, bool isDifference)
+{
+	ImageList_[hPict]->isDifference_ = isDifference;
 }
 
 //ˆÚ“®E‰ñ“]EŠg‘åk¬‚ÌŽæ“¾
@@ -130,4 +137,19 @@ void Image::RayCast(int hPict, RayCastData* data)
 	XMStoreFloat3(&data->dir, vecDir);
 
 	ImageList_[hPict]->pSprite->RayCast(data);
+}
+
+XMFLOAT3 Image::GetDifference()
+{
+	return difference;
+}
+
+int Image::GetAlpha(int hPict)
+{
+	float alpha = ImageList_[hPict]->alpha_ * (float)UINT8_MAX;
+	if (alpha >= UINT8_MAX)
+	{
+		alpha = UINT8_MAX;
+	}
+	return (int)alpha;
 }

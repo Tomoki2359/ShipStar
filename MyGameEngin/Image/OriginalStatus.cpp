@@ -12,7 +12,7 @@ void OriginalStatus::Initialize()
 	//モデルデータのロード
 	hPict_ = Image::Load(L"Assets\\OriginalStatus.png");
 	assert(hPict_ >= 0);
-	transform_.position_.x = -0.5f;
+	transform_.position_.x = 1.5f;
 }
 
 //更新

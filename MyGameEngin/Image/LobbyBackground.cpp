@@ -14,6 +14,7 @@ void LobbyBackground::Initialize()
 	//モデルデータのロード
 	hPict_ = Image::Load(L"Assets\\LobbyBackground.png");
 	assert(hPict_ >= 0);
+	Image::IsDifference(hPict_,false);
 }
 
 //更新

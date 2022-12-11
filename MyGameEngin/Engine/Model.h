@@ -27,4 +27,7 @@ namespace Model
 	//ZバッファのON/OFF
 	//遠くのものや隠れて見えないものを表示させたい場合はfalse
 	void IsZBuffer(int hModel_, bool zBuffer);	
+
+	//全て透明度をalphaにする
+	void AllSetAlpha(int alpha);
 };
