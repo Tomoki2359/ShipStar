@@ -6,19 +6,14 @@
 ModeSelection::ModeSelection(GameObject* parent)
 	: Button(parent, "ModeSelection")
 {
-	SIZE = 5;
+	SIZE = MODE_ONLYGHOST + 1;
 }
 
 void ModeSelection::InitialPoint()
 {
-	trans_[0].position_ = XMFLOAT3{ 0,  0.8f ,0 };
-	trans_[1].position_ = XMFLOAT3{ 0,  0.4f ,0 };
-	trans_[2].position_ = XMFLOAT3{ 0,  0.0f ,0 };
-	trans_[3].position_ = XMFLOAT3{ 0, -0.4f ,0 };
-	trans_[4].position_ = XMFLOAT3{ 0, -0.8f ,0 };
-
 	for (int i = 0; i < SIZE; i++)
 	{
+		trans_[i].position_ = XMFLOAT3{ 0,  0.8f - i * 0.4f ,0 };
 		trans_[i].scale_.x = 0.0f;
 		trans_[i].scale_.y = 0.0f;
 	}

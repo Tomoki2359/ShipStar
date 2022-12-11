@@ -104,6 +104,14 @@ void Model::IsZBuffer(int hModel_, bool zBuffer)
 	modelList_[hModel_]->zBuffer_ = zBuffer;
 }
 
+void Model::AllSetAlpha(int alpha)
+{
+	for (int i = 0; i < modelList_.size(); i++)
+	{
+		modelList_[i]->alpha_ = (float)alpha / UINT8_MAX;
+	}
+}
+
 void Model::SetTransform(int hModel_, Transform transform_)
 {
 	modelList_[hModel_]->TransformModel = transform_;

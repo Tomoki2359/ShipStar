@@ -14,12 +14,12 @@ void LobbyBackground::Initialize()
 	//モデルデータのロード
 	hPict_ = Image::Load(L"Assets\\LobbyBackground.png");
 	assert(hPict_ >= 0);
+	Image::IsDifference(hPict_,false);
 }
 
 //更新
 void LobbyBackground::Update()
 {
-	transform_.position_ = { -pParent_->GetPosition().x,0,0 };
 }
 
 //描画

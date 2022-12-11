@@ -18,4 +18,7 @@ public:
 
 	//‰Ÿ‚µ‚½‚Ìˆ—
 	void PutButton() override;
+
+	//’Ç‰ÁğŒ
+	bool IsAddCondition() override;
 };

@@ -24,12 +24,24 @@ void MatchingImage::SetFile()
 
 void MatchingImage::PutButton()
 {
-	if (tucheNumber_ == 0)
+	if (tucheNumber_ == 0 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_PLAY);
 	}
-	else if (tucheNumber_ == 1)
+	else if (tucheNumber_ == 1 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
+	Image::AllSetAlpha(alpha);
+	alpha -= 2;
+}
+
+bool MatchingImage::IsAddCondition()
+{
+	alpha = Image::GetAlpha(hPict_[0]);
+	if (alpha == UINT8_MAX)
+	{
+		return true;
+	}
+	return false;
 }

@@ -6,19 +6,19 @@
 
 //コンストラクタ
 LobbyImage::LobbyImage(GameObject* parent)
-	: Button(parent, "LobbyImage")
+	: Button(parent, "LobbyImage"),POSITION(0.7f),alpha(0)
 {
 	SIZE = 3;
 }
 
 void LobbyImage::InitialPoint()
 {
-	trans_[0].position_.x = -0.7f;
-	trans_[0].position_.y = 0.7f;
-	trans_[1].position_.x = 0.7f;
-	trans_[1].position_.y = 0.7f;
-	trans_[2].position_.x = 0.7f;
-	trans_[2].position_.y = -0.7f;
+	trans_[0].position_.x = -POSITION;
+	trans_[0].position_.y = POSITION;
+	trans_[1].position_.x = POSITION;
+	trans_[1].position_.y = POSITION;
+	trans_[2].position_.x = POSITION;
+	trans_[2].position_.y = -POSITION;
 }
 
 void LobbyImage::SetFile()

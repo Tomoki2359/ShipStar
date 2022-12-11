@@ -28,6 +28,7 @@ class BeforCustomImage : public Button
 	bool isBrightness_;
 
 	short isNumber;
+	XMFLOAT3 difference_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

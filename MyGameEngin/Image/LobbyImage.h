@@ -4,6 +4,7 @@
 //■■シーンを管理するクラス
 class LobbyImage : public Button
 {
+	const float POSITION;
 	int alpha;
 public:
 	//コンストラクタ
@@ -19,5 +20,6 @@ public:
 	//押した時の処理
 	void PutButton() override;
 
+	//追加条件
 	bool IsAddCondition() override;
 };

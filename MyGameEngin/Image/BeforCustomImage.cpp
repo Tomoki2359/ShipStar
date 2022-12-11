@@ -5,7 +5,7 @@
 
 //コンストラクタ
 BeforCustomImage::BeforCustomImage(GameObject* parent)
-	: Button(parent, "BeforCustomImage"), partsBrightness_(0.5f), isBrightness_(false),isNumber(-1)
+	: Button(parent, "BeforCustomImage"), partsBrightness_(0.5f), isBrightness_(false), isNumber(-1), difference_({0.0f,0.0f,0.0f})
 {
 	SIZE = 2;
 	MODEL = 4;
@@ -55,23 +55,26 @@ void BeforCustomImage::PutButton()
 	}
 	else if (tucheNumber_ == 1)
 	{
-		pParent_->SetPosition(XMFLOAT3{pParent_->GetPosition().x - 0.1f,0.0f,0.0f});
-		if (pParent_->GetPosition().x <= -2)
+		difference_.x -= 0.1f;
+		Image::AllTransPosition(difference_);
+		if (difference_.x <= -2.0f)
 		{
-			pParent_->SetPosition(XMFLOAT3{ -2.0f,0.0f,0.0f });
-		}
-		else
-		{
-			return;
+			difference_.x = -2.0f;
+			Image::AllTransPosition(difference_);
+			isPut = false;
 		}
 	}
-	isPut = false;
+	else
+	{
+		isPut = false;
+	}
 }
 
 void BeforCustomImage::TucheButton(int number)
 {
 	if (isNumber != tucheNumber_)
 	{
+		isNumber = tucheNumber_;
 		partsBrightness_ = 0.5f;
 		isBrightness_ = false;
 	}
@@ -125,7 +128,9 @@ void BeforCustomImage::TucheButton(int number)
 
 bool BeforCustomImage::IsAddCondition()
 {
-	if (pParent_->GetPosition().x == 0)
+	difference_.x = Image::GetDifference().x;
+	int alpha = Image::GetAlpha(hPict_[0]);
+	if (difference_.x >= 0 && alpha == UINT8_MAX)
 	{
 		return true;
 	}

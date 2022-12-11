@@ -4,6 +4,7 @@
 //■■シーンを管理するクラス
 class MatchingImage : public Button
 {
+	int alpha;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -17,4 +18,7 @@ public:
 
 	//押した時の処理
 	void PutButton() override;
+
+	//追加条件
+	bool IsAddCondition() override;
 };

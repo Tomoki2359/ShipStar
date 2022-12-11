@@ -29,8 +29,3 @@ void PartsUnion::RotationParts()
 {
 	transform_.rotate_.y++;
 }
-
-void PartsUnion::TransPos()
-{
-	transform_.position_ = { -pParent_->GetPosition().x,0,0 };
-}

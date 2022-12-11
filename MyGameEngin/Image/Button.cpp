@@ -4,7 +4,7 @@
 
 //コンストラクタ
 Button::Button(GameObject* parent, std::string name)
-	: GameObject(parent, name), MousePos_(),alpha_(255),isPut(false),SIZE(1),MODEL(0),first_(true),tucheNumber_(-1)
+	: GameObject(parent, name), MousePos_(),isPut(false),SIZE(1),MODEL(0),first_(true),tucheNumber_(-1)
 {
 }
 
@@ -52,7 +52,7 @@ void Button::Update()
 		IsImage();
 		for (int i = 0; i < SIZE + MODEL; i++)
 		{
-			if (change_[i] && IsAddCondition())
+			if (IsAddCondition() && change_[i])
 			{
 				TucheButton(i);
 				if (Input::IsMouceDown(0) || Input::IsKeyDown(DIK_Z))
@@ -87,21 +87,8 @@ void Button::Draw()
 	}
 }
 
-//開放
 void Button::Release()
 {
-}
-
-//選択されているかどうか
-void Button::IsButton()
-{
-	change_[0] = true;
-}
-
-//複数画像がある場合
-void Button::IsButton(int number)
-{
-	change_[number] = true;
 }
 
 void Button::IsImage()
@@ -110,9 +97,6 @@ void Button::IsImage()
 	MousePos_ = Input::GetMousePosition();
 	if (MousePos_.x != previousMousePos_.x && MousePos_.y !=  previousMousePos_.y)
 	{
-		change_[tucheNumber_] = false;
-		//マウスの位置の取得
-		MousePos_ = Input::GetMousePosition();
 		//ビューポート行列
 		float w = (float)Direct3D::scrWidth / 2.0f;
 		float h = (float)Direct3D::scrHeight / 2.0f;
@@ -141,12 +125,14 @@ void Button::IsImage()
 		XMVECTOR vMousePosBack = XMLoadFloat3(&mousePosBack);
 		vMousePosBack = XMVector3TransformCoord(vMousePosBack, invVP);
 
-		RayCastData MousePos;
-		XMStoreFloat3(&MousePos.start, vMousePosFront);
-
-		XMStoreFloat3(&MousePos.dir, vMousePosBack - vMousePosFront);
 		for (int i = 0; i < SIZE; i++)
 		{
+			RayCastData MousePos;
+			XMStoreFloat3(&MousePos.start, vMousePosFront);
+
+			XMStoreFloat3(&MousePos.dir, vMousePosBack - vMousePosFront);
+			change_[i] = false;
+			//Image::SetTransform(hPict_[i], trans_[i]);
 			Image::RayCast(hPict_[i], &MousePos);
 			change_[i] = MousePos.hit;
 		}
@@ -180,13 +166,7 @@ void Button::IsKey()
 //押した時どうするか
 void Button::PutButton()
 {
-	//画像が見えなくなってから消す
-	//if (alpha_ <= 0)
-	//{
-		KillMe();
-	//}
-	//alpha_ -= 3;
-	//Image::AllSetAlpha(alpha_);
+	KillMe();
 }
 
 void Button::TucheButton(int number)

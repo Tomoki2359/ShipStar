@@ -24,14 +24,24 @@ void TitleImage::SetFile()
 
 void TitleImage::PutButton()
 {
-	Image::AllSetAlpha(alpha);
 	if (tucheNumber_ == 0 && alpha <= 0)
 	{
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
-	else if (tucheNumber_ == 1 && alpha <= 0)
+	else if (tucheNumber_ == 1)
 	{
 		SCENE_CHANGE(SCENE_ID_OPTION);
 	}
+	Image::AllSetAlpha(alpha);
 	alpha -= 2;
+}
+
+bool TitleImage::IsAddCondition()
+{
+	alpha = Image::GetAlpha(hPict_[0]);
+	if (alpha == UINT8_MAX)
+	{
+		return true;
+	}
+	return false;
 }

@@ -136,9 +136,6 @@
     <ClCompile Include="Image\ButtonArrangement.cpp">
       <Filter>Image\Option</Filter>
     </ClCompile>
-    <ClCompile Include="Image\OptionVolume.cpp">
-      <Filter>Image\Option</Filter>
-    </ClCompile>
     <ClCompile Include="Image\TitleImage.cpp">
       <Filter>Image\Title</Filter>
     </ClCompile>
@@ -159,12 +156,6 @@
     </ClCompile>
     <ClCompile Include="Image\MatchingImage.cpp">
       <Filter>Image\Matching</Filter>
-    </ClCompile>
-    <ClCompile Include="ButtonScene.cpp">
-      <Filter>Scene\Option</Filter>
-    </ClCompile>
-    <ClCompile Include="VolumeScene.cpp">
-      <Filter>Scene\Option</Filter>
     </ClCompile>
     <ClCompile Include="CustomScene.cpp">
       <Filter>Scene\Custom</Filter>
@@ -190,9 +181,9 @@
     <ClCompile Include="SplashScene.cpp">
       <Filter>Scene\Splash</Filter>
     </ClCompile>
-    <ClCompile Include="Image\BackButton.cpp" />
-    <ClCompile Include="Image\OKButton.cpp" />
-    <ClCompile Include="Image\OptionButton.cpp" />
+    <ClCompile Include="Image\OptionImage.cpp">
+      <Filter>Image\Option</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Building.h" />
@@ -328,9 +319,6 @@
     <ClInclude Include="Image\ButtonArrangement.h">
       <Filter>Image\Option</Filter>
     </ClInclude>
-    <ClInclude Include="Image\OptionVolume.h">
-      <Filter>Image\Option</Filter>
-    </ClInclude>
     <ClInclude Include="Image\TitleImage.h">
       <Filter>Image\Title</Filter>
     </ClInclude>
@@ -351,12 +339,6 @@
     </ClInclude>
     <ClInclude Include="Image\MatchingImage.h">
       <Filter>Image\Matching</Filter>
-    </ClInclude>
-    <ClInclude Include="ButtonScene.h">
-      <Filter>Scene\Option</Filter>
-    </ClInclude>
-    <ClInclude Include="VolumeScene.h">
-      <Filter>Scene\Option</Filter>
     </ClInclude>
     <ClInclude Include="CustomScene.h">
       <Filter>Scene\Custom</Filter>
@@ -382,9 +364,9 @@
     <ClInclude Include="SplashScene.h">
       <Filter>Scene\Splash</Filter>
     </ClInclude>
-    <ClInclude Include="Image\BackButton.h" />
-    <ClInclude Include="Image\OKButton.h" />
-    <ClInclude Include="Image\OptionButton.h" />
+    <ClInclude Include="Image\OptionImage.h">
+      <Filter>Image\Option</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Scene">

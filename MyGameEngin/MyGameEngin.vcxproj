@@ -155,7 +155,6 @@
   <ItemGroup>
     <ClCompile Include="Airframe.cpp" />
     <ClCompile Include="Building.cpp" />
-    <ClCompile Include="ButtonScene.cpp" />
     <ClCompile Include="Computer.cpp" />
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="CSVReader.cpp" />
@@ -182,7 +181,6 @@
     <ClCompile Include="Icon\ComputerIcon.cpp" />
     <ClCompile Include="Icon\PlayerIcon.cpp" />
     <ClCompile Include="Image\AfterCustomImage.cpp" />
-    <ClCompile Include="Image\BackButton.cpp" />
     <ClCompile Include="Image\Background.cpp" />
     <ClCompile Include="Image\BeforCustomImage.cpp" />
     <ClCompile Include="Image\Button.cpp" />
@@ -196,9 +194,7 @@
     <ClCompile Include="Image\MatchingCourse.cpp" />
     <ClCompile Include="Image\MatchingImage.cpp" />
     <ClCompile Include="Image\ModeSelection.cpp" />
-    <ClCompile Include="Image\OKButton.cpp" />
-    <ClCompile Include="Image\OptionButton.cpp" />
-    <ClCompile Include="Image\OptionVolume.cpp" />
+    <ClCompile Include="Image\OptionImage.cpp" />
     <ClCompile Include="Image\OriginalStatus.cpp" />
     <ClCompile Include="Image\PartsList.cpp" />
     <ClCompile Include="Image\PlayBackground.cpp" />
@@ -224,7 +220,6 @@
     <ClCompile Include="SplashScene.cpp" />
     <ClCompile Include="Storage.cpp" />
     <ClCompile Include="TitleScene.cpp" />
-    <ClCompile Include="VolumeScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl">
@@ -247,7 +242,6 @@
   <ItemGroup>
     <ClInclude Include="Airframe.h" />
     <ClInclude Include="Building.h" />
-    <ClInclude Include="ButtonScene.h" />
     <ClInclude Include="Computer.h" />
     <ClInclude Include="Course.h" />
     <ClInclude Include="CSVReader.h" />
@@ -275,7 +269,6 @@
     <ClInclude Include="Icon\ComputerIcon.h" />
     <ClInclude Include="Icon\PlayerIcon.h" />
     <ClInclude Include="Image\AfterCustomImage.h" />
-    <ClInclude Include="Image\BackButton.h" />
     <ClInclude Include="Image\Background.h" />
     <ClInclude Include="Image\BeforCustomImage.h" />
     <ClInclude Include="Image\Button.h" />
@@ -289,9 +282,7 @@
     <ClInclude Include="Image\MatchingCourse.h" />
     <ClInclude Include="Image\MatchingImage.h" />
     <ClInclude Include="Image\ModeSelection.h" />
-    <ClInclude Include="Image\OKButton.h" />
-    <ClInclude Include="Image\OptionButton.h" />
-    <ClInclude Include="Image\OptionVolume.h" />
+    <ClInclude Include="Image\OptionImage.h" />
     <ClInclude Include="Image\OriginalStatus.h" />
     <ClInclude Include="Image\PartsList.h" />
     <ClInclude Include="Image\PlayBackground.h" />
@@ -316,7 +307,6 @@
     <ClInclude Include="SplashScene.h" />
     <ClInclude Include="Storage.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="VolumeScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

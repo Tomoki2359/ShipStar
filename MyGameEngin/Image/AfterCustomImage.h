@@ -4,7 +4,8 @@
 //■■シーンを管理するクラス
 class AfterCustomImage : public Button
 {
-	
+	XMFLOAT3 difference_;
+	int alpha;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

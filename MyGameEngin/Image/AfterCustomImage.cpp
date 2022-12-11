@@ -1,5 +1,6 @@
 #include "AfterCustomImage.h"
 #include "../Engine/Image.h"
+#include "../Engine/Model.h"
 #include "../Option.h"
 #include "../Engine/SceneManager.h"
 #include "BeforCustomImage.h"
@@ -7,7 +8,7 @@
 
 //コンストラクタ
 AfterCustomImage::AfterCustomImage(GameObject* parent)
-	: Button(parent, "AfterCustomImage")
+	: Button(parent, "AfterCustomImage"), difference_({0.0f,0.0f,0.0f})
 {
 	SIZE = 2;
 }
@@ -31,17 +32,19 @@ void AfterCustomImage::PutButton()
 {
 	if (tucheNumber_ == 0)
 	{
-		pParent_->SetPosition(XMFLOAT3{ pParent_->GetPosition().x + 0.1f,0.0f,0.0f });
-		if (pParent_->GetPosition().x >= 0)
+		difference_.x += 0.1f;
+		Image::AllTransPosition(difference_);
+		if (difference_.x >= 0.0f)
 		{
-			pParent_->SetPosition(XMFLOAT3{ 0.0f,0.0f,0.0f });
+			difference_.x = 0.0f;
+			Image::AllTransPosition(difference_);
+			isPut = false;
 		}
-		else
-		{
-			return;
-		}
+		return;
 	}
-	else if (tucheNumber_ == 1)
+	Image::AllSetAlpha(alpha);
+	Model::AllSetAlpha(alpha);
+	if (tucheNumber_ == 1 && alpha <= 0)
 	{
 		BeforCustomImage* pBefor_;
 		pBefor_ = (BeforCustomImage*)FindObject("BeforCustomImage");
@@ -49,7 +52,7 @@ void AfterCustomImage::PutButton()
 		pBefor_->SetParts();
 		SCENE_CHANGE(SCENE_ID_LOBBY);
 	}
-	isPut = false;
+	alpha -= 2;
 }
 
 void AfterCustomImage::TucheButton(int number)
@@ -68,7 +71,9 @@ void AfterCustomImage::TucheButton(int number)
 
 bool AfterCustomImage::IsAddCondition()
 {
-	if (pParent_->GetPosition().x == -2.0f)
+	difference_.x = Image::GetDifference().x;
+	alpha = Image::GetAlpha(hPict_[0]);
+	if (difference_.x <= -2.0f)
 	{
 		return true;
 	}

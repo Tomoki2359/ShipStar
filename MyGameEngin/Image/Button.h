@@ -1,21 +1,30 @@
 #pragma once
 #include "../Engine/GameObject.h"
 
+//画像を押したするときに継承するクラス
+//使うときはコンストラクタでSIZE(画像数)とMODEL(モデル数)を決めて
+//SetFile()とInitialPoint()を設定する(名前と位置)
+//あとは必要なものだけオーバライドする
+
 //■■シーンを管理するクラス
 class Button : public GameObject
 {
 	bool* change_;	//選択されているかどうか
+	bool first_;		//一回だけ処理をしたか
 protected:
-	Transform* trans_;	//マウスの位置
-	XMFLOAT3 MousePos_;	//前回のマウスの位置
+	//必ず設定するもの
 	LPCWSTR* fileName;	//ファイルの名前
-	int alpha_;			//透明度
+	
+	//必要に応じて設定する
+	Transform* trans_;	//画像の動き
 	short SIZE;			//画像数
-	short MODEL;			//モデル数
+	short MODEL;		//モデル数
+
+	//使うかもしれないもの
+	XMFLOAT3 MousePos_;	//マウスの位置
 	short* hPict_;    //モデル番号
 	short tucheNumber_;	//触れた番号
 	bool isPut;		//押されたかどうか
-	bool first_;		//押されたかどうか
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -35,24 +44,27 @@ public:
 	//開放
 	void Release() override;
 
-	virtual void FirstFind() {};
-
-	//選択されているかどうか
-	void IsButton();
-
-	//複数画像がある場合
-	void IsButton(int number);
-
-	//初期地点
-	virtual void InitialPoint() = 0;
-
+	//選択するやり方
+	//ON/OFF機能はついてない
 	//画像の位置の判定
 	void IsImage();
 
 	//キーボード操作の判定
 	void IsKey();
 
-	//画像を押した時の動き
+	//必ず設定する
+	//画像ファイルの名前を取得
+	virtual void SetFile() = 0;
+
+	//初期地点
+	virtual void InitialPoint() = 0;
+
+	//必要に応じてオーバライド
+	//ゲームオブジェクトを探すなど
+	//一回やっておきたい処理
+	virtual void FirstFind() {};
+
+	//画像を押した時の処理
 	//動きが違うやつはオーバライド
 	virtual void PutButton();
 
@@ -69,7 +81,4 @@ public:
 	//触れられている・選択されている以外の追加条件
 	//必要なもののみオーバーライド
 	virtual bool IsAddCondition() { return true; };
-
-	//画像ファイルの名前を取得
-	virtual void SetFile() = 0;
 };

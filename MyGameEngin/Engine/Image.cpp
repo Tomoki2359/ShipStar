@@ -4,7 +4,7 @@
 namespace Image
 {
 	std::vector<Image*> ImageList_;
-	XMFLOAT3 difference = XMFLOAT3{ 0,0,0 };;
+	XMFLOAT3 difference = XMFLOAT3{ 0,0,0 };
 }
 
 int Image::Load(std::string fileName)
@@ -39,7 +39,10 @@ void Image::Draw(int hPict)
 {
 	ImageList_[hPict]->color_ = { ImageList_[hPict]->red_, ImageList_[hPict]->green_, ImageList_[hPict]->blue_, ImageList_[hPict]->alpha_ };
 	Transform trans = ImageList_[hPict]->TransformImage;
-	trans.position_ = XMFLOAT3{ trans.position_.x + difference.x,trans.position_.y + difference.y,0 };
+	if (ImageList_[hPict]->isDifference_)
+	{
+		trans.position_ = XMFLOAT3{ trans.position_.x + difference.x,trans.position_.y + difference.y,0 };
+	}
 	ImageList_[hPict]->pSprite->Draw(trans, ImageList_[hPict]->color_);
 }
 
@@ -90,12 +93,7 @@ void Image::AllSetAlpha(int alpha)
 
 void Image::AllTransPosition(XMFLOAT3 position)
 {
-	for (int i = 0; i < ImageList_.size(); i++)
-	{
-		difference.x += position.x;
-		difference.y += position.y;
-		difference.z += position.z;
-	}
+	difference = position;
 }
 
 //“§–¾“x‚Ìæ“¾
@@ -110,6 +108,11 @@ void Image::SetColor(int hPict, int red, int blue, int green)
 	ImageList_[hPict]->red_ = (float)red / UINT8_MAX;
 	ImageList_[hPict]->green_ = (float)green / UINT8_MAX;
 	ImageList_[hPict]->blue_ = (float)blue / UINT8_MAX;
+}
+
+void Image::IsDifference(int hPict, bool isDifference)
+{
+	ImageList_[hPict]->isDifference_ = isDifference;
 }
 
 //ˆÚ“®E‰ñ“]EŠg‘åk¬‚Ìæ“¾
