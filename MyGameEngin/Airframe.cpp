@@ -11,7 +11,7 @@
 //コンストラクタ
 Airframe::Airframe(GameObject* parent, std::string name)
 	: GameObject(parent, name), hModel_(-1), cAscent_(false), speed_(NULL), RespawnPos_(), RespawnRot_(), RespawnUpdate_(NULL),
-	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(NULL), Lap_(NULL), Side_(true), VirtualState_(NULL),
+	cDescent_(false), lCurve_(false), rCurve_(false), cTurbo_(false), tTurbo_(90), Lap_(NULL), Side_(true), VirtualState_(NULL),
 	cCamera_(false), status_(), PartsSet(), start_(false), timeCount_(180), PrevPosition_(), pNav_(nullptr), IsGoal_(false), NextState_(NULL)
 {
 }
@@ -52,14 +52,6 @@ void Airframe::Initialize()
 	{
 		ComCorrection();
 	}
-
-	/*if (Option::GetMode() == MODE_REPLAY)
-	{
-		if (objectName_ == "Player")
-		{
-			Model::SetAlpha(hModel_, 0.1);
-		}
-	}*/
 }
 
 //更新
@@ -106,8 +98,6 @@ void Airframe::Update()
 		RespawnUpdate_++;
 		if (RespawnUpdate_ >= Past)	//配列の最大数は超えないようにする
 		{
-			cTurbo_ = false;
-			tTurbo_ = NULL;
 			RespawnUpdate_ = NULL;
 		}
 	}
@@ -267,7 +257,6 @@ void Airframe::TurnLeft()
 void Airframe::Turbo()
 {
 	cTurbo_ = true;
-	tTurbo_ = NULL;
 }
 
 XMFLOAT3 Airframe::GetDistance(GameObject* pTarget)
@@ -369,18 +358,19 @@ void Airframe::TurboProcess()
 	//ターボ中の処理
 	if (cTurbo_)
 	{
-		//スピードを上げる
-		speed_ = status_[MAX_SPEED] * 2.0f;
-		//時間が経ったら終わる
-		if (tTurbo_ >= status_[TURBO])
+		if (tTurbo_ > 0)
 		{
-			cTurbo_ = false;
-			tTurbo_ = NULL;
+			//スピードを上げる
+			speed_ = status_[MAX_SPEED] * 2.0f;
+			tTurbo_--;
 		}
 	}
-
-	//ターボ値を貯める
-	tTurbo_++;
+	
+	if (tTurbo_ <= 0)
+	{
+		//ターボ強制終了
+		cTurbo_ = false;
+	}
 }
 
 void Airframe::MoveProcess()

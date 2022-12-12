@@ -49,12 +49,10 @@ void Player::UpdateState()
 	}
 
 	//ƒ^[ƒ{
-	//300‚Í‡ˆÊ‚É‚æ‚Á‚Ä”­“®‚·‚éŽžŠÔ‚ª•Ï“®‚·‚é(Å‰ºˆÊ‚©‚ç5•b,10•b,15•b,20•b)
-	if (tTurbo_ >= 300 && Input::IsKeyDown(DIK_C))
+	if (Input::IsKey(DIK_C))
 	{
-		tTurbo_ = 0;
 		Turbo();
-		NextState_ = M_TURBO;
+		NextState_ += M_TURBO;
 	}
 	
 	if (NextState_ != VirtualState_)
