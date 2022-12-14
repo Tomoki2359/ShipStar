@@ -16,4 +16,7 @@ namespace Storage
 	//選択されているコースのデータが存在するか
 	///戻り値 : true = ある  false = ない
 	bool ExistData();
+
+	//記録が更新されたかを返す
+	bool IsBreaked();
 };

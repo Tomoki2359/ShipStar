@@ -6,6 +6,13 @@
 class ResultScene : public GameObject
 {
 	int hPict_[10];
+
+	enum
+	{
+		Pict_Lately,
+		Pict_Recbreak
+	};
+	int hPictRecord_[2];
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

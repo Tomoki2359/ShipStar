@@ -15,6 +15,8 @@ namespace Storage
 	float ClearTime;
 	float LoadTime;
 
+	bool RecordBreaked;	//‹L˜^‚ªXV‚³‚ê‚½‚©
+
 	void Save();
 	bool Load();	//“Ç‚İæ‚è¸”s‚µ‚½‚çfalse‚ğ•Ô‚·
 
@@ -25,6 +27,8 @@ namespace Storage
 
 		Data_Command.reserve(command.size());
 		Data_Frame.reserve(command.size());
+
+		RecordBreaked = false;	//‚Æ‚è‚ ‚¦‚¸false‚ğ“ü‚ê‚Ä‚¨‚­
 
 		ClearTime = Time::GetTime();
 
@@ -45,6 +49,7 @@ namespace Storage
 			{
 				if (ClearTime < LoadTime)	//Load‚Å“Ç‚İæ‚Á‚½ŠÔ‚æ‚èClear‚Ì•û‚ª‘‚©‚Á‚½ê‡
 				{
+					RecordBreaked = true;
 					Save();
 				}
 			}
@@ -115,6 +120,11 @@ namespace Storage
 		}
 		CloseHandle(hFile);
 		return true;
+	}
+
+	bool IsBreaked()
+	{
+		return RecordBreaked;
 	}
 
 	void Save()
