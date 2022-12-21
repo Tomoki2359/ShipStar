@@ -93,6 +93,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	pRoot->Initialize();
 
 	Time::Initialize();
+	static const char MAX_FPS = 60;
+	static DWORD countFps[MAX_FPS];
+	std::fill(countFps, countFps + MAX_FPS, MAX_FPS);
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -134,10 +137,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			timeBeginPeriod(1);
 
-			static const char MAX_FPS = 60;
-
 			static int i = 0;
-			static DWORD countFps[MAX_FPS];
 			static DWORD startTime = timeGetTime();
 			DWORD nowTime = timeGetTime();
 			static DWORD lastUpdateTime = nowTime;

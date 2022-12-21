@@ -43,8 +43,8 @@ namespace Time
 
 	void Update(short FPS)
 	{
-		float fps = (FPS - 1) * 1.0005f;
 		if (Lock_) { return; }	//Lock‚³‚ê‚Ä‚¢‚½‚çXV‚µ‚È‚¢
+		float fps = (FPS - 1) * 1.0005f;
 		Seconds += 1.0 / fps;
 	}
 
